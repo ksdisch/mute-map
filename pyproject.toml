@@ -1,0 +1,17 @@
+[project]
+name = "mute-map"
+version = "0.1.0"
+description = "Cartography of the late-band J-lens output off-switch first observed in dim-stage S4b: breadth, localization, dose, specificity."
+requires-python = ">=3.12"
+dependencies = [
+    "torch>=2.4",
+    "transformers>=4.44",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[tool.uv]
+package = false

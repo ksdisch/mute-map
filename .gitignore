@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+*.egg-info/
+
+# Env / secrets (none expected — local-only project — but never track them)
+.env
+
+# Fitted lens weights are large binary artifacts (70–560MB per model), sourced
+# from local dim-stage copies with recorded provenance (M0 decision) — never tracked.
+*.pt
+*.safetensors
+lenses/
+
+# Run logs (results that matter get written into docs/ and results/ JSONs)
+*.log
+
+# Fetched reference material (Anthropic's paper content — never commit)
+refs/
+
+# OS
+.DS_Store
