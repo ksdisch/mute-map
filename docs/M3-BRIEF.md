@@ -89,11 +89,15 @@ pairs have never been measured.
   counts at 1.5B: all six countries, Jupiter, Mars, October and silver gate
   3/3; piano and violin gate 2/3.
 - **The frozen control pairings put 6 of the 12 recorded control cells inside
-  the matrix.** The six countries' M1 controls are all subset members
-  (France→Canada, Canada→China, China→Egypt, Egypt→France, Japan→Brazil,
-  Brazil→Japan), so those 18 recorded `control_late` item-cells are matrix
-  cells. The other six concepts' controls (February, Saturn, Mercury, guitar,
-  drum, platinum) are outside the subset.
+  the matrix.** The six countries' M1 controls are all subset members, so
+  those 18 recorded `control_late` item-cells are matrix cells. In this
+  brief's prime→probe (A→B) notation — corrected at this PR's review (F4),
+  which caught the list written probe→prime — the six recorded ordered pairs
+  are **Canada→France, China→Canada, Egypt→China, France→Egypt, Brazil→Japan,
+  Japan→Brazil** (e.g. the recorded cell for France's items ablates *Canada*,
+  France's frozen control, and probes France: pair (Canada, France)). The
+  other six concepts' controls (February, Saturn, Mercury, guitar, drum,
+  platinum) are outside the subset.
 - **No cross-mention confound in the items.** Checked on the frozen
   `items/m1-battery.json`: no subset concept's clue contains any other subset
   concept's spelling at a word boundary, case-insensitive. So an off-diagonal
@@ -178,7 +182,9 @@ brief owes the boundary-class decision before freezing any non-ASCII list.
     within-category ordered pairs — the S4b control generalized in both
     directions); **silver**, the named non-specific anti-example, sits inside
     the pooled off-diagonal where its collateral *lowers* off-diagonal naming
-    and so biases against the gate, never for it; Egypt and October carry the
+    and so biases against the gate, never for it (silver only — the pooled
+    arm's *composition* biases the other way, owned in D17 per this PR's
+    review F2); Egypt and October carry the
     replicated leak texture; the S2 stratum tests whether space-keyed
     directions splash differently.
   - **The re-certification surface is maximal** (D16): 90 of the matrix's
@@ -242,31 +248,62 @@ on the pooled gated cell — gating is the clean arm under D9(b), decided once
 per item and direction-independent, so every matrix cell shares one gated
 set:
 
-> **MATRIX-SPECIFIC** iff naming under the pooled **off-diagonal** cells
-> (every gated item under each of the 11 directions that are not its own
-> concept's) minus naming under the pooled **diagonal** cells (each gated
-> item under its own concept's direction) is positive with its Newcombe 95%
-> CI excluding 0. The M3 verdict is the AND over 1.5B and 3B; 0.5B runs and
-> is reported under its standing any-direction-damage frame, never
-> gate-bearing. Pooled diagonal gated n < MIN_N = 20 ⇒ pre-declared
-> UNDERPOWERED and no specificity claim. Every matrix cell ablates the
-> subject's identical late-third layer set at λ = 1, k = 1, so the compared
-> arms differ **only in which direction is removed** — never in depth, layer
-> count, or dose (M2 review F2's caveat, retired structurally and stated
+> **MATRIX-SPECIFIC** iff BOTH, per subject on the pooled gated cell:
+> **(1)** naming under the pooled **off-diagonal** cells (every gated item
+> under each of the 11 directions that are not its own concept's) minus
+> naming under the pooled **diagonal** cells (each gated item under its own
+> concept's direction) is positive with its Newcombe 95% CI excluding 0;
+> AND **(2)** the same contrast restricted to the **within-category**
+> off-diagonal cells (each gated item under its same-category subset
+> siblings' directions only) is likewise positive with its Newcombe 95% CI
+> excluding 0 — the S4b-comparable arm, since the lineage's control has
+> always been same-category. The M3 verdict is the AND over 1.5B and 3B;
+> 0.5B runs and is reported under its standing any-direction-damage frame,
+> never gate-bearing. Pooled diagonal gated n < MIN_N = 20 ⇒ pre-declared
+> UNDERPOWERED and no specificity claim. **Collateral-floor qualifier,
+> pre-committed:** the ordering contrasts above cannot by themselves
+> distinguish a per-concept switch from graded damage that is merely worse
+> on-diagonal, so if pooled off-diagonal naming's Wilson 95% lower bound is
+> below **0.5**, the verdict — whatever it is — carries the pre-declared
+> qualifier **ON A DAMAGED FLOOR** (the any-direction-damage frame applied
+> to a gate-bearing subject); the qualifier scopes the claim and can never
+> create or rescue a verdict. Every matrix cell ablates the subject's
+> identical late-third layer set at λ = 1, k = 1, so the compared arms
+> differ **only in which direction is removed** — never in depth, layer
+> count, or dose (PR #7 review F2's caveat, retired structurally and stated
 > here so it stays owned).
 
-This *is* KICKOFF's "diagonal suppression CI-cleanly exceeds off-diagonal
-collateral" in directly comparable proportions, by M2's algebra: suppression
-under arm X is the naming drop clean − naming_X on the same items, so
-suppression_diag − suppression_offdiag = naming_offdiag − naming_diag — the
-shared clean arm cancels, leaving the plain two-proportion comparison the
-ported ruler already decides.
+Clause (1) *is* KICKOFF's "diagonal suppression CI-cleanly exceeds
+off-diagonal collateral" in directly comparable proportions, by M2's algebra:
+suppression under arm X is the naming drop clean − naming_X on the same
+items, so suppression_diag − suppression_offdiag = naming_offdiag −
+naming_diag — the shared clean arm cancels, leaving the plain two-proportion
+comparison the ported ruler already decides.
+
+**Why clauses (2) and the floor qualifier exist (added at this PR's
+adversarial review, findings F2 and F1 — both pre-run; Kyle freezes or
+strikes each at D17).** The pooled off-diagonal arm is 73% cross-category
+(274 of 374 cells at 1.5B), while the arm KICKOFF's wording generalizes —
+S4b D28's specificity control — was same-category only. Cross-category pairs
+are the ones least likely to show collateral, so pooling shifts the
+comparator in the gate's favour relative to the control the lineage actually
+ran: if collateral is category-structured (the "block structure" named above
+as the most interesting finding), the pooled arm dilutes it. Clause (2) is
+the undiluted test, and it is powered on its own — within-category pooled n
+**96 / 100 / 101** (0.5B / 1.5B / 3B), all ≥ MIN_N. The floor qualifier
+covers the failure mode neither ordering clause can see: a matrix whose
+off-diagonal is heavily damaged can still pass both orderings CI-cleanly
+(the recorded 0.5B tier cells do exactly that: `control_late` 20/28 vs
+`primed_late` 0/28 → +0.714 [+0.494, +0.847] through the project's own
+ruler), which is why 0.5B's exclusion is now backed by a measured tripwire
+rather than scale fiat alone.
 
 **Descriptive package (never gate-bearing, Wilson CIs).** The matrix itself:
 per-pair (A, B) cells are n ≤ 3, always descriptive. Reported beside, all
 pre-registered here: the **within-category vs cross-category** split of the
-pooled off-diagonal (KICKOFF's named readout — realized pooled ns below, all
-clear MIN_N); per-direction **row profiles** (how much does deleting A damage
+pooled off-diagonal (KICKOFF's named readout — the within-category arm is
+gate-bearing via clause (2); the cross-category arm and the full grid stay
+descriptive); per-direction **row profiles** (how much does deleting A damage
 the other 11 — silver's row is the pre-registered interesting one) and
 per-concept **column profiles** (how fragile is B to other deletions);
 asymmetry texture (A→B vs B→A); the 18 out-of-subset control cells; mean
@@ -293,10 +330,12 @@ before any trial; `--dry-run` validates and stops; `--limit` is smoke, never
 a result; M3 refuses an M1 artifact that was itself not a result. All M1/M2
 patterns carried verbatim.
 
-*(No alternative wording options offered: the gate is KICKOFF-frozen in
-substance, and every clause above is a standing convention carried from
-D14 — the decision is to freeze this instantiation. Objections to any clause
-belong here, before code.)*
+*(No alternative wording options offered: the gate's substance is
+KICKOFF-frozen and the degeneracy/precedence machinery is carried from D14.
+The two review-added elements — clause (2) and the floor qualifier, from
+this PR's F2 and F1 — are the strikeable parts: each strengthens or scopes
+the gate and neither weakens it, so striking either reverts to the plain
+KICKOFF ordering test. Objections to any clause belong here, before code.)*
 
 ### D18 — Run-time instrument bars (the F5 + F4 pins)
 
@@ -340,18 +379,29 @@ cross-check, not a power surprise):
 |---|---|---|---|---|
 | Diagonal (the binding gate cell) | 28 | 34 | 32 | yes, all |
 | Off-diagonal (11 × gated n) | 308 | 374 | 352 | yes, all |
-| Within-category off-diagonal (texture) | 96 | 100 | 101 | yes, all |
+| Within-category off-diagonal (gate clause 2) | 96 | 100 | 101 | yes, all |
 | Cross-category off-diagonal (texture) | 212 | 274 | 251 | yes, all |
 
 Per-pair cells are n ≤ 3 — always descriptive, never verdict-bearing (D7's
 logic, unchanged). Honesty rows, carried and extended: items within a concept
 share one direction (clustering); the diagonal and off-diagonal arms are
 measured on the same gated items under an independent-samples Newcombe, which
-widens the CI and can only cost power; **new for M3** — the pooled
-off-diagonal repeats each gated item 11 times, so its effective n is far
-below 374 and its narrow Wilson CI should be read with that in mind (the gate
-itself compares it against the diagonal on shared items, where the bias again
-runs toward *wider*, not narrower, intervals); MIN_N applies to raw n.
+widens the CI and can only cost power; **new for M3, anti-conservative and
+owned (corrected at this PR's review, F3)** — the pooled off-diagonal
+repeats each gated item 11 times (the within-category arm up to 5), which
+makes the gate's Newcombe interval *narrower* than the clustering justifies,
+not wider: worked on the recorded 0.5B rates, the inflated-n contrast reads
++0.714 [+0.583, +0.762] where the honest per-item n gives +0.714 [+0.494,
++0.847]. (This brief originally asserted the bias ran toward wider
+intervals; that was wrong — the paired-arms widening above is small
+precisely because the diagonal arm sits near 0 hits.) The pre-registered
+**effective-n sanity check**, reported beside the gate: each contrast
+recomputed with the repeated arm collapsed to one binary per gated item —
+"survives **all 11** off-diagonal deletions" for clause (1), "survives all
+within-category sibling deletions" for clause (2) — n = the gated items
+(28 / 34 / 32), decided by the same frozen ruler. If a pooled clause is
+CI-clean but its per-item collapse is not, the per-item numbers are the
+honest ones to quote. MIN_N applies to raw n.
 
 What the recorded evidence predicts, said plainly: M1's control cells
 (30/34 surviving at 1.5B) and M2's tier texture predict the gate passes.
