@@ -282,6 +282,15 @@ def test_compare_pair_catches_a_flipped_greedy_cell():
     assert len(problems) == 1 and "primed_late.produced" in problems[0]
 
 
+def test_compare_pair_catches_a_greedy_token_drift():
+    """Pins the greedy-token half of D3's gating cell: a flipped decoded token
+    with `produced` unchanged must still be a mismatch."""
+    ours, ref = _fake_results(), _fake_results()
+    ours["items"][0]["instructions"]["avoidance"]["clean"]["greedy"] = "y"
+    problems, _ = compare_pair(ours, ref)
+    assert len(problems) == 1 and "clean.greedy" in problems[0]
+
+
 def test_compare_pair_catches_gate_membership_drift():
     ours, ref = _fake_results(), _fake_results()
     ours["items"][0]["gate_greedy"] = False
@@ -304,20 +313,29 @@ def test_compare_pair_mass_drift_is_texture_not_failure():
     assert texture["mass_cells_equal"] == 13
 
 
-def test_port_gate_rejects_a_half_specified_pair(monkeypatch):
-    """F2 regression: --ours alone must exit 2 with the gate's INVALID wording,
-    never a TypeError traceback."""
-    monkeypatch.setattr(sys, "argv", ["m0_port_gate.py", "--ours", "x.json"])
+#: An anchor file that exists on disk — the half-pair tests must use a real path
+#: so load()'s missing-file branch cannot absorb the assertion (F8).
+EXISTING_ANCHOR = "anchors/s4-avoidance-qwen2.5-0.5b-instruct.json"
+
+
+def test_port_gate_rejects_a_half_specified_pair(monkeypatch, capsys):
+    """F2 regression: --ours alone must exit 2 with the pair guard's own INVALID
+    wording, never a TypeError traceback — and never via the missing-file branch."""
+    monkeypatch.setattr(sys, "argv", ["m0_port_gate.py", "--ours", EXISTING_ANCHOR])
     with pytest.raises(SystemExit) as exc:
         m0_port_gate.main()
     assert exc.value.code == 2
+    assert "must be given together" in capsys.readouterr().out
 
 
-def test_port_gate_rejects_all_mixed_with_a_pair_flag(monkeypatch):
-    monkeypatch.setattr(sys, "argv", ["m0_port_gate.py", "--all", "--ours", "x.json"])
+def test_port_gate_rejects_all_mixed_with_a_pair_flag(monkeypatch, capsys):
+    monkeypatch.setattr(
+        sys, "argv", ["m0_port_gate.py", "--all", "--ours", EXISTING_ANCHOR]
+    )
     with pytest.raises(SystemExit) as exc:
         m0_port_gate.main()
     assert exc.value.code == 2
+    assert "must be given together" in capsys.readouterr().out
 
 
 def test_port_gate_invalid_on_corrupt_json(monkeypatch, tmp_path):
