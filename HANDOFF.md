@@ -51,10 +51,13 @@ re-attribution, not a retraction — M1's and M2's numbers stand as published.
 **One carry-forward M3 creates, found at its own adversarial review (PR #9 F1).**
 M3's gate is a conjunction, but D17's frozen degeneracy scope names only clause
 (1)'s surviving arm (`off_diagonal`) as dispositive — clause (2)'s
-(`within_category_off_diagonal`) is guarded nowhere, and it is the *more*
-collapse-prone arm on every subject (wrong-opening shares 0.052 / 0.030 / 0.010
-vs 0.016 / 0.008 / 0.014). Nothing here is affected — no arm came within an order
-of magnitude of COLLAPSE_SHARE = 0.5 — and `m3_matrix.GATE_WORDING` was **not**
+(`within_category_off_diagonal`) is guarded nowhere, and at the two smaller
+subjects it runs 3–4× the guarded arm's wrong-opening share (0.052 vs 0.016 at
+0.5B, 0.030 vs 0.008 at 1.5B; at 3B the ordering inverts, 0.010 vs 0.014).
+Nothing here is affected — neither gate-reading arm came within an order of
+magnitude of COLLAPSE_SHARE = 0.5, and the one arm that does run close is the
+pooled **diagonal** (0.464 at 0.5B), which D17 pre-registers as TAG-only because
+it *is* the expected mute signature — and `m3_matrix.GATE_WORDING` was **not**
 amended, because it is byte-frozen with three subjects' artifacts and editing a
 pre-registration after seeing results is what D9/D10 exist to prevent. Owned in
 M3-BRIEF's Honest limits, and carried here: **any later stage whose gate is a

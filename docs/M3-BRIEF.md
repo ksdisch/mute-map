@@ -702,11 +702,12 @@ wrong-opening collapse confined to the within-category arm (at most 100 of 374
 pooled cells at 1.5B) could not lift the pooled share near COLLAPSE_SHARE = 0.5,
 so a run could in principle print MATRIX-SPECIFIC with clause (2) resting on a
 degenerate cell. This is a gap in the **pre-registration**, not a coding error —
-and it is not a hypothetical worth dismissing, because the unguarded arm is the
-*more* collapse-prone one on every subject: within-category wrong-opening shares
-of **0.052 / 0.030 / 0.010** against the guarded arm's 0.016 / 0.008 / 0.014
-(0.5B / 1.5B / 3B), 3–6× higher at the two smaller subjects, which is what
-pooling six same-category country probes should do.
+and it is not a hypothetical worth dismissing, because at the two smaller
+subjects the unguarded arm runs **3–4× the guarded arm's** wrong-opening share:
+**0.052 vs 0.016** at 0.5B (3.2×) and **0.030 vs 0.008** at 1.5B (3.7×), which is
+what pooling six same-category country probes should do. At 3B the ordering
+inverts and the unguarded arm is the *lower* of the two (**0.010 vs 0.014**), so
+"more collapse-prone" holds at two of the three subjects, not all three.
 
 **Nothing here is affected**: 0.052 is an order of magnitude below the 0.5
 threshold, no arm collapsed on any subject, and adding the arm would change no
