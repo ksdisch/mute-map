@@ -103,11 +103,13 @@ result until D10 lands):
   can hold every roster word. One quirk: `opal` is the sole word whose
   *leading-space* form is multi-token (its bare form is single).
 - Widened-readout projections (prefix rule, D9b, case-insensitive), computed
-  offline from the recorded spans: gated n **105 / 116 / 69**; primed **0/105,
-  12/116, 0/69**; control 80/105, 92/116, 33/69; contrast +0.762 [+0.665,
-  +0.833], +0.690 [+0.582, +0.767], +0.478 [+0.353, +0.594]. Planets prefix-gate
-  8 / 15 / 7 of 18 items and instruments 8 / 13 / 2 — the dark categories light
-  up on both gate-bearing subjects.
+  offline from the recorded spans, every number labelled inline: gated n **69
+  (0.5B) / 105 (1.5B) / 116 (3B)**; primed 0/69 (0.5B), 0/105 (1.5B), 12/116
+  (3B); control 33/69, 80/105, 92/116 (same order); contrast +0.478 [+0.353,
+  +0.594] (0.5B), +0.762 [+0.665, +0.833] (1.5B), +0.690 [+0.582, +0.767]
+  (3B). Planets prefix-gate 7 (0.5B) / 8 (1.5B) / 15 (3B) of 18 items and
+  instruments 2 / 8 / 13 (same order) — the dark categories light up on both
+  gate-bearing subjects.
 
 **Paper context (context, never a reproduced claim):** the seed paper's Figure
 69 late-band texture — the late workspace copy as "the intention to say this
@@ -122,7 +124,13 @@ word-boundary; first-token recorded beside every cell); D10 (a) offline
 re-score published as a labelled reanalysis beside M1's standing numbers; D11
 (a) the shared stratified 12; D12 (b) tier gate cells + stride-2 sliding sweep;
 D13 (a) primed-only dose at the late third; D14 as written. Full DECISIONS.md
-entries land with the M2 code PR, per the M0/M1 pattern.*
+entries land with the M2 code PR, per the M0/M1 pattern. Amended pre-run at
+this PR's adversarial review, all Kyle-approved ("pull all four" for the
+nice-to-haves): F1 subject-order labelling; F2 mass-channel scoping (D13); F3
+direction-keying ownership (D11); F4 the both-oracle per-source split; F5 the
+span-end boundary reading (D9); F6 S2′'s resolution order; F7 the corrected
+clean-arm cap argument (D14); F8 the late-anchored window grid (D12); F9 the
+re-scoped degeneracy disposition (D14).*
 
 ### D9 — The oracle: what counts as "the model said the word" (decide first)
 
@@ -145,6 +153,12 @@ owned miss-counting caveat).
   boundary, case-insensitive**. "Marseille" does not match Mars (the boundary
   check); "not France" does not match France (prefix, not containment); "The
   France" still counts as a miss (S4's caveat stays owned, unchanged in kind).
+  **The end of the span counts as a word boundary** (review F5): a word that
+  exactly fills the recorded span ("Butterfly") is a hit — truncation must
+  never turn a completed word into a miss, and this is the reading every
+  projection and pre-registered n in this brief was computed under (six
+  recorded cells decide between the readings, two on the control arm; frozen
+  as a named unit-test case in the M2 code PR).
   This is still a deterministic oracle: greedy decoding is deterministic and
   the rule is a fixed string comparison on that deterministic span, frozen as
   code with unit tests — not free-text parsing, and never a judge. The
@@ -204,10 +218,17 @@ recorded artifacts and must reproduce exactly.
     items everywhere (planets, musical instruments): top 2 per category by
     summed prefix-gated items across the gate-bearing subjects, tie-break
     alphabetical → **Jupiter, Mars** (3+3 each), **violin** (2+3), **piano**
-    (2+2). Requires D9 ≠ (a); under D9(a) this stratum is unmeasurable and is
-    replaced by S2′: top 4 by summed primary-gated items among concepts not
-    already selected, tie-break alphabetical → February, Friday, September,
-    January.
+    (2+2). One convention S2 must own (review F3): for these four concepts the
+    ablated direction is keyed to the **leading-space token's unembed row**
+    (`' Jupiter'`) — the only single-token form that exists — while D9(b)
+    scores the bare spelling the model actually emits. This is measured, not
+    assumed: in M1's recorded data the space-keyed late ablation *does* mute
+    the bare emission (primed 0 on all four concepts at both gate-bearing
+    subjects; 0/105 pooled at 1.5B) — an owned convention with evidence, in
+    the deviations table below. Requires D9 ≠ (a); under D9(a) this stratum is
+    unmeasurable and is replaced by S2′: top 4 by summed primary-gated items
+    among concepts not selected by S1, S3, or S4 (S2′ resolves after them —
+    review F6), tie-break alphabetical → February, Friday, September, January.
   - **S3 — leaky switch (2):** primary-gated on both gate-bearing subjects with
     any primed-arm leak, ranked by leak count then gated total then
     alphabetical → **Egypt** (3B primed 2/3), **October** (3B primed 1/2).
@@ -248,10 +269,17 @@ late third" to the window's contiguous layers.
     powered.
   - **Descriptive map:** a window of width = the subject's late-third width
     (5 / 6 / 7 layers), slid at stride 2 across the full lens range L0..n−2,
-    **primed arm only** — 10 / 11 / 15 window positions per subject. Windows
-    starting below the band are the outside-band probes (9–14 layers of room);
-    above-band coverage is structurally thin (1–2 layers, owned in the
-    extraction table). Stride 2 localizes any transition edge to ±2 layers.
+    **primed arm only**. The stride-2 grid is **anchored on the late-third
+    start** (this run's review F8), so the gate cell is a point on every
+    subject's map — and that window *is* the `primed_late` tier cell, reused
+    rather than re-run. The maximum-start window (the lens ceiling) is added
+    when the grid does not already include it — relevant at 0.5B, where the
+    anchored grid alone would stop one layer short of L22. Positions per
+    subject: 10 / 11 / 15, of which the late-start window is reused →
+    **9 / 10 / 14 newly-run window conditions**. Windows starting below the
+    band are the outside-band probes (9–14 layers of room); above-band
+    coverage is structurally thin (1–2 layers, owned in the extraction
+    table). Stride 2 localizes any transition edge to ±2 layers.
 - **(c) Single-layer sweep.** Finest resolution, but ablating 1 layer where the
   tier cells ablate 4–7 under-doses the intervention — a flat curve would be
   unreadable (no switch found, or dose too small?). Also the costliest. Not
@@ -271,9 +299,14 @@ M1's check). The partial operator is new code and lives in the M2 runner —
 - **(a) Primed arm only, at the late third (recommended).** λ = 0 is `clean`
   and λ = 1 is `primed_late` — both already-run, deterministic cells, reused
   not re-measured; only λ ∈ {.25, .5, .75} are new conditions. Readout per λ:
-  naming rate under D9's oracle + mean concept mass (the graded signal that can
-  show a dimmer even where the binary steps). Dose shape descriptive, as
-  frozen — no gate.
+  naming rate under D9's oracle for all subset items, plus mean concept mass —
+  the graded signal that can show a dimmer even where the binary steps —
+  computed **only over the concepts with a single-token form of the spelling
+  the model emits** (review F2): the S2 stratum's bare spellings have no
+  single-token form, so its mass channel is floor-pinned by construction
+  (measured on the clean arm: S2 mean 0.009 vs 0.913 for the rest at 1.5B) and
+  its dose curve is read on the binary rate alone, owned in the deviations
+  table. Dose shape descriptive, as frozen — no gate.
 - **(b) Primed + control at every λ.** Doubles dose cost for a collateral curve
   S4b and M1 both predict is flat. Not recommended.
 - **(c) Dose × window cross.** λ at every window position explodes the run
@@ -306,9 +339,13 @@ no added honesty. Control tiers are reported beside as the specificity texture
 recorded here before any M2 run:
 
 1. *The F3 correction.* `clean` is the **gate arm**, not a comparison arm: on
-   the gated cell its greedy first tokens are the concepts' own answer tokens,
-   so its attractor share is structurally capped near 3/n (three clues per
-   concept) and cannot reach COLLAPSE_SHARE = 0.5 for any n > 6. M1's wording
+   the gated cell its answers are, by construction, correct openings of up to
+   60 different spellings, so no single token can approach COLLAPSE_SHARE =
+   0.5 on a powered cell. Under the first-token oracle the share is capped
+   near 3/n (three clues per concept); under D9(b), where fragment first
+   tokens can be shared across concepts, the structural cap loosens but the
+   measured worst case on the recorded data is 4/116 ≈ 0.034 (this run's
+   review F7 — a right call, now with the right reason). M1's wording
    listing `clean` among the monitored arms was inert (it could never fire on a
    powered cell, and fired nowhere) — that wording stays byte-frozen with M1's
    artifacts in `m1_battery.GATE_WORDING`, un-edited; M2's own GATE_WORDING
@@ -320,11 +357,16 @@ recorded here before any M2 run:
    **non-produced items only**, with the share still computed against the full
    gated n — "at least half of this arm's answers are the same *wrong*
    opening." The raw all-answers guard stays recorded beside as texture (M1
-   comparability). Disposition: collapse in any surviving-side arm
-   (`primed_early`, `primed_middle`, any control tier) ⇒ **DEGENERATE**, no
-   LATE-LOCALIZED claim; collapse in `primed_late` ⇒ **TAG only** (the expected
-   mute signature). Sliding-window and dose cells are descriptive, so their
-   guards are always texture.
+   comparability). Disposition, scoped to the arms the gate actually reads
+   (this run's review F9): collapse in a surviving-side gate arm
+   (`primed_early`, `primed_middle`) ⇒ **DEGENERATE**, no LATE-LOCALIZED
+   claim; collapse in `primed_late` ⇒ **TAG only** (the expected mute
+   signature); collapse in a **control tier** — arms the gate does not read —
+   is a **specificity-texture caveat**: recorded, attached to the control-tier
+   readouts it compromises, never dispositive over the localization verdict
+   (re-scoped from M1, where `control_late` *was* the comparison arm).
+   Sliding-window and dose cells are descriptive, so their guards are always
+   texture.
 
 **The standing re-certification, one generation deeper.** The subset's
 `clean` / `primed_late` / `control_late` cells must reproduce M1's recorded
@@ -350,9 +392,12 @@ the wording frozen in the M2 runner's GATE_WORDING before any run.
 - **M2 code PR:** F4 — `torch.load`'s except tuple widened in the M2 runner
   cut *and* in `m1_battery.py` (code-only, no wording or artifact change). F5 —
   the per-source split lands in the D10 reanalysis artifact (the recorded JSONs
-  carry per-item `source`): the reviewer's recomputation — new-items-only
-  contrast CI-clean at all three subjects, **+0.278 / +0.545 / +0.478**
-  (0.5B / 1.5B / 3B) — becomes our own recorded number instead of a PR comment.
+  carry per-item `source`), computed under **both oracles** (this run's review
+  F4): the primary first-token split closes PR #4's F5 at its recorded
+  values — new-items-only contrast CI-clean at all three subjects, **+0.278 /
+  +0.545 / +0.478** (0.5B / 1.5B / 3B) — as our own recorded number instead of
+  a PR comment, and the widened-oracle split is reported beside it as part of
+  the labelled reanalysis (projected +0.389 / +0.714 / +0.629, same order).
   F6 — `concept_ablation_edits` + `greedy_continuation` get direct unit tests,
   and the new window-edit and partial-λ operators get the same treatment from
   birth. F7 — the loader validates `forbidden_forms` keys against the roster.
@@ -369,13 +414,15 @@ the wording frozen in the M2 runner's GATE_WORDING before any run.
 | Partial-projection operator (new code) | `intervention.py` ported verbatim | Lives in the M2 runner; read-back generalized to survivor = (1−λ)·original within tol; unit-covered (F6 pattern) |
 | Sliding windows (no S4b precedent) | S4b's three fixed thirds | The point of M2 — characterization, not reproduction; the tier cells keep the S4b-comparable frame beside the new map |
 | Subset countries-heavy (6/12) | the roster's uniform 10 × 6 | The measured shared hard-switch set is all countries (S1 stratum verbatim); S2–S4 spread coverage deliberately |
+| Mass channel scoped to single-token-form spellings (D13, review F2) | M1's `concept_mass` on every cell | The S2 stratum's bare spellings have no single-token form, so its mass is floor-pinned by construction (clean-arm mean 0.009 vs 0.913 at 1.5B); S2's dose curve is binary-only |
+| Direction keyed to the leading-space unembed row for multi-token-bare concepts (review F3) | the "bare form first" convention, which only exists for single-bare-token words | No bare single token exists for those 26 roster words; measured in M1's recording: the space-keyed late ablation mutes the bare emission (primed 0 on all four S2 concepts at both gate-bearing subjects) |
 
 ## Expected power (honest math)
 
 Mostly *realized*, not projected: gating is a property of the clean arm, which
 is deterministic and already recorded, so on the certified stack the subset's
 pooled gated ns are known now — under D9(b): **34 (1.5B), 32 (3B), 28 (0.5B)**;
-under D9(a) with the S2′ list: 34 / 29 on the gate-bearing subjects. Every
+under D9(a) with the S2′ list: 34 (1.5B) / 29 (3B). Every
 tier, window, and dose cell shares that one gated set, so every pooled cell
 clears MIN_N = 20 on both gate-bearing subjects under either branch. (If a run
 disagrees with these ns, that is itself an INVALID cross-check, not a power
@@ -394,9 +441,10 @@ the map S4b never drew.
 
 ## Wall-clock plan
 
-36 items × (1 clean + 6 tier + 10/11/15 window + 3 dose) = 20 / 21 / 25
-conditions → 720 / 756 / 900 cells per subject, ×3 forwards each (the 3-token
-texture span) ≈ 2.2–2.7k forwards per subject — about 1.5× an M1 subject run.
+36 items × (1 clean + 6 tier + 9/10/14 newly-run window + 3 dose) = 19 / 20 /
+24 conditions → 684 / 720 / 864 cells per subject, ×3 forwards each (the
+3-token texture span) ≈ 2.1–2.6k forwards per subject — about 1.4× an M1
+subject run.
 All three subjects comfortably under an hour on MPS, $0, run backgrounded with
 untracked logs. Cross-check cells graded first (D14). The D10 reanalysis costs
 no model time at all. Standard machinery regardless of decisions: wrong-arm

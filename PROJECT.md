@@ -30,8 +30,8 @@ reanalysis) + the M2 runner cut from `m1_battery.py`, both per the frozen
   bare form and planets/instruments gated 0 items everywhere under the
   first-token readout. M1's pre-committed numbers stand; the D10 (a) offline
   re-score lands with the M2 code PR as a clearly-labelled reanalysis beside
-  them (design projection: prefix-gated n 105/116/69, primed 0/105, 12/116,
-  0/69).
+  them (design projection: prefix-gated n 69 (0.5B) / 105 (1.5B) / 116 (3B);
+  primed 0/69, 0/105, 12/116, same order).
 - Decision — K1–K4 at kickoff: slug/visibility, naming-only competence gate,
   lens provenance (no refits in core), stats ruler ported verbatim.
 - Fact — Lens artifacts gitignored (70–560MB); sourced from local dim-stage
