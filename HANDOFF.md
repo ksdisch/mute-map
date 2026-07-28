@@ -48,12 +48,21 @@ S1/S2 stretches optional. `docs/DECISIONS.md` now runs D1–D14.
 
 ## Immediate next move
 
-**Write the M3 start-of-stage brief** (`docs/M3-BRIEF.md`), per the per-stage
-rhythm: plain-terms explanation, design extraction from S4/S4b verbatim, then
-decisions for Kyle to freeze — code only after that. M3's gate per KICKOFF:
-diagonal suppression > off-diagonal collateral, CI-clean at 1.5B AND 3B.
+**Build M3 — the code PR.** D15–D18 are **frozen (Kyle, 2026-07-28)**, in
+`docs/M3-BRIEF.md`'s freeze note: D15(a) reuse M2's 12 verbatim; D16(a)
+full re-run with the embedded 108-cell re-certification graded first;
+D17 with both review-added gate elements kept (within-category AND-clause;
+collateral-floor qualifier on the per-item collapse); D18(a) both run-time
+bars (span bar = max(bare, space form) ≤ SPAN_TOKENS; pure-ASCII). The code
+PR cuts `m3_matrix.py` from `m2_depth.py` (validate-before-load per the
+PR #7 F6 disposition), freezes `m3_matrix.GATE_WORDING` byte-for-byte from
+the brief's D17 text, lands full DECISIONS.md entries D15–D18, and dry-runs
+the gates before any real run. All four carry-forwards below are
+dispositioned in the brief; PR #8's review follow-ups were all pulled in at
+freeze.
 
-**Three carry-forwards for M3's brief, from M2's round-1 adversarial review**
+**Three carry-forwards, now dispositioned in the M3 brief, from M2's round-1
+adversarial review**
 (all accepted, all recorded in the PR comment; none blocks the merge):
 
 1. **The tier-width caveat belongs in M3's frozen `GATE_WORDING`** (review F2).
