@@ -44,14 +44,17 @@ structure descriptive (Wilson CIs). A low prevalence is a finding, not a
 failure."
 
 **The item recipe M1 extends — D27c construction rules, frozen in
-`items/s4-avoidance-items.json`:** "Concepts drawn only from vocabularies this
-project has measured: S2 flexible-generalization args (countries, months,
-animals; numbers excluded per the S2 knowledge confound) and M3
-directed-modulation topic_categories (…). Controls are another word from the
-same shipped list. Each clue implies exactly one concept via famous facts and
-NEVER contains the concept word, the control word, or a derivative of either
-(guarded in test)." Item schema: `name`, `category`, `noun` (the category noun
-the question uses), `concept`, `control`, `clue`.
+`items/s4-avoidance-items.json`:** "D27c, frozen 2026-07-17 BEFORE any run.
+Concepts drawn only from vocabularies this project has measured: S2
+flexible-generalization args (countries, months, animals; numbers excluded per
+the S2 knowledge confound) and M3 directed-modulation topic_categories (…).
+Controls are another word from the same shipped list. Each clue implies
+exactly one concept via famous facts and NEVER contains the concept word, the
+control word, or a derivative of either (guarded in test_avoidance.py). 20
+concepts x 3 clues = 60 items. The paper-style competence gate (D29) does the
+per-subject filtering." (Only the category list is elided, marked (…).) Item
+schema: `name`, `category`, `noun` (the category noun the question uses),
+`concept`, `control`, `clue`.
 
 **The gate pattern M1's pooled gate follows — S4b's D31 wording (dim-stage
 `docs/S4-BRIEF.md`):** "the late switch is concept-specific iff, per subject on
@@ -87,7 +90,8 @@ candidate roster below was checked against the shared Qwen2.5 tokenizer
 ## Decisions to freeze (Kyle picks; recommendations flagged)
 
 *Frozen (Kyle, 2026-07-27): D4 (b) 10 × 6 with minimal top-up; D5 (a) 3 per
-concept + S4 reuse; D6 (a) item-level greedy; D7 (a) no per-concept verdicts;
+concept + S4 reuse; D6 (a) item-level greedy; D7 (a) no per-concept verdicts —
+prevalence wording amended pre-run at review F1 of PR #3, Kyle-approved;
 D8 (a) widen the comparison. Full DECISIONS.md entries land with the M1 code
 PR, per the M0 pattern.*
 
@@ -95,9 +99,10 @@ PR, per the M0 pattern.*
 
 - **(a) Measured-only, uneven categories.** Every concept from a shipped S2/M3
   list, no new vocabulary at all. Countries and animals stay at 4 members
-  (S2 shipped only 4 each); gemstones tops out at 4 single-token members.
-  ~55–60 concepts. *Trade-off:* purest provenance line, but category sizes vary
-  4–7, which muddies the per-category comparison M1 is supposed to deliver.
+  (S2 shipped only 4 each); gemstones tops out at 4 single-token members while
+  months runs 11 deep. ~55–60 concepts. *Trade-off:* purest provenance line,
+  but category sizes vary 4–11, which muddies the per-category comparison M1
+  is supposed to deliver.
 - **(b) Measured + minimal top-up, uniform 10 × 6 = 60 (recommended).** The
   nine S4 categories plus days of the week, each filled to exactly 6 concepts.
   53/60 concepts come from shipped measured lists; **7 new-list words** (Japan,
@@ -122,7 +127,7 @@ item proves unwritable:
 | musical instruments | **piano, guitar**, violin, drum, trumpet, flute† |
 | precious metals | **gold**, silver, platinum, copper, bronze, iron (steel) |
 | gemstones | **diamond**, ruby, pearl, jade, opal†, amber† |
-| farm animals | **cow**, pig, horse, sheep, chicken, duck (goat) |
+| farm animals | **cow**, pig, horse, sheep, chicken, duck (goat†) |
 | insects | **bee**, ant, beetle, butterfly, moth, mosquito (cricket) |
 | days of the week | Monday, Tuesday, Thursday, Friday, Saturday, Sunday (Wednesday) |
 
@@ -183,11 +188,15 @@ package to freeze around it:
   any-direction-damage frame (pre-declared risk 2), never gate-bearing. Pooled
   n < 20 ⇒ pre-declared UNDERPOWERED. Per-concept and per-category cells are
   always descriptive: paired primed/control rates with Wilson CIs, plus the
-  full distribution. Prevalence texture, pre-committed wording: the count of
-  gated concepts showing the **hard-switch profile** (primed_late naming 0 hits
-  AND control_late all hits, over that concept's gated items) — reported as a
-  descriptive count with its Wilson CI over concepts, never per-concept
-  verdicts. Stats honesty row, owned: items within a concept share one
+  full distribution. Prevalence texture, pre-committed wording (amended at
+  review F1 of PR #3, pre-run, Kyle-approved): the headline count uses a
+  **fixed denominator** — only concepts with **all 3 items gated** count, and
+  of those, the number showing the **hard-switch profile** (primed_late naming
+  0/3 AND control_late 3/3) is reported with its Wilson CI over that fixed set.
+  Concepts with 1 or 2 gated items are reported beside, stratified by
+  gated-item count, never pooled into the headline — a 1-gated-item concept
+  satisfies the profile trivially, and sparse gating tracks marginal
+  competence. No per-concept verdicts. Stats honesty row, owned: items within a concept share one
   direction, so item-level pooling overstates independence; S4b pooled the same
   way, and the per-concept map is the honest granular view beside it.
 - **(b) Same, plus a binary per-concept "switched" verdict** at a pre-committed

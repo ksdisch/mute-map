@@ -4,11 +4,13 @@
 breadth, localization, dose, specificity — on small local Qwen models.
 
 **Status:** M0 PASSED (2026-07-27) — ported instrument certified bit-for-bit
-against dim-stage's recorded S4b results, ×3 subjects. v1 = M0–M3 per
-`docs/KICKOFF.md`; S1/S2 stretches optional.
+against dim-stage's recorded S4b results, ×3 subjects. M1 design frozen same
+day (`docs/M1-BRIEF.md`, decisions D4–D8). v1 = M0–M3 per `docs/KICKOFF.md`;
+S1/S2 stretches optional.
 
-**Next action:** M1 start-of-stage brief (breadth battery) → Kyle freezes →
-items frozen → run.
+**Next action:** M1 build — freeze `items/m1-battery.json` (D4 roster, D27c
+clue rules), cut the M1 runner from `m0_anchor.py`, gates as code + dry-run,
+then the three-subject run.
 
 **Key facts**
 - Fact — Anchor: S4b (dim-stage), concept-specific off-switch at 1.5B, +.727

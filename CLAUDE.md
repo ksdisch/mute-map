@@ -26,7 +26,8 @@ characterized here.* The anchor is our own S4b numbers (dim-stage
 recorded S4b JSONs bit-for-bit, ×3 subjects (0 mismatches over 840 cells each;
 see `docs/M0-BRIEF.md` results). `m0_anchor.py` is certified post-gate — cut
 new runners from it, never edit it. **Now: M1 — breadth battery**
-(`docs/M1-BRIEF.md`; decisions D4–D8 freeze before items or code).
+(`docs/M1-BRIEF.md`; D4–D8 frozen 2026-07-27 — next: freeze `items/`, cut the
+M1 runner from `m0_anchor.py`).
 
 ## How to run
 
