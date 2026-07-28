@@ -68,6 +68,8 @@ PRE_REGISTERED = {
                             "cross": 251},
 }
 LATE_THIRDS = {24: list(range(17, 22)), 28: list(range(19, 25)), 36: list(range(26, 33))}
+SUBJECT_LAYERS = {"qwen2.5-0.5b-instruct": 24, "qwen2.5-1.5b-instruct": 28,
+                  "qwen2.5-3b-instruct": 36}
 
 
 def _m2(subject):
@@ -765,6 +767,36 @@ def test_the_gate_wording_is_frozen_as_code_and_names_its_own_departures():
     # D18's two bars name the premises they pin
     bars = m3_matrix.GATE_WORDING["run_time_bars"]
     assert "opal" in bars and "`oracle.py` is UNTOUCHED" in bars
+
+
+@pytest.mark.parametrize("subject", SUBJECTS)
+def test_every_published_artifact_carries_the_wording_it_was_produced_under(subject):
+    """The guardrail is 'pre-commit gates as code — wording included ... written
+    verbatim into the results JSON so prose and code can never drift'. Pinned in
+    both directions, so a future wording edit fails the suite instead of
+    orphaning the artifacts it governs (M2 round-1 review F1's lesson)."""
+    run = json.load(open(f"results/m3-matrix-{subject}.json"))
+    assert run["protocol"]["gate_wording"] == m3_matrix.GATE_WORDING
+    assert run["protocol"]["floor_lower_bound"] == FLOOR_LOWER_BOUND
+    assert run["protocol"]["run_time_bars"]["worst_form_length"] <= oracle.SPAN_TOKENS
+
+
+@pytest.mark.parametrize("subject", SUBJECTS)
+def test_the_published_runs_re_certified_the_instrument_and_ran_the_frozen_plan(subject):
+    """D16(a)'s two bars, on the artifacts themselves: the 108-cell
+    re-certification passed on every subject, and every one of the 486
+    pre-registered cells was actually graded."""
+    run = json.load(open(f"results/m3-matrix-{subject}.json"))
+    crosscheck = run["m1_crosscheck"]
+    assert crosscheck["n_mismatches"] == 0
+    assert crosscheck["cells_checked"] == crosscheck["cells_expected"] == 108
+    assert crosscheck["items_checked"] == crosscheck["items_expected"] == 36
+    assert crosscheck["mass_cells_equal"] == 108  # texture, but it came in exact
+    assert run["protocol"]["cells_planned"] == 486
+    assert sum(len(item["cells"]) for item in run["items"]) == 486
+    assert run["environment"]["certified"] is True and run["smoke_limit"] is None
+    assert run["lambda"] == 1.0
+    assert run["ablated_layers"] == LATE_THIRDS[SUBJECT_LAYERS[subject]]
 
 
 def test_the_earlier_milestones_wordings_stay_byte_frozen_with_their_artifacts():

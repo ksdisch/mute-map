@@ -556,3 +556,161 @@ as code in `m3_matrix.GATE_WORDING` before any real run.
 - No oracle change beyond D9's frozen rule: `oracle.py` is byte-shared and
   untouched; D18 pins its premises without altering the rule. Never an LLM
   judge, never free-text parsing (standing guardrail).
+
+## Results (2026-07-28) — GATE PASSED, and the collateral is asymmetric
+
+**M3 verdict: MATRIX-SPECIFIC at 1.5B AND 3B.** Both gate-bearing subjects clear
+both clauses on the pooled gated cell, so the pre-committed gate passes. 0.5B
+also clears both, off-gate, under its standing any-direction-damage frame. **No
+subject carries the ON A DAMAGED FLOOR qualifier** — the collateral floor is
+clear everywhere, including at 0.5B, which the brief left genuinely open.
+
+Every run re-certified the instrument on the way in: the 108 shared cells —
+`clean` (36), the diagonal (36) and the control cells (18 in-matrix + 18
+out-of-subset extras) — reproduced `results/m1-battery-*.json` **bit-for-bit,
+108/108 cells, with `concept_mass` floats exact 108/108**, on all three subjects,
+graded before a single off-diagonal cell was read. All 486 planned cells ran on
+every subject.
+
+| Subject | Gated n / 36 | Diagonal | Off-diagonal | clause (1) off − diag [Newcombe 95%] | Within-category | Restricted diagonal | clause (2) [Newcombe 95%] | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| 0.5B *(context only, never gate-bearing)* | 28 | 0/28 | 279/308 | **+0.906** [+0.779, +0.934] | 80/96 | 0/24 | **+0.833** [+0.670, +0.895] | MATRIX-SPECIFIC |
+| 1.5B *(gate-bearing)* | 34 | 0/34 | 363/374 | **+0.971** [+0.867, +0.983] | 95/100 | 0/28 | **+0.950** [+0.814, +0.978] | MATRIX-SPECIFIC |
+| 3B *(gate-bearing)* | 32 | 3/32 | 343/352 | **+0.881** [+0.731, +0.943] | 97/101 | 2/29 | **+0.891** [+0.730, +0.947] | MATRIX-SPECIFIC |
+
+**Every pre-registered n came in exactly** — 28 / 34 / 32 gated, 308 / 374 / 352
+off-diagonal, 96 / 100 / 101 within-category, 24 / 28 / 29 restricted, 212 / 274
+/ 251 cross-category. That was knowable before the run (gating is the
+deterministic clean arm M1 already recorded), and a disagreement would have been
+an INVALID cross-check rather than a power surprise. Every pooled cell clears
+MIN_N = 20 on every subject, so nothing is UNDERPOWERED.
+
+**The collateral floor, and the question M2 left open.** The floor readout —
+each gated item's *fraction* of its 11 off-diagonal deletions survived, collapsed
+to `wilson(⌊Σ fractions⌋, gated items)` — reads **25/28 → [0.728, 0.963]** at
+0.5B, **33/34 → [0.851, 0.995]** at 1.5B and **31/32 → [0.843, 0.994]** at 3B.
+All three sit far above the pre-registered 0.5 floor, so no verdict is scoped. On
+the recorded single-direction proxy the 0.5B floor read [0.529, 0.847] — barely
+clear, and the brief said honestly that the full collapse was open until the
+matrix ran. It ran, and 0.5B's collateral floor is *healthier* than the proxy
+suggested (mean per-cell survival 0.906). That is not in tension with M2's
+"raised damage floor" at 0.5B: M2 measured damage from ablating **anywhere in
+depth**, M3 measures damage from ablating **someone else's direction** at the one
+depth that works. 0.5B's switch is direction-specific and depth-nonspecific.
+
+**No degeneracy fired anywhere.** The dispositive off-diagonal arm's
+wrong-opening share is 0.016 / 0.008 / 0.014 — more than thirty times below
+COLLAPSE_SHARE = 0.5. The diagonal arm, whose collapse would have been a
+TAG only, reads 0.464 / 0.265 / 0.156 (attractor `'The'` at 0.5B) and does not
+fire either. `clean` reads **0.000 on all three subjects**, the same structural
+fact D14's F3 correction predicted, now re-confirmed on a third milestone's
+arms. No row-level texture caveat fired on any subject.
+
+**The effective-n sanity check agrees with the gate on every subject** — pooled
+CI-clean and per-item collapse CI-clean everywhere, so there is no case where the
+honest per-item numbers would have to be quoted instead. Clause (1) collapsed:
+19/28, 29/34, 27/32 items survive *all 11* off-diagonal deletions against
+diagonal 0/28, 0/34, 3/32 → +0.679 [+0.458, +0.821], +0.853 [+0.668, +0.936],
++0.750 [+0.531, +0.857]. Clause (2) collapsed: 16/24, 25/28, 25/29 → +0.667,
++0.893, +0.793, all CI-clean.
+
+### The killer figure, in numbers: a dark diagonal on a nearly-white grid
+
+Rows are the deleted direction A, columns the probed concept B, each cell the
+gated items of B still naming B (n ≤ 3, always descriptive):
+
+**1.5B** (gated n per probe: 3 3 3 3 3 3 3 3 2 2 3 3)
+
+|  A ↓ / B → | Bra | Can | Chi | Egy | Fra | Jap | Jup | Mar | pia | vio | Oct | sil |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Brazil | **0** | 2 | 3 | 3 | 3 | 3 | 3 | 3 | 2 | 2 | 3 | 3 |
+| Canada | 3 | **0** | 3 | 3 | 3 | 3 | 3 | 3 | 2 | 2 | 3 | 3 |
+| China | 3 | 3 | **0** | 3 | 3 | 3 | 3 | 3 | 2 | 2 | 3 | 3 |
+| Egypt | 3 | 2 | 3 | **0** | 3 | 3 | 3 | 3 | 2 | 2 | 3 | 3 |
+| France | 3 | 2 | 3 | 3 | **0** | 3 | 3 | 3 | 2 | 2 | 3 | 1 |
+| Japan | 3 | 3 | 3 | 3 | 3 | **0** | 3 | 3 | 2 | 2 | 3 | 2 |
+| Jupiter | 3 | 3 | 3 | 3 | 3 | 3 | **0** | 3 | 2 | 2 | 3 | 3 |
+| Mars | 3 | 3 | 3 | 3 | 3 | 3 | 3 | **0** | 2 | 2 | 3 | 3 |
+| piano | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | **0** | 1 | 3 | 1 |
+| violin | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 1 | **0** | 3 | 3 |
+| October | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 2 | 2 | **0** | 2 |
+| silver | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 2 | 2 | 3 | **0** |
+
+The 0.5B and 3B grids are in `m3_verdict.py`'s output and in the results JSONs.
+At 1.5B **eleven** of the 374 off-diagonal cells miss; at 3B **nine** of 352; at
+0.5B **twenty-nine** of 308.
+
+### The three findings the gate did not ask for
+
+**1. Collateral concentrates on *probes*, not on *primes* — and the lineage's
+anti-example is the clearest case.** Deleting a direction is remarkably safe:
+at 1.5B, `silver`, `Canada`, `China`, `Jupiter` and `Mars` cause **zero**
+collateral across all 31–32 other gated items, and the worst prime (`France`)
+costs 3 of 31. The misses instead pile onto a few fragile probes: at 1.5B all 11
+off-diagonal misses land on `silver` (6), `Canada` (3), `piano` (1) and `violin`
+(1); at 3B all 9 land on `silver` (5) and four others once each.
+
+`silver` is the sharp case, and it inverts a pre-registration. It entered the
+subset (D11's S4 stratum) as the **non-specific anti-example** — the concept
+whose *control* direction muted it in M1 — and the brief expected its row to
+lower the pooled off-diagonal. Its row does no such thing: **deleting silver's
+direction damages nothing, at any scale** (27/27, 31/31, 31/31). What is true is
+the transpose: silver's *column* is the most fragile in the matrix (7/11, 27/33,
+6/11 under other concepts' deletions). Non-specificity turns out to have a
+direction, and the single-control design could not have seen which one — M1 and
+M2 sampled one cell of silver's column and read it as a property of silver's row.
+
+**2. Category-block structure is real at 0.5B and washes out with scale.**
+Within- vs cross-category collateral (KICKOFF's named readout): 80/96 [0.746,
+0.895] vs 199/212 [0.898, 0.964] at 0.5B — Wilson intervals that do not overlap,
+and a Newcombe difference of **+0.105 [+0.032, +0.196]**, CI-clean. At 1.5B the
+same contrast is **+0.028 [−0.010, +0.091]** and at 3B **+0.020 [−0.016,
++0.079]** — both straddle 0, and by this project's own rule a cell whose CI
+overlaps its neighbour is not a result. So: at 0.5B, deleting a country's
+direction measurably damages *other countries* (the `Brazil` column absorbs 13 of
+0.5B's 29 off-diagonal misses, and every other country contributes at least one
+of them); by 1.5B that block has dissolved into noise. Clause (2) — the
+undiluted, S4b-comparable arm
+review F2 added — passes CI-cleanly at every scale anyway, which is the point of
+having run it: the pooled arm's 73%-cross-category composition did not carry the
+verdict.
+
+**3. The leak stratum replicated, on the diagonal, at 3B only.** The only
+diagonal cells anywhere that are not 0 are `Egypt` 2/3 and `October` 1/2 at 3B —
+exactly the two concepts D11 pre-registered as the S3 *leaky switch* stratum,
+and exactly the subjects-and-shape M2 recorded. The mute is not perfect for those
+two words at the largest subject, and the pre-registration named them in advance.
+
+The graded channel agrees with the binary one throughout: mean concept mass on
+the mass-eligible gated items reads clean 0.833 / 0.913 / 0.942, diagonal
+**0.0001 / 0.017 / 0.120**, off-diagonal 0.773 / 0.889 / 0.937. Asymmetry is real
+but sparse — 19 / 7 / 8 of the 66 unordered pairs differ at all between A→B and
+B→A, and at 1.5B and 3B the largest gaps are dominated by `silver` on the probe
+side.
+
+### Honest limits (carried forward, plus what the run adds)
+
+Every honesty row from D17 stands as pre-committed. The three that actually bind
+on these numbers:
+
+- **The pooled off-diagonal repeats each gated item 11 times**, which makes the
+  gate's Newcombe interval narrower than the clustering justifies —
+  anti-conservative and owned. It changed no verdict here: the pre-registered
+  per-item collapse is CI-clean on every subject and every clause, so the honest
+  and the permissive readings agree.
+- **The category structure is lopsided by construction** (30 of the 34
+  within-category ordered pairs are country pairs), so finding 2's block story is
+  mostly a countries story, and October and silver contribute nothing to
+  clause (2) at all. Their recorded control cells — the D16(a) extras — are their
+  only same-category collateral sample, and they are n ≤ 3.
+- **Per-pair cells are n ≤ 3.** Every statement in "the three findings" above
+  that rests on a single pair (the `piano`↔`violin` asymmetry, `Mars`→`October`
+  at 0.5B) is descriptive texture, not a result. The pooled and column-level
+  statements are the ones with n behind them.
+
+One bound worth stating plainly: **the matrix measures collateral among 12
+concepts, not across the vocabulary.** M1 established breadth over 60 concepts
+with one control each; M3 establishes near-zero collateral over 132 ordered pairs
+of 12. Nothing here shows that deleting France spares the other 48 M1 concepts —
+that is a different (and cheap) experiment the matrix design deliberately did not
+run.

@@ -432,3 +432,210 @@ result: a smoke or uncertified run cannot certify anything.
 **Verdict precedence, frozen** in `localization_verdict()`: NOT A RESULT >
 DEGENERATE > UNDERPOWERED > the contrast. Wrong-arm inputs exit INVALID before
 any trial; `--dry-run` validates and stops; `--limit` is smoke, never a result.
+
+## D15 — The matrix roster: reuse M2's pre-registered 12 verbatim (Kyle, 2026-07-28)
+
+Option (a). Brazil, Canada, China, Egypt, France, Japan, Jupiter, Mars, October,
+piano, silver, violin — with their 36 frozen M1 items, gated sets and per-item
+`direction_key` exactly as recorded. **Zero new discretion:** the subset was
+fixed by D11's stratified rule before any M2 cell existed, so M3's selection
+surface was pre-registered two milestones ago — the strongest position a
+specificity claim can argue from. The characterization also stays on one cast of
+concepts (breadth → depth → dose → collateral), and the strata keep doing their
+jobs against 11 probes instead of 1: the six countries give a dense
+within-category block, **silver** — the named non-specific anti-example — sits
+inside the pooled off-diagonal where its collateral *lowers* off-diagonal naming
+and so biases against the gate, Egypt and October carry the replicated leak
+texture, and the S2 stratum tests whether space-keyed directions splash
+differently. It also maximizes D16's re-certification surface: 90 of the
+matrix's cells per subject are already recorded in M1's artifacts.
+
+*Trade-off, owned:* the category structure is lopsided (6 countries / 2 planets /
+2 instruments / 1 month / 1 metal), so the within- vs cross-category readout is
+mostly a countries story — 30 of the 34 within-category ordered pairs are
+country pairs, and October and silver have no same-category sibling in the
+matrix at all (their recorded M1 control cells, run as re-certification texture
+under D16, are their only same-category collateral sample). Rejected: (b) a
+re-derived category-balanced 12, which discards M2's per-concept depth and dose
+evidence for the swapped-in concepts, shrinks the embedded re-certification,
+re-opens selection discretion one milestone before the headline figure, and
+de-samples the one stratum where the hard switch is *measured* to live; (c)
+reusing the 12 but swapping out the awkward strata (silver's non-specific row,
+October's siblingless cell) — a cleaner figure on a dishonest sample, since it
+deletes exactly the concepts pre-registered to keep the aggregate honest.
+
+The roster is copied into `m3_matrix.SUBSET` rather than imported from
+`m2_depth`, per the standing cut-from-your-predecessor rule, and pinned equal to
+M2's by a test so the copy cannot drift.
+
+## D16 — Matrix cells + the embedded re-certification (Kyle, 2026-07-28)
+
+Option (a): **a full re-run of the 12 × 12 grid with the recorded cells graded
+first.** Per subject: `clean` (36 items) plus every (direction A × item of B)
+cell — 12 × 36 = 432 ablated cells — at the late third, λ = 1, k = 1,
+naming instruction only, D9(b) oracle, first-token outcome recorded beside every
+cell. Additionally the six out-of-subset control directions (February, Saturn,
+Mercury, guitar, drum, platinum) run **on their paired concepts' 3 items only**
+(+18 cells): they are not matrix cells, but they complete the recorded
+`control_late` surface — their primary job — and they give **October and
+silver**, the two subset concepts with no same-category sibling in the matrix,
+their only same-category collateral sample. **486 cells per subject**, 0.9× an
+M1 subject run.
+
+**The standing re-certification, a generation deeper.** The 108 cells this run
+shares with M1's recorded artifacts — `clean` (36), the diagonal (= 36
+`primed_late` cells) and the control cells (18 inside the matrix + the 18
+extras) — must reproduce `results/m1-battery-*.json` on the raw recorded fields
+(`greedy`, `greedy_3` decoded strings; `concept_mass` as texture) **before any
+off-diagonal cell is read**, enforced as an explicit two-phase grade
+(`conditions_for` splits each item's M1-shared cells from the rest). The
+comparison is on raw strings, so it is oracle-independent. On the certified
+stack any mismatch is INVALID (exit 2); off it the check is recorded but the run
+is pre-declared NOT A RESULT and `m3_verdict.py` refuses it. M3 also refuses an
+M1 artifact that was itself not a result.
+
+Rejected: (b) reusing the recorded cells instead of re-running them, which saves
+~25% of the run and destroys the one check that has caught nothing yet *because*
+it runs every time; (c) matrix × tiers or matrix × λ, which explodes the run
+3–5× and answers questions M2 already answered — KICKOFF fixes M3 at the home
+band.
+
+## D17 — The pre-committed wording package for M3 (Kyle, 2026-07-28)
+
+Frozen as code in `m3_matrix.GATE_WORDING` before any M3 run and written verbatim
+into every results JSON, so prose and code cannot drift.
+
+**Gate wording.** Per subject, on the pooled gated cell — gating is the clean arm
+under D9(b), decided once per item and **direction-independent**, so every matrix
+cell shares one gated set: **MATRIX-SPECIFIC iff BOTH (1)** naming under the
+pooled **off-diagonal** cells (every gated item under each of the 11 directions
+that are not its own concept's) minus naming under the pooled **diagonal** cells
+is positive with its Newcombe 95% CI excluding 0; **AND (2)** the same contrast
+restricted to the **within-category** off-diagonal cells is likewise positive
+with its Newcombe 95% CI excluding 0. Both arms of clause (2) — its off-diagonal
+pool AND its diagonal — are restricted to gated items whose concept has at least
+one within-category subset sibling, so October's and silver's items drop from
+that clause **by construction, not by choice**. Clause (2) compares
+within-category off-diagonal *cells* (n = 96 / 100 / 101) against the *diagonal
+cells of the same restricted item set* (n = 24 / 28 / 29); MIN_N guards that
+diagonal n as well as the pooled one. The M3 verdict is the AND over 1.5B and 3B
+(`m3_verdict.py`); 0.5B runs under its standing any-direction-damage frame,
+never gate-bearing.
+
+Clause (1) *is* KICKOFF's "diagonal suppression CI-cleanly exceeds off-diagonal
+collateral" in directly comparable proportions, by M2's algebra: the shared
+`clean` arm cancels, leaving the plain two-proportion comparison the ported
+ruler already decides.
+
+**Why clause (2) exists (brief review F2).** The pooled off-diagonal arm is 73%
+cross-category (274 of 374 cells at 1.5B), while the arm KICKOFF's wording
+generalizes — S4b D28's specificity control — was same-category only.
+Cross-category pairs are the ones least likely to show collateral, so pooling
+shifts the comparator in the gate's favour relative to the control the lineage
+actually ran. Clause (2) is the undiluted test, powered on its own.
+
+**The collateral-floor qualifier (brief review F1, re-defined at F11 and F15).**
+The ordering contrasts cannot by themselves distinguish a per-concept switch from
+graded damage that is merely worse on-diagonal, so the verdict carries the
+pre-declared qualifier **ON A DAMAGED FLOOR** if the floor readout's Wilson 95%
+lower bound is below **0.5**. The floor readout is the **cluster-collapsed
+per-cell survival**: each gated item contributes its *fraction* of the 11
+off-diagonal deletions survived, and the readout is `wilson(k, n)` with
+k = ⌊the sum of those fractions⌋ and n = the gated items. This keeps the quantity
+the floor is about — the per-cell collateral rate — while refusing both dishonest
+denominators: the pooled rate at n = 308 under-fires (its 11×-inflated n narrows
+the interval, F11), and a survives-all-11 conjunction is decided by the unmeasured
+correlation structure across the 11 deletions rather than by damage (F15). A
+binomial interval on a mean of bounded fractions is approximate by construction —
+owned, and acceptable only because the qualifier is never dispositive. The
+pooled per-cell reading is reported beside as the permissive comparison. **The
+qualifier scopes a claim and can never create or rescue one**, so it attaches to
+a contrast-level verdict (MATRIX-SPECIFIC or not shown) and has nothing to scope
+when precedence already withheld the claim; the floor readout itself is recorded
+on every run regardless. The 0.5 constant is pre-registered and deliberately
+**not** fitted to any recorded cell; 0.5B's exclusion from gate-bearing rests on
+the standing pre-declared scale frame, never on this qualifier.
+
+**PR #7 F2's tier-width caveat, retired structurally and stated affirmatively.**
+M2's gate compared tiers of unequal layer count (the late third takes the band
+remainder — 4 vs 6 layers at 1.5B), so depth *and* intervention size differed
+between compared arms. M3 has no tier contrast: every matrix cell ablates the
+*identical* late-third layer set at λ = 1, k = 1, so the two arms the gate
+compares differ **only in which direction is removed**. D17's wording carries a
+clause saying exactly that, so the caveat's lesson is owned rather than silently
+mooted — and if a later stage re-introduces tiers, the caveat clause must come
+back with them.
+
+**Degeneracy disposition**, carrying M2's D14 wide-oracle guard verbatim and
+re-scoping it to M3's arms: the dispositive guard pools the first tokens of an
+arm's **non-produced** cells only, share against the arm's full cell count.
+Collapse in the pooled **off-diagonal** — the surviving side the gate reads — ⇒
+**DEGENERATE**; collapse in the pooled **diagonal** ⇒ **TAG only** (the expected
+mute signature); `clean` stays off the dispositive list (the D14 F3 correction,
+carried); collapse inside any single direction's row or any per-pair cell is
+**texture** (at n ≤ 3 a per-pair share is not evidence of anything).
+
+**Descriptive package, never gate-bearing:** the full grid (per-pair cells are
+n ≤ 3), the within- vs cross-category split, per-direction row profiles and
+per-concept column profiles, asymmetry texture (A→B vs B→A), the 18
+out-of-subset control cells, and mean concept mass per cell under D13's standing
+scope.
+
+**The effective-n sanity check**, pre-registered and never dispositive: each
+contrast recomputed with the repeated arm collapsed to one binary per gated item
+— "survives all 11 off-diagonal deletions" for clause (1), "survives all
+within-category sibling deletions" for clause (2). The pooled off-diagonal
+repeats each gated item 11 times, which makes the gate's Newcombe interval
+**narrower** than the clustering justifies, not wider — anti-conservative and
+owned. If a pooled clause is CI-clean but its per-item collapse is not, the
+per-item numbers are the honest ones to quote.
+
+**Verdict precedence, frozen** in `matrix_verdict()`: NOT A RESULT > DEGENERATE >
+UNDERPOWERED > the contrast. Wrong-arm inputs exit INVALID before any trial —
+and, per D18's companion disposition, before the checkpoint is even loaded;
+`--dry-run` validates and stops; `--limit` is smoke, never a result.
+
+## D18 — Run-time instrument bars for M3 (Kyle, 2026-07-28)
+
+Option (a): **both bars in the runner's `main()` path, pre-trial, plus unit
+tests.** After the tokenizer loads and before any trial:
+
+1. **The span bar.** Every planned direction word must tokenize to
+   ≤ `oracle.SPAN_TOKENS` = 3 in **both** its bare and its leading-space form —
+   `max(len(tok(w)), len(tok(" " + w))) ≤ SPAN_TOKENS` — else exit INVALID. This
+   is D9(b)/D10's whole soundness premise (a prefix hit cannot be hidden by span
+   truncation *because* every roster word fits the span), which PR #7 F5 flagged
+   as carried by nothing. Widened from bare-form-only at freeze (brief follow-up
+   F5): the recorded span holds the model's *emitted* continuation, normally the
+   space-prefixed form, and bare length does not bound space-form length —
+   `opal` is 1 token bare but 2 space-prefixed on all three tokenizers, the
+   pinned unit-test case.
+2. **The ASCII bar.** Every planned direction word must be pure ASCII, else exit
+   INVALID — `oracle._BOUNDARY` is `(?![A-Za-z0-9])`, so a non-ASCII
+   continuation character would read as a word boundary and a longer non-ASCII
+   word could score as a hit (PR #7 F4).
+
+**`oracle.py` itself is untouched**: it is byte-shared with `m1_rescore.py` and
+`m2_depth.py` and must stay identical. M3 adds no vocabulary — every roster word
+comes from M1's frozen 60, all pure-ASCII spellings — so the boundary rule does
+not change; the premise is *pinned* rather than assumed, and the day it breaks
+the run refuses instead of silently mis-scoring. Widening `_BOUNDARY` to `\w`
+now, with zero live cases and a silent flip of `_` from boundary to
+word-character, is the unforced version of the mistake D9 exists to prevent
+(rejected option (c)); unit tests alone (rejected option (b)) catch a roster
+edit at test time but not an environment or tokenizer drift at the moment of
+measurement, which was F5's actual point. The named future trigger is the S2
+stretch's translations/synonyms lists: if that stage is reached, its brief owes
+the boundary-class decision before freezing any non-ASCII list.
+
+**Companion disposition (PR #7 F6, non-blocking, adopted for the M3 cut).**
+`m2_depth.main()` loaded the checkpoint *before* validating inputs, so a
+`--dry-run` or a wrong-arm exit still paid a full model load, and its
+`validate()` parsed the M1 results JSON only to discard it. Because the M3 runner
+is cut from `m2_depth.py`, that shape would have propagated by construction.
+`m3_matrix.py` instead validates its inputs — including both bars above —
+against a config-derived `SubjectSpec` **before** loading the checkpoint (pinned
+by a test that makes `AutoModelForCausalLM.from_pretrained` raise), re-asserts
+the loaded model's shape against that spec before any trial, and returns the
+parsed M1 artifact from `validate()` for `main()` to reuse. `m2_depth.py` itself
+stays untouched, per the certified-predecessor rule.

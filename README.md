@@ -27,7 +27,22 @@ pre-registered gates frozen as code before any run):
 **The honest framing:** an effect *found during a replication, characterized
 here* — the anchor is dim-stage's own recorded result, not a paper claim.
 
-**Status: M2 PASSED 2026-07-28** — on a pre-registered 12-concept subset, the
+**Status: M3 PASSED 2026-07-28 — the v1 chain is complete.** On the full 12 × 12
+prime × probe matrix at the switch's home band, deleting one concept's direction
+silences that concept and leaves the other eleven almost untouched: at 1.5B the
+diagonal names **0/34** while the pooled off-diagonal names **363/374**
+(+0.971 [+0.867, +0.983]); at 3B 3/32 vs 343/352 (+0.881 [+0.731, +0.943]). The
+same contrast restricted to *same-category* pairs — the arm the lineage's single
+control actually tested — is +0.950 and +0.891, likewise CI-clean. 132 of the
+matrix's ordered pairs had never been measured before. What the gate did not
+ask: collateral concentrates on a few fragile **probes** rather than being caused
+by damaging **primes** (`silver`'s direction damages *nothing*, while `silver`
+itself is the most fragile probe in the grid — inverting what a single control
+cell had suggested), category-block collateral is CI-clean at 0.5B and dissolves
+by 1.5B, and the only imperfect mutes anywhere are `Egypt` and `October` at 3B —
+the two concepts pre-registered as the leaky-switch stratum.
+
+**M2 PASSED 2026-07-28** — on a pre-registered 12-concept subset, the
 off-switch is **localized to the late third**: removing the concept direction
 there mutes the word, while removing that same direction at the early or middle
 third leaves most naming intact (early − late naming +0.853 [+0.668, +0.936] at 1.5B
@@ -52,9 +67,10 @@ by fixing the instrument rather than the numbers: the oracle widened to a
 deterministic prefix rule on the recorded 3-token span (decision D9b, frozen
 before any run), M1's published numbers stand untouched, and the re-score is
 published beside them as a labelled reanalysis (D10a) in which the contrast
-survives on every subject and the dark categories light up. **M3 (specificity
-matrix) next.** Models: Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS, forward-only;
-core chain $0.
+survives on every subject and the dark categories light up. **The v1 chain
+(M0–M3) is now closed; the S1 (7B) and S2 (lexical vs semantic scope) stretches
+remain optional.** Models: Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS,
+forward-only; core chain $0.
 
 Full brief: [`docs/KICKOFF.md`](docs/KICKOFF.md). The 12-idea backlog this was
 picked from: dim-stage

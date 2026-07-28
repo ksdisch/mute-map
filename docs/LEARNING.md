@@ -199,3 +199,85 @@ descriptive.
    windows leave 30–32/32 intact. Both subjects returned LATE-LOCALIZED. What
    does the 0.5B curve tell you that its verdict alone does not, and which
    pre-declared frame does it land in?
+
+## M3 — the specificity matrix (2026-07-28)
+
+**One control cell can be wrong about *which direction* an effect runs.** M1 and
+M2 measured specificity the way S4b did: delete one same-category alternative's
+direction and check the concept still comes out. `silver` failed that check in
+M1, so D11 pre-registered it as the *non-specific anti-example* — the concept
+whose direction was expected to damage everything. The matrix says the opposite:
+deleting silver's direction damages **nothing** at any scale (27/27, 31/31,
+31/31), while silver's *column* is the most fragile in the grid. The single
+control cell had sampled silver's column and been read as a fact about silver's
+row. A 1-cell probe of a 2-dimensional object cannot tell you which dimension you
+measured; the matrix is what makes the transpose visible. Note that this doesn't
+retract anything M1 or M2 published — their numbers stand — it re-attributes what
+those numbers were *about*.
+
+**Design out a confound instead of disclosing it.** M2's round-1 review found
+that its gate compared a 4-layer ablation against a 6-layer one, because
+`sub_band_thirds` hands the late tier the band remainder. M2 could only *own* it
+(its wording was byte-frozen with its artifacts). M3 didn't have to: holding
+depth and dose fixed means every cell in the matrix ablates the identical layer
+set at the identical strength, so the two arms the gate compares differ in
+exactly one thing. The frozen wording says so affirmatively rather than letting
+the caveat quietly lapse — a retired confound should leave a note saying it was
+retired, or the next stage re-introduces it by accident.
+
+**A qualifier that can create a verdict is not a qualifier.** The collateral-floor
+rule went through four drafts at the brief's review, and each fix was about
+keeping it from doing more work than it should. The final shape: it can only
+*scope* a MATRIX-SPECIFIC or a "not shown", never produce one, never rescue one,
+and never explain why 0.5B is off-gate (that was always the pre-declared scale
+frame). Getting the denominator right mattered too — the pooled per-cell rate
+inflates n by 11× and under-fires, a survives-all-11 conjunction is decided by
+correlation structure nobody measured, and the cluster-mean of per-item survival
+fractions is the one that tracks the quantity the floor is *about*. All three
+agree here, because the floor came in clear on every subject; pre-registering the
+honest one anyway is what made that agreement meaningful rather than lucky.
+
+**Validate before you load.** M2's runner loaded a full checkpoint before it
+checked whether its inputs made sense, so every `--dry-run` and every wrong-arm
+exit paid for a model it never used. The M3 cut reads the subject's shape from
+its *config*, validates everything validatable — including the new tokenizer
+bars — and only then loads weights, re-asserting the loaded model's shape against
+the config so the cheap path can't quietly disagree with the measured one. The
+test that pins it is the honest kind: it makes `from_pretrained` raise, so the
+dry-run passes only because nothing touched it.
+
+**Pin the premise, not just the conclusion.** D9(b)'s soundness rests on "3
+tokens ≥ the longest roster form" — a sentence in a brief that no code checked.
+D18 turns it into a run-time bar on the subject's own tokenizer, and widening it
+from the bare form to `max(bare, leading-space)` was not pedantry: `opal` is 1
+token bare and 2 space-prefixed on all three tokenizers, and the recorded span
+holds the *emitted* form. A premise that only lives in prose drifts the first
+time a tokenizer revision ships.
+
+**The gate was the least interesting thing in the milestone.** MATRIX-SPECIFIC
+passed at every scale with enormous margins (1.5B: 363/374 off-diagonal vs 0/34
+diagonal). What the 132 never-measured ordered pairs bought was structure the
+gate never asked about: collateral concentrates on a handful of fragile *probes*
+rather than being caused by damaging *primes*; category-block collateral is real
+and CI-clean at 0.5B (+0.105 [+0.032, +0.196]) and dissolves into noise by 1.5B;
+and the only diagonal leaks anywhere are Egypt and October at 3B — precisely the
+two concepts pre-registered as the leaky-switch stratum. Descriptive findings
+earn their keep by being pre-registered as descriptive, not by being small.
+
+### Recall questions
+
+1. `silver` entered the subset as the pre-registered "non-specific anti-example",
+   and the matrix shows its row causing zero collateral at every scale while its
+   column is the most damaged in the grid. Explain what M1's single control cell
+   actually measured about silver — and why this is a *re-attribution* rather
+   than a retraction of M1's published numbers.
+2. The gate has two clauses, and clause (1) alone would have passed at every
+   scale. Why was clause (2) added at the brief's review, what would have been
+   dilutive about resting on clause (1), and why do October's and silver's items
+   drop out of clause (2) *by construction* — including what would have gone
+   wrong if they had been left in?
+3. The collateral-floor readout collapses each gated item to its *fraction* of 11
+   deletions survived, then reads `wilson(⌊Σ fractions⌋, gated items)`. Name the
+   two simpler readouts this replaced and the specific way each one lies —
+   and explain why it matters that the qualifier can never turn a "not shown"
+   into a result.

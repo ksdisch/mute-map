@@ -4,102 +4,91 @@ _Last updated: 2026-07-28_
 
 ## What was just done
 
-**M2 built, run, and PASSED** (2026-07-28) — localization + dose, per the frozen
-`docs/M2-BRIEF.md` (D9–D14). Landed in one PR with its docs spine:
+**M3 built, run, and PASSED** (2026-07-28) — the specificity matrix, per the
+frozen `docs/M3-BRIEF.md` (D15–D18). Landed in one PR with its docs spine:
 
-- **`oracle.py`** — D9(b)'s greedy-span prefix rule frozen as code (shared
-  byte-for-byte by the reanalysis and the runner, so the two can never diverge).
-- **`m1_rescore.py`** — D10(a)'s labelled reanalysis of M1 under the widened
-  oracle: a pure function of the committed M1 JSONs, no model run, which
-  refuses to write unless it first reproduces M1's *published* first-token
-  numbers exactly. Emits `results/m1-rescore-*.json` + a REANALYSIS-labelled
-  addendum in M1-BRIEF. Carries PR #4's F5 per-source split under both oracles.
-- **`m2_depth.py` + `m2_verdict.py`** — the M2 runner cut from `m1_battery.py`
-  (never `m0_anchor.py`), with its own frozen `GATE_WORDING`, the 12-concept
-  subset, tier cells, the late-anchored stride-2 window sweep, the new partial-λ
-  operator with a generalized read-back, and the M1 cross-check graded before
-  any new cell. Plus `test_m2.py` (~100 cases); full suite 187 → green.
+- **`m3_matrix.py`** — the M3 runner, cut from `m2_depth.py` (never from the
+  certified `m0_anchor.py`), with its own byte-frozen `GATE_WORDING`. Holds depth
+  and dose fixed at the switch's home (late third, λ = 1, k = 1) so every cell
+  differs from every other in exactly one thing: *which* direction was removed.
+  486 cells per subject — 36 `clean` + 432 matrix + 18 out-of-subset
+  control-extras — with the 108-cell M1 re-certification graded first.
+- **`m3_verdict.py`** — the cross-subject AND over 1.5B and 3B, plus the
+  descriptive package (within- vs cross-category split, row/column profiles,
+  asymmetry, the printed grid). Refuses any run that is not a result.
+- **`test_m3.py`** — 83 cases; the full suite is 272 and green.
 
-**Results: LATE-LOCALIZED at 1.5B AND 3B.** Early−late +0.853 [+0.668, +0.936]
-and middle−late +0.794 [+0.603, +0.897] at 1.5B; +0.750 [+0.531, +0.857] and
-+0.688 [+0.463, +0.812] at 3B. 0.5B also LATE-LOCALIZED, off-gate, but on a
-raised damage floor. The M1 cross-check re-certified the instrument bit-for-bit
-on every run (108/108 cells, `concept_mass` exact, ×3 subjects). No degeneracy
-fired anywhere. Every pre-registered gated n (28 / 34 / 32) came in exactly.
+**Results: MATRIX-SPECIFIC at 1.5B AND 3B.** Clause (1) pooled off-diagonal −
+diagonal: +0.971 [+0.867, +0.983] at 1.5B (diagonal 0/34 vs off-diagonal
+363/374) and +0.881 [+0.731, +0.943] at 3B (3/32 vs 343/352). Clause (2)
+within-category: +0.950 [+0.814, +0.978] and +0.891 [+0.730, +0.947]. 0.5B also
+MATRIX-SPECIFIC, off-gate. **No subject carries the ON A DAMAGED FLOOR
+qualifier** — the collateral floor reads [0.728, 0.963] / [0.851, 0.995] /
+[0.843, 0.994] against the pre-registered 0.5, which settles the one question
+the brief left genuinely open. Every pre-registered n landed exactly (28/34/32
+gated, 308/374/352 off-diagonal, 96/100/101 within-category, 24/28/29
+restricted). The M1 cross-check re-certified the instrument bit-for-bit on every
+run (108/108 cells, `concept_mass` exact, ×3 subjects). No degeneracy fired
+anywhere, and the effective-n per-item collapse agrees with the pooled gate on
+every subject and both clauses.
 
-**The two descriptive findings the gate did not ask for:** the window curve has
-a *floor* of depth-nonspecific damage that shrinks with scale (≈48% of naming
-lost at 0.5B for windows entirely outside the band, ~0–6% at 3B), with a sharp
-late cliff at 0.5B/1.5B that becomes a ramp at 3B; and the dose curve is a
-**dimmer, not a step**, with the half-mute point sliding right with scale
-(λ ≈ 0.23 / 0.29 / 0.36).
+**The three descriptive findings the gate did not ask for:** collateral
+concentrates on a few fragile **probes** rather than being caused by damaging
+**primes** (at 1.5B all 11 off-diagonal misses land on 4 probes; `silver`,
+`Canada`, `China`, `Jupiter` and `Mars` cause zero collateral as primes);
+category-block collateral is CI-clean at 0.5B (cross − within +0.105 [+0.032,
++0.196]) and dissolves into noise by 1.5B; and the only non-zero diagonal cells
+anywhere are `Egypt` 2/3 and `October` 1/2 at 3B — exactly the S3 leaky-switch
+stratum D11 pre-registered.
 
-Riding follow-ups all landed: PR #4's F4 (widened `torch.load` except tuple),
-F5, F6, F7 (`forbidden_forms` keys validated against the roster), F11; PR #5's
-F13 (wall-clock restated 1.3×/1.4×/1.6×), F14 (the span-fill clause replaced by
-the inspection-based qualifier — six cells fill the span, truncation cannot rule
-out a continuation, so the residual is *owned*, not excluded), and the stale
-`# bare form — M1 convention` comment in `m1_battery.py`.
+**The one pre-registration that inverted.** `silver` entered the subset as the
+*non-specific anti-example*, expected to damage everything. Its row damages
+nothing at any scale (27/27, 31/31, 31/31); its **column** is the most fragile in
+the grid (7/11, 27/33, 6/11). M1's and M2's single control cell had sampled
+silver's column and been read as a fact about silver's row. This is a
+re-attribution, not a retraction — M1's and M2's numbers stand as published.
+
+All four of M2's carry-forwards landed as the brief dispositioned them: PR #7 F2
+(the tier-width caveat, retired structurally and stated affirmatively in D17's
+frozen wording), F5 + F4 (D18's two run-time bars, span and ASCII, on the
+subject's own tokenizer), and the non-blocking F6 (`m3_matrix.py` validates
+before the checkpoint loads and `validate()` returns the parsed M1 artifact).
 
 ## Where things stand
 
-Chain: ~~M0~~ → ~~M1~~ → ~~M2~~ → **M3 (specificity matrix — brief first)**;
-S1/S2 stretches optional. `docs/DECISIONS.md` now runs D1–D14.
+Chain: ~~M0~~ → ~~M1~~ → ~~M2~~ → ~~M3~~ — **the v1 chain per `docs/KICKOFF.md`
+is complete.** `docs/DECISIONS.md` now runs D1–D18. S1/S2 stretches are optional
+and each needs its own brief.
 
 ## Immediate next move
 
-**Build M3 — the code PR.** D15–D18 are **frozen (Kyle, 2026-07-28)**, in
-`docs/M3-BRIEF.md`'s freeze note: D15(a) reuse M2's 12 verbatim; D16(a)
-full re-run with the embedded 108-cell re-certification graded first;
-D17 with both review-added gate elements kept (within-category AND-clause;
-collateral-floor qualifier on the per-item collapse); D18(a) both run-time
-bars (span bar = max(bare, space form) ≤ SPAN_TOKENS; pure-ASCII). The code
-PR cuts `m3_matrix.py` from `m2_depth.py` (validate-before-load per the
-PR #7 F6 disposition), freezes `m3_matrix.GATE_WORDING` byte-for-byte from
-the brief's D17 text, lands full DECISIONS.md entries D15–D18, and dry-runs
-the gates before any real run. All four carry-forwards below are
-dispositioned in the brief; PR #8's review follow-ups were all pulled in at
-freeze.
+**Nothing is pre-committed.** The honest options, none of them owed:
 
-**Three carry-forwards, now dispositioned in the M3 brief, from M2's round-1
-adversarial review**
-(all accepted, all recorded in the PR comment; none blocks the merge):
-
-1. **The tier-width caveat belongs in M3's frozen `GATE_WORDING`** (review F2).
-   `sub_band_thirds` gives the late tier the band remainder, so M2's gate
-   compared a 4-layer ablation against a 6-layer one at 1.5B — depth *and*
-   intervention size differ. M2 owns it in its brief's Honest limits and shows
-   the equal-width window cells that retire it, but M2's own wording could not
-   be amended post-run (byte-frozen with its artifacts). If M3 uses tiers, its
-   wording should say this up front.
-2. **Pin the "3 tokens ≥ longest bare form" premise as a run-time bar** (F5).
-   It carries D10(a)'s whole soundness argument and no test reproduces it. The
-   suggested shape: in the runner's `main()`, where the tokenizer is already
-   loaded, require every planned concept's bare form to tokenize to
-   ≤ `SPAN_TOKENS` or exit INVALID. This matters the moment M3 touches the
-   roster — a 4-token bare form would be silently unscoreable.
-3. **Decide the oracle's boundary class if M3 adds non-ASCII vocabulary** (F4).
-   `oracle._BOUNDARY` is ASCII-only, so a non-ASCII continuation would score as
-   a hit. No live path today; switching to `\w` flips `_` and is a rule change,
-   so it needs a decision rather than a fix.
-
-Also carried, non-blocking (F6): `m2_depth.main()` loads the checkpoint before
-validating inputs (inherited from `m1_battery.py`, so `--dry-run` and wrong-arm
-exits still pay a full load), and `validate()` parses the M1 results JSON only
-to discard it, so `main()` parses it twice.
-
-M3's own first decision, per M2's "what M2 does not decide": whether M3 reuses
-M2's 12-concept subset or re-derives one from M1 + M2 evidence. M2 gives it new
-evidence to work with — a per-concept late-tier map on 12 concepts, a named
-non-specific anti-example (`silver`), and a leak stratum that replicated
-(Egypt, October at 3B).
+1. **Close the project** — a write-up of the four-milestone arc, then
+   `/seed-hunt` for the next paper. The characterization KICKOFF bought is
+   delivered: breadth (M1), localization + dose (M2), specificity (M3).
+2. **S1 stretch — scale.** 7B lens fit on a rented GPU (≤ $15, decision K3's
+   no-refit rule applies only to the core chain) plus a matrix-lite. The
+   sharpening-with-scale story is the one M1–M3 keep gesturing at and never
+   measured above 3B.
+3. **S2 stretch — scope.** Token mute button or concept mute button?
+   (translations, synonyms, morphological variants). **Its brief owes the
+   `oracle._BOUNDARY` boundary-class decision before it freezes any non-ASCII
+   list** — that is the named future trigger D18 recorded, and it is the only
+   inherited obligation on the board.
+4. **The cheap follow-up M3 explicitly did not run:** M3 measures collateral
+   among 12 concepts, not across the vocabulary. Nothing here shows that deleting
+   France spares the other 48 M1 concepts. A 12-prime × 60-probe strip would
+   close that gap for roughly the cost of one M3 subject run.
 
 Standing constraints unchanged: certified environment = `mps` + torch 2.13.0 +
 transformers 5.13.1 (off it: NOT A RESULT); `m0_anchor.py` stays certified and
-un-editable, and `m1_battery.GATE_WORDING` / `m2_depth.GATE_WORDING` are
-byte-frozen with their artifacts (editing either forces a full re-run of that
-milestone); adversarial review before any merge.
+un-editable, and `m1_battery.GATE_WORDING` / `m2_depth.GATE_WORDING` /
+`m3_matrix.GATE_WORDING` are byte-frozen with their artifacts (editing any forces
+a full re-run of that milestone); `oracle.py` is byte-shared by three consumers
+and must stay identical in all of them; adversarial review before any merge.
 
 ## Open questions / blockers
 
-- None. M2 is closed; M3 is a fresh brief with no inherited blocker.
+- None. M3 is closed and the v1 chain with it. The only inherited obligation is
+  S2's boundary-class decision, and it only fires if S2 is started.

@@ -3,16 +3,19 @@
 **One-liner:** Map the late-band J-lens output off-switch found in dim-stage S4b —
 breadth, localization, dose, specificity — on small local Qwen models.
 
-**Status:** M2 PASSED (2026-07-28) — the off-switch is **LATE-LOCALIZED at 1.5B
-and 3B**: removing the concept direction at the late third mutes the word, while
-the same removal at the early or middle third leaves most naming intact. M1
-PASSED (2026-07-28, BREADTH-SPECIFIC at 1.5B and 3B) and M0 PASSED (2026-07-27);
-both are re-certified bit-for-bit on every later run. v1 = M0–M3 per
-`docs/KICKOFF.md`; S1/S2 stretches optional.
+**Status:** **v1 chain complete — M3 PASSED (2026-07-28)**, the off-switch is
+**MATRIX-SPECIFIC at 1.5B and 3B**: over the full 12 × 12 prime × probe grid,
+deleting one concept's direction at the late third silences that concept and
+leaves the other eleven almost untouched (1.5B: diagonal 0/34 vs off-diagonal
+363/374). M2 PASSED (LATE-LOCALIZED at 1.5B and 3B), M1 PASSED
+(BREADTH-SPECIFIC at 1.5B and 3B), M0 PASSED (2026-07-27); all re-certified
+bit-for-bit on every later run. v1 = M0–M3 per `docs/KICKOFF.md`; S1/S2
+stretches optional.
 
-**Next action:** the M3 start-of-stage brief (`docs/M3-BRIEF.md`) — specificity
-matrix, gate = diagonal suppression > off-diagonal collateral, CI-clean at 1.5B
-AND 3B. Its first decision: reuse M2's 12-concept subset or re-derive one.
+**Next action:** none pre-committed — the v1 chain is closed. Open options: the
+S1 stretch (7B lens fit + matrix-lite, ≤ $15 rented GPU), the S2 stretch
+(lexical vs semantic scope, which owes the `oracle._BOUNDARY` boundary-class
+decision before freezing any non-ASCII list), a write-up, or `/seed-hunt`.
 
 **Key facts**
 - Fact — Anchor: S4b (dim-stage), concept-specific off-switch at 1.5B, +.727
@@ -37,6 +40,25 @@ AND 3B. Its first decision: reuse M2's 12-concept subset or re-derive one.
   with scale, while the dose needed to trip it grows. 0.5B reaches the same
   verdict from a much noisier floor, which is what its standing
   any-direction-damage frame predicted.
+- Fact — M3 (2026-07-28): on the 12 × 12 matrix at the late third (λ = 1, k = 1),
+  pooled off-diagonal − diagonal naming = **+0.971 [+0.867, +0.983]** at 1.5B
+  (diagonal 0/34, off-diagonal 363/374) and **+0.881 [+0.731, +0.943]** at 3B
+  (3/32 vs 343/352); the within-category clause is +0.950 and +0.891, likewise
+  CI-clean. 0.5B MATRIX-SPECIFIC too, off-gate. Every pre-registered n landed
+  exactly; the collateral floor is clear on all three, so no verdict carries the
+  ON A DAMAGED FLOOR qualifier.
+- Fact — M3's descriptive map (no gate reads it): collateral concentrates on a
+  few fragile **probes**, not on damaging **primes** — at 1.5B all 11
+  off-diagonal misses land on 4 probes, and `silver`, `Canada`, `China`,
+  `Jupiter` and `Mars` cause zero collateral as primes. Category-block collateral
+  is CI-clean at 0.5B (cross − within +0.105 [+0.032, +0.196]) and dissolves into
+  noise by 1.5B. The only non-zero diagonal cells anywhere are `Egypt` 2/3 and
+  `October` 1/2 at 3B — the pre-registered S3 leaky-switch stratum.
+- Inference — `silver`'s pre-registered "non-specific" label was a fact about its
+  **column** (it is fragile to other deletions), not its **row** (its direction
+  damages nothing). M1's and M2's single control cell sampled one cell of that
+  column; the matrix is what distinguishes the two readings. A re-attribution,
+  not a retraction — M1's and M2's numbers stand as published.
 - Decision — **D9 (b), frozen 2026-07-28 (M2-BRIEF): the oracle widens** to a
   greedy-span prefix rule (case-insensitive, word-boundary, deterministic
   string rule on the recorded 3-token span; first-token recorded beside every
