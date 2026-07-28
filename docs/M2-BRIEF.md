@@ -130,7 +130,10 @@ nice-to-haves): F1 subject-order labelling; F2 mass-channel scoping (D13); F3
 direction-keying ownership (D11); F4 the both-oracle per-source split; F5 the
 span-end boundary reading (D9); F6 S2′'s resolution order; F7 the corrected
 clean-arm cap argument (D14); F8 the late-anchored window grid (D12); F9 the
-re-scoped degeneracy disposition (D14).*
+re-scoped degeneracy disposition (D14); and from the verification round
+("pull all 3"): F10 the subset-population evidence for the clean-arm argument
+(D14); F11 the floor window restoring the full lens range (D12); F12 the
+owned span-fill residual (D9).*
 
 ### D9 — The oracle: what counts as "the model said the word" (decide first)
 
@@ -158,7 +161,13 @@ owned miss-counting caveat).
   never turn a completed word into a miss, and this is the reading every
   projection and pre-registered n in this brief was computed under (six
   recorded cells decide between the readings, two on the control arm; frozen
-  as a named unit-test case in the M2 code PR).
+  as a named unit-test case in the M2 code PR). The residual this buys, owned
+  (review F12): for the three concepts whose bare form fills the span (beetle,
+  butterfly, trumpet) the boundary is unobservable, so a longer word sharing
+  those three tokens ("Beetlejuice") would score as a hit for beetle — zero
+  such cells occur in the recorded data, none of the three is in M2's subset,
+  and the accepted behaviour is pinned by its own unit-test case rather than
+  left implied.
   This is still a deterministic oracle: greedy decoding is deterministic and
   the rule is a fixed string comparison on that deterministic span, frozen as
   code with unit tests — not free-text parsing, and never a judge. The
@@ -272,11 +281,13 @@ late third" to the window's contiguous layers.
     **primed arm only**. The stride-2 grid is **anchored on the late-third
     start** (this run's review F8), so the gate cell is a point on every
     subject's map — and that window *is* the `primed_late` tier cell, reused
-    rather than re-run. The maximum-start window (the lens ceiling) is added
-    when the grid does not already include it — relevant at 0.5B, where the
-    anchored grid alone would stop one layer short of L22. Positions per
-    subject: 10 / 11 / 15, of which the late-start window is reused →
-    **9 / 10 / 14 newly-run window conditions**. Windows starting below the
+    rather than re-run. The maximum-start window (the lens ceiling) and the
+    minimum-start window (L0) are added when the grid does not already
+    include them (reviews F8 + F11): the ceiling case bites at 0.5B, where
+    the anchored grid alone would stop one layer short of L22; the floor case
+    at 0.5B and 1.5B, whose odd-anchored grids would otherwise never ablate
+    L0. Positions per subject: 11 / 12 / 15, of which the late-start window
+    is reused → **10 / 11 / 14 newly-run window conditions**. Windows starting below the
     band are the outside-band probes (9–14 layers of room); above-band
     coverage is structurally thin (1–2 layers, owned in the extraction
     table). Stride 2 localizes any transition edge to ±2 layers.
@@ -339,13 +350,16 @@ no added honesty. Control tiers are reported beside as the specificity texture
 recorded here before any M2 run:
 
 1. *The F3 correction.* `clean` is the **gate arm**, not a comparison arm: on
-   the gated cell its answers are, by construction, correct openings of up to
-   60 different spellings, so no single token can approach COLLAPSE_SHARE =
-   0.5 on a powered cell. Under the first-token oracle the share is capped
-   near 3/n (three clues per concept); under D9(b), where fragment first
-   tokens can be shared across concepts, the structural cap loosens but the
-   measured worst case on the recorded data is 4/116 ≈ 0.034 (this run's
-   review F7 — a right call, now with the right reason). M1's wording
+   the gated cell its answers are, by construction, correct openings of the
+   subset's 12 different spellings over a pooled gated n of 28–34, so no
+   single token can approach COLLAPSE_SHARE = 0.5 on a powered cell. Under
+   the first-token oracle the share is capped near 3/n (three clues per
+   concept); under D9(b), where fragment first tokens can be shared across
+   concepts, the structural cap loosens but the measured worst case on the
+   subset's recorded clean cells is 3/28 ≈ 0.107 — five times below the
+   threshold (full-roster worst case 3/69 ≈ 0.043; this run's reviews F7 +
+   F10 — a right call, now evidenced on the population M2 actually grades).
+   M1's wording
    listing `clean` among the monitored arms was inert (it could never fire on a
    powered cell, and fired nowhere) — that wording stays byte-frozen with M1's
    artifacts in `m1_battery.GATE_WORDING`, un-edited; M2's own GATE_WORDING
@@ -441,9 +455,9 @@ the map S4b never drew.
 
 ## Wall-clock plan
 
-36 items × (1 clean + 6 tier + 9/10/14 newly-run window + 3 dose) = 19 / 20 /
-24 conditions → 684 / 720 / 864 cells per subject, ×3 forwards each (the
-3-token texture span) ≈ 2.1–2.6k forwards per subject — about 1.4× an M1
+36 items × (1 clean + 6 tier + 10/11/14 newly-run window + 3 dose) = 20 / 21 /
+24 conditions → 720 / 756 / 864 cells per subject, ×3 forwards each (the
+3-token texture span) ≈ 2.2–2.6k forwards per subject — about 1.4–1.5× an M1
 subject run.
 All three subjects comfortably under an hour on MPS, $0, run backgrounded with
 untracked logs. Cross-check cells graded first (D14). The D10 reanalysis costs
