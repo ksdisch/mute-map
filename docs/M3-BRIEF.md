@@ -4,8 +4,9 @@
 design extraction second, decisions third, code only after Kyle freezes.
 Decisions here are D15–D18, continuing `docs/DECISIONS.md` (D9–D14 were M2's).
 Per HANDOFF, this brief also gives an explicit disposition to each of the three
-carry-forwards from M2's adversarial review (its own section, before the
-decisions) — none is left as a passing mention.*
+carry-forwards from M2's adversarial review — plus HANDOFF's fourth,
+non-blocking carried item, PR #7 F6 (its own section, before the decisions) —
+none is left as a passing mention.*
 
 ## What M3 is, in plain terms
 
@@ -105,7 +106,7 @@ pairs have never been measured.
   probe's clue text. (Pinned as a unit test in the M3 code PR.)
 - **Direction keying is carried, per item, as recorded.** Each concept's
   direction is keyed to its bare-form unembed row where that is a single
-  token, else the leading-space row (the S2-stratum convention, D11/F3, owned
+  token, else the leading-space row (the S2-stratum convention, D11 / PR #5 F3, owned
   with evidence); M2's artifacts record `direction_key` per item and M3
   inherits them verbatim.
 - **Late thirds (frozen band arithmetic, from M2's extraction):** L17–21
@@ -120,7 +121,7 @@ machinery that collapses in blocks.
 
 ## Dispositions for M2's three review carry-forwards (explicit, per HANDOFF)
 
-**F2 — the tier-width caveat and M3's `GATE_WORDING`.** The caveat: M2's gate
+**PR #7 F2 — the tier-width caveat and M3's `GATE_WORDING`.** The caveat: M2's gate
 compared tiers of unequal layer count (the late third takes the band
 remainder — 4 vs 6 layers at 1.5B), so depth and intervention size differed
 between compared arms; the instruction was that if M3 uses tiers, its frozen
@@ -134,7 +135,7 @@ exactly that, so the caveat's lesson is owned in the frozen wording rather
 than silently mooted. If a later stage ever re-introduces tiers, the caveat
 clause must come back with them.
 
-**F5 — the "3 tokens ≥ longest bare form" premise becomes a run-time bar.**
+**PR #7 F5 — the "3 tokens ≥ longest bare form" premise becomes a run-time bar.**
 The premise carries D9(b)'s whole soundness argument (a prefix hit cannot be
 hidden by span truncation *because* every roster word fits the span) and no
 test reproduced it; the review's suggested shape was a run-time check in the
@@ -146,7 +147,7 @@ must tokenize to ≤ `oracle.SPAN_TOKENS` on the subject's own tokenizer or the
 run exits INVALID, plus a unit test. `oracle.py` itself is untouched (it is
 byte-shared with `m1_rescore.py` and must stay identical).
 
-**F4 — the oracle's boundary class if M3 adds non-ASCII vocabulary.**
+**PR #7 F4 — the oracle's boundary class if M3 adds non-ASCII vocabulary.**
 `oracle._BOUNDARY` is ASCII-only (`[A-Za-z0-9]`), so a non-ASCII continuation
 character would read as a word boundary and a longer non-ASCII word could
 score as a hit; switching to `\w` flips `_` and is a rule change needing a
@@ -161,7 +162,31 @@ belongs in a decision *when a live case exists*. The named future trigger is
 the S2 stretch's translations/synonyms lists; if that stage is reached, its
 brief owes the boundary-class decision before freezing any non-ASCII list.
 
+**PR #7 F6 — the fourth carried item (non-blocking), dispositioned at freeze
+(this PR's follow-up F8).** HANDOFF also carries PR #7's F6: `m2_depth.main()`
+loads the checkpoint *before* validating inputs — so `--dry-run` and
+wrong-arm exits still pay a full model load — and its `validate()` parses
+the M1 results JSON only to discard it, so `main()` parses it twice. Because
+the M3 runner is cut from `m2_depth.py`, that shape would propagate by
+construction. **Disposition: adopted for the M3 cut** — `m3_matrix.py`
+validates its inputs before loading the checkpoint (a `--dry-run` or
+wrong-arm exit touches no model), and `validate()` returns the parsed M1
+artifact for `main()` to reuse instead of re-parsing. `m2_depth.py` itself
+stays untouched, per the certified-predecessor rule.
+
 ## Decisions to freeze (Kyle picks; recommendations flagged)
+
+*Frozen (Kyle, 2026-07-28): D15 (a) reuse M2's pre-registered 12 verbatim;
+D16 (a) full re-run with the embedded 108-cell re-certification graded
+first; D17 as written with both review-added elements kept — clause (2),
+and the collateral-floor qualifier under its F11 re-definition (decided on
+the per-item collapse, not the pooled n); D18 (a) both run-time bars, with
+the span bar widened per follow-up F5 (max of bare and space form ≤
+`SPAN_TOKENS`). Full DECISIONS.md entries land with the M3 code PR, per the
+M0/M1/M2 pattern. Amended pre-freeze at PR #8's adversarial review: F1–F4
+and F10 fixed and verified in-run; F11 and F13 fixed at freeze; the seven
+follow-ups (F5–F9, F12, F14) all pulled in at freeze, Kyle-approved
+("pull all 7").*
 
 ### D15 — The matrix roster: reuse M2's 12 or re-derive (decide first)
 
@@ -217,9 +242,12 @@ brief owes the boundary-class decision before freezing any non-ASCII list.
   beside every cell as always. Additionally, the six out-of-subset control
   directions (February, Saturn, Mercury, guitar, drum, platinum) run **on
   their paired concepts' 3 items only** (+18 cells): they are not matrix
-  cells, but they complete the recorded `control_late` surface and give
-  October, Mars, Jupiter, piano, violin and silver their one same-category
-  collateral sample, reported as texture beside the matrix.
+  cells, but they complete the recorded `control_late` surface — that is
+  their primary job — and they give **October and silver**, the two subset
+  concepts with no same-category sibling in the matrix, their only
+  same-category collateral sample (Jupiter↔Mars and piano↔violin already
+  have in-matrix sibling cells; corrected at freeze, follow-up F6).
+  Reported as texture beside the matrix.
   **The standing re-certification, a generation deeper:** the 108 cells this
   run shares with M1's recorded artifacts — `clean` (36), the diagonal (= 36
   `primed_late` cells), and the control cells (18 inside the matrix + the 18
@@ -262,22 +290,32 @@ set:
 > has **at least one within-category subset sibling**; October's and
 > silver's items drop from this clause by construction, not by choice
 > (they have no sibling, so their "within-category collateral" is an empty
-> set — this PR's review F10), leaving one estimand for the runner to
-> encode: ns 24 / 28 / 29 (0.5B / 1.5B / 3B), all ≥ MIN_N. The M3 verdict is the AND over 1.5B and 3B;
+> set — this PR's review F10). Stated per arm so the runner cannot guess
+> (this PR's review F13): clause (2) compares the within-category
+> off-diagonal **cells**, n = **96 / 100 / 101** (0.5B / 1.5B / 3B),
+> against the **diagonal cells of the same restricted item set**, n =
+> **24 / 28 / 29** — MIN_N guards that diagonal n — while the per-item
+> 24-vs-24 collapse is the separately pre-registered, never-dispositive
+> effective-n check (power section). The M3 verdict is the AND over 1.5B and 3B;
 > 0.5B runs and is reported under its standing any-direction-damage frame,
 > never gate-bearing. Pooled diagonal gated n < MIN_N = 20 ⇒ pre-declared
 > UNDERPOWERED and no specificity claim. **Collateral-floor qualifier,
 > pre-committed:** the ordering contrasts above cannot by themselves
 > distinguish a per-concept switch from graded damage that is merely worse
-> on-diagonal, so if pooled off-diagonal naming's Wilson 95% lower bound is
-> below **0.5**, the verdict — whatever it is — carries the pre-declared
+> on-diagonal, so the verdict — whatever it is — carries the pre-declared
 > qualifier **ON A DAMAGED FLOOR** (the any-direction-damage frame applied
-> to a gate-bearing subject); the qualifier scopes the claim and can never
-> create or rescue a verdict. The floor is a pre-registered constant,
-> deliberately **not** fitted to any recorded cell; the recorded evidence
-> brackets it (below), and it does **not** fire on the recorded 0.5B
-> subset cells — 0.5B's exclusion from gate-bearing rests on the standing
-> pre-declared scale frame, never on this qualifier. Every matrix cell ablates the subject's
+> to a gate-bearing subject) if the floor readout's Wilson 95% lower bound
+> is below **0.5**. The floor readout is the **per-item collapse** (this
+> PR's review F11): the fraction of gated items that survive **all 11**
+> off-diagonal deletions, n = the gated items (28 / 34 / 32) — never the
+> pooled per-cell rate, whose 11×-inflated n narrows the interval and
+> under-fires exactly when it matters (off-diagonal survival 0.57–0.68
+> fires on the honest n and clears on the pooled one); the pooled reading
+> is reported beside as the permissive comparison, never dispositive. The
+> qualifier scopes the claim and can never create or rescue a verdict.
+> The 0.5 floor is a pre-registered constant, deliberately **not** fitted
+> to any recorded cell; 0.5B's exclusion from gate-bearing rests on the
+> standing pre-declared scale frame, never on this qualifier. Every matrix cell ablates the subject's
 > identical late-third layer set at λ = 1, k = 1, so the compared arms
 > differ **only in which direction is removed** — never in depth, layer
 > count, or dose (PR #7 review F2's caveat, retired structurally and stated
@@ -291,8 +329,8 @@ naming_diag — the shared clean arm cancels, leaving the plain two-proportion
 comparison the ported ruler already decides.
 
 **Why clauses (2) and the floor qualifier exist (added at this PR's
-adversarial review, findings F2 and F1 — both pre-run; Kyle freezes or
-strikes each at D17).** The pooled off-diagonal arm is 73% cross-category
+adversarial review, findings F2 and F1 — both pre-run; both kept at Kyle's
+freeze, 2026-07-28).** The pooled off-diagonal arm is 73% cross-category
 (274 of 374 cells at 1.5B), while the arm KICKOFF's wording generalizes —
 S4b D28's specificity control — was same-category only. Cross-category pairs
 are the ones least likely to show collateral, so pooling shifts the
@@ -309,21 +347,36 @@ ruler).
 
 **What the floor does and does not catch, on the recorded numbers
 (corrected at this PR's round-2 review, F1 reopened — the first fix
-overclaimed this).** The qualifier is decided by the Wilson **lower**
-bound, and on the 0.5B subset cells that bound sits *above* the 0.5
-floor: recorded `control_late` 20/28 → [**0.529**, 0.847]; pooled as the
-gate would compute it, wilson(220, 308) → lower bound **0.661**. So the
-floor does **not** fire on 0.5B's recorded subset cells, and 0.5B's
-exclusion from gate-bearing remains what it has been since KICKOFF: the
-standing pre-declared any-direction-damage frame (risk 2) — a scale
-frame, not a tripwire. The regime the floor targets is grosser damage of
-the kind M1's *full-battery* 0.5B control cell shows under the same
-oracle — `control_late` 33/69 → Wilson lower bound **0.36**, well below
-the floor — a cell M3's curated subset does not re-run (the subset's S1
-core was selected for clean controls, which is precisely why its 0.5B
-control cell sits high). The floor is therefore a forward-looking drift
-guard for the gate-bearing subjects — it fires if 1.5B or 3B ever slides
-toward that regime — not the mechanism that excludes 0.5B.
+overclaimed this; floor readout re-defined per F11).** The qualifier is
+decided by the Wilson **lower** bound of the per-item collapse. That
+collapse cannot be computed from any recorded artifact — only each item's
+one frozen control direction has ever been run, never all 11 — so the
+recorded evidence gives a *ceiling*, not the number: an item that fails
+its single control deletion certainly fails "all 11", so the survives-all-11
+rate can only sit at or below the recorded single-direction rate. On 0.5B
+that ceiling is `control_late` 20/28 → [**0.529**, 0.847]: the recorded
+proxy clears the floor, and whether the full collapse would is genuinely
+open until the matrix runs — which is fine, because 0.5B's exclusion from
+gate-bearing remains what it has been since KICKOFF: the standing
+pre-declared any-direction-damage frame (risk 2), a scale frame, not a
+tripwire. The regime the floor targets is grosser damage of the kind M1's
+*full-battery* 0.5B control cell shows under the same oracle —
+`control_late` 33/69 → Wilson lower bound **0.36**, well below the floor —
+a cell M3's curated subset does not re-run. Two calibration caveats, owned
+(follow-up F14): that 0.36 reference is a *same-category* cell, so it is a
+lower estimate of what a 73%-cross-category arm would read on the same
+subject; and the pooled off-diagonal has never been measured at any scale —
+no recorded artifact contains a cross-category ablation — which is the
+honest reason the constant is uncalibrated. And the reason M3's subset
+reads so much higher than the full battery at 0.5B (0.714 vs 0.478) is
+measured, not asserted (follow-up F12, judge-confirmed): S1 membership
+conditioned on `control_late` 3/3 **at the gate-bearing subjects** (D7's
+hard-switch profile — 0.5B played no part in the rule), and that selection
+measurably enriches 0.5B control survival too: S1's items read **12/15
+(0.80)** vs **21/54 (0.39)** for the rest of the gated roster under the
+same oracle. The floor is therefore a forward-looking drift guard for the
+gate-bearing subjects — it fires if 1.5B or 3B ever slides toward that
+regime — not the mechanism that excludes 0.5B.
 
 **Descriptive package (never gate-bearing, Wilson CIs).** The matrix itself:
 per-pair (A, B) cells are n ≤ 3, always descriptive. Reported beside, all
@@ -360,21 +413,26 @@ patterns carried verbatim.
 *(No alternative wording options offered: the gate's substance is
 KICKOFF-frozen and the degeneracy/precedence machinery is carried from D14.
 The two review-added elements — clause (2) and the floor qualifier, from
-this PR's F2 and F1 — are the strikeable parts: each strengthens or scopes
-the gate and neither weakens it, so striking either reverts to the plain
-KICKOFF ordering test. Objections to any clause belong here, before code.)*
+this PR's F2 and F1 — were the strikeable parts: each strengthens or scopes
+the gate and neither weakens it, and both were kept at Kyle's freeze.)*
 
 ### D18 — Run-time instrument bars (the F5 + F4 pins)
 
 - **(a) Both bars in the runner's `main()`, pre-trial, plus unit tests
   (recommended).** After the tokenizer loads and before any trial: (1) every
-  planned concept's **bare form tokenizes to ≤ `oracle.SPAN_TOKENS`** on the
-  subject's tokenizer — the D9(b)/D10 soundness premise, now checked where it
-  can drift (a new tokenizer revision, a future roster edit) — else exit
-  INVALID; (2) every planned concept's spelling is **pure ASCII** — the
-  `oracle._BOUNDARY` premise — else exit INVALID. Two unit tests pin the
-  bars' failure modes (a fabricated 4-token word; a fabricated non-ASCII
-  word). `oracle.py` is untouched.
+  planned concept tokenizes to ≤ `oracle.SPAN_TOKENS` in **both** its bare
+  and its leading-space form — `max(len(tok(w)), len(tok(" " + w))) ≤
+  SPAN_TOKENS` — on the subject's tokenizer, else exit INVALID. Widened from
+  bare-form-only at freeze (this PR's follow-up F5): the recorded span holds
+  the model's *emitted* continuation, normally the space-prefixed form, and
+  bare length does not bound space-form length — `opal` is 1 token bare but
+  2 space-prefixed on all three tokenizers, the pinned unit-test case. This
+  is the D9(b)/D10 soundness premise, now checked where it can drift (a new
+  tokenizer revision, a future roster edit). (2) Every planned concept's
+  spelling is **pure ASCII** — the `oracle._BOUNDARY` premise — else exit
+  INVALID. Unit tests pin the bars' failure modes (`opal`'s space form
+  against a fabricated SPAN_TOKENS=1; a fabricated 4-token word; a
+  fabricated non-ASCII word). `oracle.py` is untouched.
 - **(b) Unit tests only, no run-time bar.** Catches a roster edit at test
   time but not an environment/tokenizer drift at run time — F5's review point
   was precisely that the premise should hold *at the moment of measurement*.
@@ -393,7 +451,7 @@ KICKOFF ordering test. Objections to any clause belong here, before code.)*
 | 18 out-of-subset control-direction cells (D16a) | the 12 × 12 matrix frame | Not matrix cells; run solely to complete the recorded 108-cell re-certification surface and reported as texture |
 
 Standing owned rows that carry unchanged: the S2-stratum space-keyed
-direction convention (D11/F3), the mass-channel scope (D13/F2), naming-only
+direction convention (D11 / PR #5 F3), the mass-channel scope (D13 / PR #5 F2), naming-only
 gate (K2), lens provenance (K3).
 
 ## Expected power (honest math — realized, not projected)
@@ -426,7 +484,8 @@ precisely because the diagonal arm sits near 0 hits.) The pre-registered
 **effective-n sanity check**, reported beside the gate: each contrast
 recomputed with the repeated arm collapsed to one binary per gated item,
 decided by the same frozen ruler — for clause (1), "survives **all 11**
-off-diagonal deletions", n = the gated items (28 / 34 / 32); for clause
+off-diagonal deletions", n = the gated items (28 / 34 / 32) — the same
+collapse that decides D17's collateral-floor qualifier (F11); for clause
 (2), "survives all within-category sibling deletions", n = the gated items
 with **at least one within-category subset sibling** — **24 / 28 / 29**
 (0.5B / 1.5B / 3B), October's and silver's items excluded by construction,
@@ -437,8 +496,10 @@ anti-conservative direction this very row exists to correct). If a pooled
 clause is CI-clean but its per-item collapse is not, the per-item numbers
 are the honest ones to quote. MIN_N applies to raw n.
 
-What the recorded evidence predicts, said plainly: M1's control cells
-(30/34 surviving at 1.5B) and M2's tier texture predict the gate passes.
+What the recorded evidence predicts, said plainly: M2's re-scored control
+cells (30/34 under D9(b) at 1.5B — M1's own first-token scoring of the same
+subset reads 21/24; corrected attribution, follow-up F9) and M2's tier
+texture predict clauses (1) and (2) pass.
 The matrix's genuinely new content is the 126 never-measured ordered pairs —
 block structure, row-level non-specificity beyond silver's, and asymmetries
 are all findings the single-control design could not have seen, and a
