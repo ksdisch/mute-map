@@ -117,6 +117,13 @@ sits at our scales.
 
 ## Decisions to freeze (Kyle picks; recommendations flagged)
 
+*Frozen (Kyle, 2026-07-28): D9 (b) greedy-span prefix oracle (case-insensitive,
+word-boundary; first-token recorded beside every cell); D10 (a) offline
+re-score published as a labelled reanalysis beside M1's standing numbers; D11
+(a) the shared stratified 12; D12 (b) tier gate cells + stride-2 sliding sweep;
+D13 (a) primed-only dose at the late third; D14 as written. Full DECISIONS.md
+entries land with the M2 code PR, per the M0/M1 pattern.*
+
 ### D9 — The oracle: what counts as "the model said the word" (decide first)
 
 The current primary: produced iff the greedy first token is one of the

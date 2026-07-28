@@ -9,8 +9,9 @@ breadth, localization, dose, specificity — on small local Qwen models.
 bit-for-bit on every M1 run. v1 = M0–M3 per `docs/KICKOFF.md`; S1/S2 stretches
 optional.
 
-**Next action:** M2 (localization + dose) — start-of-stage brief first. It
-opens with the oracle question M1 surfaced (see below) before any M2 design.
+**Next action:** M2 build (fresh session): `m1_rescore.py` (the D10a labelled
+reanalysis) + the M2 runner cut from `m1_battery.py`, both per the frozen
+`docs/M2-BRIEF.md` (D9–D14 frozen 2026-07-28, PR #5).
 
 **Key facts**
 - Fact — Anchor: S4b (dim-stage), concept-specific off-switch at 1.5B, +.727
@@ -22,14 +23,15 @@ opens with the oracle question M1 surfaced (see below) before any M2 design.
 - Inference — S4b's 0.5B null looks **underpowered rather than absent**: the
   naming-only gate (K2) took 0.5B from n = 5 to n = 38 and the contrast is
   CI-clean. The lineage's "specificity emerges by scale" story weakens.
-- Unresolved — **The oracle bounds the map.** 26 of 60 roster words are
-  multi-token in bare form, so the greedy-first-token readout can score them
-  only on the runs where the model happens to emit the leading-space form —
-  which it rarely does (those 26 contribute 1, 2 and 1 gated items at
-  0.5B/1.5B/3B); planets and musical instruments gate 0 items on all three.
-  M1's breadth claim holds over the vocabulary the readout can see. Widening
-  the oracle is a decision owed at M2, and any M1 re-scoring under it must be
-  reported as a labelled reanalysis beside the pre-committed numbers.
+- Decision — **D9 (b), frozen 2026-07-28 (M2-BRIEF): the oracle widens** to a
+  greedy-span prefix rule (case-insensitive, word-boundary, deterministic
+  string rule on the recorded 3-token span; first-token recorded beside every
+  cell). Resolves M1's owned bound: 26 of 60 roster words are multi-token in
+  bare form and planets/instruments gated 0 items everywhere under the
+  first-token readout. M1's pre-committed numbers stand; the D10 (a) offline
+  re-score lands with the M2 code PR as a clearly-labelled reanalysis beside
+  them (design projection: prefix-gated n 105/116/69, primed 0/105, 12/116,
+  0/69).
 - Decision — K1–K4 at kickoff: slug/visibility, naming-only competence gate,
   lens provenance (no refits in core), stats ruler ported verbatim.
 - Fact — Lens artifacts gitignored (70–560MB); sourced from local dim-stage

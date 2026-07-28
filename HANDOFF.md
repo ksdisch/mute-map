@@ -3,52 +3,46 @@
 _Last updated: 2026-07-28_
 
 ## What was just done
-- **M1 built and PASSED** (2026-07-28): frozen 60-concept / 180-item breadth
-  battery (`items/m1-battery.json`), runner `m1_battery.py` cut from the
-  certified `m0_anchor.py`, cross-subject `m1_verdict.py`, 93 tests green.
-  Verdict: **BREADTH-SPECIFIC at 1.5B AND 3B** — control − primed late naming
-  +0.656 [+0.517, +0.763] (n = 61) and +0.636 [+0.443, +0.759] (n = 44). 0.5B
-  also CI-clean (+0.447 [+0.275, +0.603], n = 38) but never gate-bearing.
-  Prevalence 9/11, 6/8, 4/8 concepts with the hard-switch profile, all carrying
-  the pre-declared UNDERPOWERED tag. No degeneracy on any gated arm.
-- **The instrument re-certified itself on every run**: the 60 reused S4 items
-  reproduced the recorded anchors bit-for-bit, 180/180 cells, `concept_mass`
-  floats exact, on all three subjects.
-- Decisions **D4–D8** written up in `docs/DECISIONS.md`; PR #3 review
-  follow-ups F5/F6/F7/F11 landed as brief addenda + frozen gate wording in
-  `m1_battery.GATE_WORDING`; PR #2 follow-ups F5/F7/F9/F10/F11 and D8's
-  comparator widening landed with tests (mutation-probed).
+- **M2 start-of-stage brief written and frozen** (2026-07-28, PR #5,
+  `docs/M2-BRIEF.md`). It opened with the oracle question M1 owed, and Kyle
+  froze all six decisions: **D9 (b)** greedy-span prefix oracle
+  (case-insensitive, word-boundary, deterministic string rule on the recorded
+  3-token span; first-token recorded beside every cell); **D10 (a)** offline
+  M1 re-score as a labelled reanalysis beside the standing numbers; **D11 (a)**
+  the shared stratified 12-concept subset (Brazil, Canada, China, Egypt,
+  France, Japan, Jupiter, Mars, October, piano, silver, violin); **D12 (b)**
+  tier gate cells + width-late-third stride-2 sliding sweep incl. outside-band
+  probes; **D13 (a)** primed-only dose at the late third, λ ∈ {0,.25,.5,.75,1};
+  **D14** as written (LATE-LOCALIZED gate wording, degeneracy re-freeze
+  carrying PR #4's F3, the M1-cell cross-check, verdict precedence).
+- Every number in the brief was recomputed this session from the committed
+  `results/m1-battery-*.json` and the three Qwen2.5 tokenizers (they agree
+  exactly; max bare form = 3 tokens — what makes the offline re-score sound).
 
 ## Where things stand
-Chain: ~~M0~~ → ~~M1~~ → **M2 (localization + dose)** → M3 (specificity
-matrix); S1/S2 stretches optional. Results in `results/m1-battery-*.json`.
+Chain: ~~M0~~ → ~~M1~~ → **M2 (brief frozen; build next)** → M3; S1/S2
+stretches optional. Full D9–D14 DECISIONS.md entries land with the M2 code PR,
+per the M0/M1 pattern.
 
 ## Immediate next move
-**M2 start-of-stage brief** — but it must open with the question M1 surfaced,
-before any M2 design work:
+**Cut M2's code from the frozen brief** (fresh build session):
 
-> **The oracle bounds the map.** The primary readout is the greedy *first
-> token*, so a concept is only scorable when its bare (no-leading-space)
-> spelling is a single token. **26 of the 60 roster words are not** — planets
-> and musical instruments gated **0 items on all three subjects**. The
-> first-3-greedy texture shows the models often *did* say those words
-> (35/142, 54/119, 80/136 of ungated items). M1's gate is unaffected (the
-> contrast lives inside the gated set, and the bias runs *against* the claim —
-> the control arm is scored too harshly, never the primed arm), but the reach
-> of the breadth claim is bounded.
+1. `m1_rescore.py` — D10 (a): pure function of the committed M1 JSONs, no
+   model run; emits `results/m1-rescore-*.json` + a REANALYSIS-labelled
+   addendum in M1-BRIEF's results; carries PR #4 F5's per-source split.
+2. The M2 runner, cut from `m1_battery.py` (never `m0_anchor.py`, which stays
+   certified and un-editable): frozen GATE_WORDING first, wrong-arm INVALID,
+   `--dry-run`, `--limit` smoke; subset loader; window edits; partial-λ
+   operator (new code, generalized read-back, unit-covered); the M1-cell
+   cross-check graded before any new cell.
+3. PR #4 follow-ups riding along: F4, F5 (in the rescore artifact), F6, F7,
+   F11.
 
-So M2's brief owes a decision on **widening the oracle** (accept the
-leading-space form? score the 3-token span?). It is a change to the
-measurement, so it goes in a decision *before* a run, never in a results
-section — and any re-scoring of M1 under a widened oracle must be published as
-a clearly-labelled reanalysis *beside* the pre-committed M1 numbers, which
-stand as they are.
-
-Also carried into M2: `m0_anchor.py` remains certified and un-editable; cut new
-runners from `m1_battery.py` or `m0_anchor.py`. The pins (torch 2.13.0,
-transformers 5.13.1) and the `mps` device are what make the anchor cross-check
-gate-bearing — off that stack a run is pre-declared NOT A RESULT.
+Standing constraints unchanged: certified environment = `mps` + torch 2.13.0 +
+transformers 5.13.1 (off it: NOT A RESULT); editing `m1_battery.GATE_WORDING`
+is forbidden without a full re-run (M2 freezes its *own* wording instead —
+D14); adversarial review before any merge.
 
 ## Open questions / blockers
-- None blocking. The oracle question above is the first agenda item for M2, not
-  a blocker on anything already recorded.
+- None. The oracle question is resolved (D9b frozen); the build is fully
+  specified by `docs/M2-BRIEF.md`.
