@@ -91,7 +91,7 @@ candidate roster below was checked against the shared Qwen2.5 tokenizer
 
 *Frozen (Kyle, 2026-07-27): D4 (b) 10 × 6 with minimal top-up; D5 (a) 3 per
 concept + S4 reuse; D6 (a) item-level greedy; D7 (a) no per-concept verdicts —
-prevalence wording amended pre-run at review F1 of PR #3, Kyle-approved;
+prevalence wording amended pre-run at reviews F1 and F9 of PR #3, Kyle-approved;
 D8 (a) widen the comparison. Full DECISIONS.md entries land with the M1 code
 PR, per the M0 pattern.*
 
@@ -189,11 +189,19 @@ package to freeze around it:
   n < 20 ⇒ pre-declared UNDERPOWERED. Per-concept and per-category cells are
   always descriptive: paired primed/control rates with Wilson CIs, plus the
   full distribution. Prevalence texture, pre-committed wording (amended at
-  review F1 of PR #3, pre-run, Kyle-approved): the headline count uses a
-  **fixed denominator** — only concepts with **all 3 items gated** count, and
-  of those, the number showing the **hard-switch profile** (primed_late naming
-  0/3 AND control_late 3/3) is reported with its Wilson CI over that fixed set.
-  Concepts with 1 or 2 gated items are reported beside, stratified by
+  reviews F1 and F9 of PR #3, both pre-run, Kyle-approved): the headline count
+  uses a **fixed denominator** — only concepts with **all 3 items gated**
+  count, and of those, the number showing the **hard-switch profile**
+  (primed_late naming 0/3 AND control_late 3/3) is reported with its Wilson CI
+  over that fixed set, carrying the pre-declared **UNDERPOWERED** tag whenever
+  that set holds fewer than MIN_N = 20 concepts — exactly the flag the ported
+  `rate_cell` emits on the cell, so code and prose agree. The anchor data
+  projects ~15–18 all-3-gated concepts of 60, so the tag is the expected case,
+  stated here so it reads as pre-declared, not discovered. The fixed set is
+  per-subject (each subject earns its own; the anchor sets already differ);
+  no cross-subject prevalence comparison is gated or claimed — the
+  intersection of the three subjects' fixed sets is reported beside as
+  texture. Concepts with 1 or 2 gated items are reported beside, stratified by
   gated-item count, never pooled into the headline — a 1-gated-item concept
   satisfies the profile trivially, and sparse gating tracks marginal
   competence. No per-concept verdicts. Stats honesty row, owned: items within a concept share one
