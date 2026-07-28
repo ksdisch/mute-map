@@ -206,6 +206,16 @@ def load_items(path: str = ITEMS_PATH) -> list[dict]:
             f"{path} does not carry exactly {REUSED_ITEMS} reused S4 items — "
             "the anchor cross-check set"
         )
+    # Review F7: `forbidden_forms` is keyed by concept word, and `clue_leaks`
+    # reads it with `.get(word, [])` — so a typo'd or renamed key silently
+    # disables that word's root-changing-derivative guard rather than failing.
+    # The keys are validated against the roster instead.
+    unknown = sorted(set(forbidden) - {c for cs in roster.values() for c in cs})
+    if unknown:
+        raise ValueError(
+            f"{path} forbidden_forms names {unknown}, which are not roster "
+            "concepts — a mis-keyed entry silently disables its leak guard"
+        )
 
     by_concept: dict[str, list[dict]] = {}
     for item in items:
@@ -458,7 +468,15 @@ def grade(
     records = []
     for i, (item, forms) in enumerate(planned):
         start = time.perf_counter()
-        u_concept = unembed_rows[forms["concept"][0]]  # bare form — M1 convention
+        # `token_forms` keeps {bare, leading-space} ordered with the bare form
+        # first, so this is the bare row *when a single-token bare form exists*
+        # and the leading-space row otherwise — which is the only single-token
+        # form the 26 multi-token-bare roster words have (PR #5 review F3: the
+        # comment here previously claimed "bare form" unconditionally, which is
+        # false for those 26). The convention is owned in M2-BRIEF's deviations
+        # table, with the measured evidence that the space-keyed ablation still
+        # mutes the bare emission.
+        u_concept = unembed_rows[forms["concept"][0]]
         u_control = unembed_rows[forms["control"][0]]
         prompt = NAMING_Q.format(clue=item["clue"], noun=item["noun"])
         input_ids = encode_chat(subject, prompt)
@@ -681,10 +699,14 @@ def main() -> None:
     tok = transformers.AutoTokenizer.from_pretrained(args.model_id)
     subject = SubjectModel(hf, tok)
 
+    # Review F4: a missing lens file is only the tidiest way this load fails. A
+    # truncated or non-torch file raises UnpicklingError/RuntimeError and a
+    # permission or directory problem raises OSError — all of them wrong-arm
+    # input, and all of them used to escape as a traceback instead of INVALID.
     try:
         artifact = torch.load(args.lens, map_location="cpu", weights_only=True)
-    except FileNotFoundError:
-        fail_invalid(f"lens artifact {args.lens} not found")
+    except (OSError, RuntimeError, torch.serialization.pickle.UnpicklingError) as exc:
+        fail_invalid(f"lens artifact {args.lens} could not be loaded: {exc}")
     band = validate(args, artifact, subject)
     thirds = sub_band_thirds(band)
     late = thirds["late"]

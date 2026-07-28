@@ -228,6 +228,17 @@ def test_load_items_rejects_a_missing_file(tmp_path):
         load_items(str(tmp_path / "nope.json"))
 
 
+def test_load_items_rejects_a_forbidden_forms_key_that_is_not_a_roster_concept(tmp_path):
+    """PR #4 review F7: `clue_leaks` reads `forbidden_forms` with `.get(word, [])`,
+    so a mis-keyed entry disables that word's guard in silence. Renaming
+    'France' to 'french' would leave France's root-changing derivatives
+    unguarded while the file still looks populated."""
+    battery = _battery()
+    battery["forbidden_forms"]["Frnace"] = battery["forbidden_forms"].pop("France")
+    with pytest.raises(ValueError, match="not roster concepts"):
+        load_items(_write(tmp_path, battery))
+
+
 # --- validate(): every wrong-arm guard proved by its printed reason (F9) ------
 
 class _FakeSubject:
@@ -547,7 +558,18 @@ def test_a_non_positive_limit_is_wrong_arm_input(limit, monkeypatch, capsys):
     two others. `--limit 0` used to satisfy the first and fail the others —
     writing a zero-item run over the real results artifact with a verdict
     string that said 'smoke' and a banner that did not. Rejecting a
-    non-positive limit makes every reading agree."""
+    non-positive limit makes every reading agree.
+
+    PR #4 review F11: this is the suite's only `main()` caller, and it reached
+    the wrong-arm exit only because that check happens to precede the model
+    load. `from_pretrained` is monkeypatched to fail loudly so that a future
+    reordering surfaces as a failing test rather than as a test run that
+    silently starts pulling a real checkpoint."""
+    def _never(*args, **kwargs):
+        raise AssertionError("a wrong-arm exit must precede any model load")
+
+    monkeypatch.setattr(m1_battery.transformers.AutoModelForCausalLM, "from_pretrained", _never)
+    monkeypatch.setattr(m1_battery.transformers.AutoTokenizer, "from_pretrained", _never)
     monkeypatch.setattr(sys, "argv", [
         "m1_battery.py", "--model-id", "Qwen/Qwen2.5-0.5B-Instruct",
         "--lens", "lenses/qwen2.5-0.5b-instruct-n100.pt", "--limit", str(limit),

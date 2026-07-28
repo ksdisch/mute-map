@@ -1,0 +1,421 @@
+{
+ "milestone": "M1-REANALYSIS",
+ "label": "REANALYSIS \u2014 NOT a pre-committed M1 result. M1's published numbers were computed under the first-token oracle and stand unchanged; this artifact re-scores the same recorded cells under the widened oracle frozen in decision D9(b) and is published beside them, per D10(a). It is a pure function of results/m1-battery-*.json: no model was run and no new trial was measured.",
+ "decision": "D10(a), frozen 2026-07-28. The re-score is computed offline from the committed M1 artifacts because the recorded 3-token greedy span is provably sufficient for a prefix rule (3 tokens >= the longest bare form on the roster, measured on all three Qwen2.5 tokenizers; a prefix hit must start at the span's first character, so truncation cannot hide one). The widened numbers are a reanalysis, never a replacement: M1's gate was not re-run, no verdict is restated, and the M1 verdict of record remains the pre-committed BREADTH-SPECIFIC at 1.5B and 3B under the first-token oracle. Rejected: (b) a full re-run, which buys nothing the recorded span does not already carry while creating a second generation of M1 artifacts; (c) no reanalysis, which would leave the widened numbers as un-published design math.",
+ "oracle_wording": "D9(b), frozen 2026-07-28 before any M2 run. PRIMARY READOUT: the concept is produced iff the decoded first-3-greedy span, after stripping leading whitespace, opens with the concept's spelling at a word boundary, case-insensitive \u2014 a prefix rule, never containment ('not France' is a miss), with the word boundary defined as 'the next character is not a letter or digit' ('Marseille' is not Mars) and the END OF THE SPAN counting as a boundary (review F5: a word that exactly fills the recorded span, 'Butterfly', is a hit \u2014 truncation must never turn a completed word into a miss). Case-insensitive because orthography is not semantics: 'Piano' is the word piano, and the widening is measured to do real work (1.5B prefix gate 72 case-exact -> 105 case-insensitive). This is a fixed string rule on a deterministic greedy span, frozen as code with unit tests \u2014 never free-text parsing and never an LLM judge. S4's 'The ...' miss-counting caveat is UNCHANGED in kind and still owned: 'The France' remains a miss. The first-token outcome is computed and recorded beside every cell, so every cross-check against M0/M1 artifacts compares raw recorded fields and is oracle-independent. OWNED RESIDUAL (review F12): for the three concepts whose bare form fills the 3-token span (beetle, butterfly, trumpet) the closing boundary is unobservable, so a longer word sharing those tokens would score as a hit; no such cell occurs in the recorded M1 data and none of the three is in M2's subset.",
+ "span_tokens": 3,
+ "source_artifact": "results/m1-battery-qwen2.5-3b-instruct.json",
+ "model_id": "Qwen/Qwen2.5-3B-Instruct",
+ "source_run": {
+  "environment": {
+   "device": "mps",
+   "torch": "2.13.0",
+   "transformers": "5.13.1",
+   "certified": true,
+   "uncertified_reasons": []
+  },
+  "anchor_crosscheck": {
+   "n_mismatches": 0,
+   "items_checked": 60,
+   "items_expected": 60
+  },
+  "published_first_token_verdict": "BREADTH-SPECIFIC"
+ },
+ "reproduces_published_first_token_cell": true,
+ "oracles": {
+  "first_token": {
+   "gated_n": 44,
+   "items_scored": 180,
+   "naming_success_gated": {
+    "clean": {
+     "hits": 44,
+     "n": 44,
+     "rate": 1.0,
+     "wilson_95": [
+      0.9197016822179859,
+      0.9999999999999999
+     ],
+     "underpowered": false
+    },
+    "primed_late": {
+     "hits": 6,
+     "n": 44,
+     "rate": 0.13636363636363635,
+     "wilson_95": [
+      0.0640286740786005,
+      0.2670973752174096
+     ],
+     "underpowered": false
+    },
+    "control_late": {
+     "hits": 34,
+     "n": 44,
+     "rate": 0.7727272727272727,
+     "wilson_95": [
+      0.6300735713298432,
+      0.8715818916981491
+     ],
+     "underpowered": false
+    }
+   },
+   "newcombe_control_minus_primed_late_naming": [
+    0.6363636363636364,
+    0.4428658611901901,
+    0.7588568298915003
+   ],
+   "positive_and_ci_excludes_zero": true,
+   "underpowered": false
+  },
+  "prefix": {
+   "gated_n": 116,
+   "items_scored": 180,
+   "naming_success_gated": {
+    "clean": {
+     "hits": 116,
+     "n": 116,
+     "rate": 1.0,
+     "wilson_95": [
+      0.9679443532129076,
+      0.9999999999999999
+     ],
+     "underpowered": false
+    },
+    "primed_late": {
+     "hits": 12,
+     "n": 116,
+     "rate": 0.10344827586206896,
+     "wilson_95": [
+      0.06017210366825829,
+      0.1721478920594356
+     ],
+     "underpowered": false
+    },
+    "control_late": {
+     "hits": 92,
+     "n": 116,
+     "rate": 0.7931034482758621,
+     "wilson_95": [
+      0.7105757513659503,
+      0.8568399039657542
+     ],
+     "underpowered": false
+    }
+   },
+   "newcombe_control_minus_primed_late_naming": [
+    0.6896551724137931,
+    0.5822752021077824,
+    0.7666951806151032
+   ],
+   "positive_and_ci_excludes_zero": true,
+   "underpowered": false
+  },
+  "containment": {
+   "gated_n": 124,
+   "items_scored": 180,
+   "naming_success_gated": {
+    "clean": {
+     "hits": 124,
+     "n": 124,
+     "rate": 1.0,
+     "wilson_95": [
+      0.9699503135129722,
+      0.9999999999999999
+     ],
+     "underpowered": false
+    },
+    "primed_late": {
+     "hits": 17,
+     "n": 124,
+     "rate": 0.13709677419354838,
+     "wilson_95": [
+      0.08738971501006193,
+      0.20861408969826462
+     ],
+     "underpowered": false
+    },
+    "control_late": {
+     "hits": 100,
+     "n": 124,
+     "rate": 0.8064516129032258,
+     "wilson_95": [
+      0.7281401662946105,
+      0.8663455097294692
+     ],
+     "underpowered": false
+    }
+   },
+   "newcombe_control_minus_primed_late_naming": [
+    0.6693548387096774,
+    0.5633010359163069,
+    0.7471884471940803
+   ],
+   "positive_and_ci_excludes_zero": true,
+   "underpowered": false
+  }
+ },
+ "per_source": {
+  "first_token": {
+   "s4-reuse": {
+    "gated_n": 21,
+    "items_scored": 60,
+    "naming_success_gated": {
+     "clean": {
+      "hits": 21,
+      "n": 21,
+      "rate": 1.0,
+      "wilson_95": [
+       0.8453561767357979,
+       0.9999999999999999
+      ],
+      "underpowered": false
+     },
+     "primed_late": {
+      "hits": 4,
+      "n": 21,
+      "rate": 0.19047619047619047,
+      "wilson_95": [
+       0.07667440615177301,
+       0.40000986539273287
+      ],
+      "underpowered": false
+     },
+     "control_late": {
+      "hits": 21,
+      "n": 21,
+      "rate": 1.0,
+      "wilson_95": [
+       0.8453561767357979,
+       0.9999999999999999
+      ],
+      "underpowered": false
+     }
+    },
+    "newcombe_control_minus_primed_late_naming": [
+     0.8095238095238095,
+     0.5491028560699811,
+     0.923325593848227
+    ],
+    "positive_and_ci_excludes_zero": true,
+    "underpowered": false
+   },
+   "m1-new": {
+    "gated_n": 23,
+    "items_scored": 120,
+    "naming_success_gated": {
+     "clean": {
+      "hits": 23,
+      "n": 23,
+      "rate": 1.0,
+      "wilson_95": [
+       0.8568788745827374,
+       1.0
+      ],
+      "underpowered": false
+     },
+     "primed_late": {
+      "hits": 2,
+      "n": 23,
+      "rate": 0.08695652173913043,
+      "wilson_95": [
+       0.02417949540723341,
+       0.2679640429809402
+      ],
+      "underpowered": false
+     },
+     "control_late": {
+      "hits": 13,
+      "n": 23,
+      "rate": 0.5652173913043478,
+      "wilson_95": [
+       0.3681104930501695,
+       0.7436563166780135
+      ],
+      "underpowered": false
+     }
+    },
+    "newcombe_control_minus_primed_late_naming": [
+     0.47826086956521735,
+     0.21065135537432167,
+     0.667420603979242
+    ],
+    "positive_and_ci_excludes_zero": true,
+    "underpowered": false
+   }
+  },
+  "prefix": {
+   "s4-reuse": {
+    "gated_n": 46,
+    "items_scored": 60,
+    "naming_success_gated": {
+     "clean": {
+      "hits": 46,
+      "n": 46,
+      "rate": 1.0,
+      "wilson_95": [
+       0.9229238226702192,
+       1.0
+      ],
+      "underpowered": false
+     },
+     "primed_late": {
+      "hits": 6,
+      "n": 46,
+      "rate": 0.13043478260869565,
+      "wilson_95": [
+       0.061177571374920234,
+       0.2566613423036133
+      ],
+      "underpowered": false
+     },
+     "control_late": {
+      "hits": 42,
+      "n": 46,
+      "rate": 0.9130434782608695,
+      "wilson_95": [
+       0.796750643647758,
+       0.9656646881232924
+      ],
+      "underpowered": false
+     }
+    },
+    "newcombe_control_minus_primed_late_naming": [
+     0.7826086956521738,
+     0.6109777900589005,
+     0.8695888832540923
+    ],
+    "positive_and_ci_excludes_zero": true,
+    "underpowered": false
+   },
+   "m1-new": {
+    "gated_n": 70,
+    "items_scored": 120,
+    "naming_success_gated": {
+     "clean": {
+      "hits": 70,
+      "n": 70,
+      "rate": 1.0,
+      "wilson_95": [
+       0.9479751251327163,
+       0.9999999999999999
+      ],
+      "underpowered": false
+     },
+     "primed_late": {
+      "hits": 6,
+      "n": 70,
+      "rate": 0.08571428571428572,
+      "wilson_95": [
+       0.03987612654032836,
+       0.17465876977827793
+      ],
+      "underpowered": false
+     },
+     "control_late": {
+      "hits": 50,
+      "n": 70,
+      "rate": 0.7142857142857143,
+      "wilson_95": [
+       0.5994958195463383,
+       0.8067792340819687
+      ],
+      "underpowered": false
+     }
+    },
+    "newcombe_control_minus_primed_late_naming": [
+     0.6285714285714286,
+     0.4833548965246717,
+     0.731800242575839
+    ],
+    "positive_and_ci_excludes_zero": true,
+    "underpowered": false
+   }
+  }
+ },
+ "per_category_gated": {
+  "first_token": {
+   "animals": {
+    "items_run": 18,
+    "gated_items": 1
+   },
+   "countries": {
+    "items_run": 18,
+    "gated_items": 18
+   },
+   "days of the week": {
+    "items_run": 18,
+    "gated_items": 11
+   },
+   "farm animals": {
+    "items_run": 18,
+    "gated_items": 1
+   },
+   "gemstones": {
+    "items_run": 18,
+    "gated_items": 1
+   },
+   "insects": {
+    "items_run": 18,
+    "gated_items": 0
+   },
+   "months": {
+    "items_run": 18,
+    "gated_items": 12
+   },
+   "musical instruments": {
+    "items_run": 18,
+    "gated_items": 0
+   },
+   "planets": {
+    "items_run": 18,
+    "gated_items": 0
+   },
+   "precious metals": {
+    "items_run": 18,
+    "gated_items": 0
+   }
+  },
+  "prefix": {
+   "animals": {
+    "items_run": 18,
+    "gated_items": 12
+   },
+   "countries": {
+    "items_run": 18,
+    "gated_items": 18
+   },
+   "days of the week": {
+    "items_run": 18,
+    "gated_items": 11
+   },
+   "farm animals": {
+    "items_run": 18,
+    "gated_items": 10
+   },
+   "gemstones": {
+    "items_run": 18,
+    "gated_items": 9
+   },
+   "insects": {
+    "items_run": 18,
+    "gated_items": 6
+   },
+   "months": {
+    "items_run": 18,
+    "gated_items": 12
+   },
+   "musical instruments": {
+    "items_run": 18,
+    "gated_items": 13
+   },
+   "planets": {
+    "items_run": 18,
+    "gated_items": 15
+   },
+   "precious metals": {
+    "items_run": 18,
+    "gated_items": 10
+   }
+  }
+ },
+ "case_exact_prefix_gate_texture": 58
+}

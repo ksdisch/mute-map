@@ -372,6 +372,52 @@ oracle*, so it belongs in a decision, not in a results section. M2 should open
 with it, and any re-scoring of M1 under a widened oracle must be reported as a
 separate, clearly-labelled reanalysis alongside these pre-committed numbers.
 
+### REANALYSIS (2026-07-28, landed with the M2 code PR) — the same cells under the widened oracle
+
+> **This is a reanalysis, not an M1 result.** Everything above was computed under
+> the pre-committed first-token oracle and **stands as published**; M1's verdict
+> of record is unchanged. The table below re-scores *the same recorded cells*
+> under the widened oracle frozen as decision **D9(b)** and is published beside
+> them per **D10(a)**. It is a pure function of `results/m1-battery-*.json` —
+> no model was run, no new trial was measured — produced by `m1_rescore.py`
+> and written to `results/m1-rescore-*.json`.
+
+Why an offline re-score is sound rather than merely cheap: the widened oracle
+reads the 3-token span M1 already recorded for every cell, and 3 tokens ≥ the
+longest bare form on the roster. For a *prefix* rule truncation cannot hide a
+hit, since a hit must start at the span's first character. The script also
+recomputes M1's **published** first-token contrast from the same file and
+refuses to write anything unless it reproduces it exactly — which it does, on
+all three subjects.
+
+| Subject | Gated n (first-token → widened) | `primed_late` | `control_late` | control − primed [Newcombe 95%] |
+|---|---|---|---|---|
+| 0.5B *(context only)* | 38 → **69** | 0/69 | 33/69 | **+0.478** [+0.353, +0.594] |
+| 1.5B *(gate-bearing)* | 61 → **105** | 0/105 | 80/105 | **+0.762** [+0.665, +0.833] |
+| 3B *(gate-bearing)* | 44 → **116** | 12/116 | 92/116 | **+0.690** [+0.582, +0.767] |
+
+**What the widening buys.** The readout caveat above said the coverage bound was
+a property of the readout, not the models. Re-scored, it is: the two categories
+that gated **0 items on every subject** light up — planets **0 → 7 / 8 / 15** and
+musical instruments **0 → 2 / 8 / 13** of 18 items each (0.5B / 1.5B / 3B). The
+case-insensitivity half of D9(b) is doing real work on its own: at 1.5B the
+prefix gate reads **72 case-exact versus 105 case-insensitive**.
+
+**The contrast survives the widening on every subject**, and on the arm that
+matters most it survives in the harder direction: `control_late` gains far more
+items than `primed_late` does (at 1.5B, primed stays at exactly 0 across 105
+gated items). Under the first-token readout one could argue the mute was partly
+an artifact of fragment-scoring; it is not.
+
+**PR #4 review F5 closes here, as a recorded number rather than a PR comment**
+— and under **both** oracles (PR #5 review F4). The worry was that the contrast
+might be carried by the 60 items S4 itself selected. It is not: on the **120
+newly authored items alone** it is CI-clean on all three subjects, under the
+first-token oracle **+0.278 / +0.545 / +0.478** and under the widened one
+**+0.389 / +0.714 / +0.629** (0.5B / 1.5B / 3B). The reused-item stratum runs
+higher, as expected for items chosen against a model that could already name
+them, but the new stratum stands on its own.
+
 ## Addenda landed with the M1 code PR (PR #3 review follow-ups)
 
 All four were accepted at PR #3's review and deferred here by design: each one
