@@ -257,7 +257,13 @@ set:
 > off-diagonal cells (each gated item under its same-category subset
 > siblings' directions only) is likewise positive with its Newcombe 95% CI
 > excluding 0 — the S4b-comparable arm, since the lineage's control has
-> always been same-category. The M3 verdict is the AND over 1.5B and 3B;
+> always been same-category. Both arms of clause (2) — its off-diagonal
+> pool AND its diagonal — are restricted to the gated items whose concept
+> has **at least one within-category subset sibling**; October's and
+> silver's items drop from this clause by construction, not by choice
+> (they have no sibling, so their "within-category collateral" is an empty
+> set — this PR's review F10), leaving one estimand for the runner to
+> encode: ns 24 / 28 / 29 (0.5B / 1.5B / 3B), all ≥ MIN_N. The M3 verdict is the AND over 1.5B and 3B;
 > 0.5B runs and is reported under its standing any-direction-damage frame,
 > never gate-bearing. Pooled diagonal gated n < MIN_N = 20 ⇒ pre-declared
 > UNDERPOWERED and no specificity claim. **Collateral-floor qualifier,
@@ -267,7 +273,11 @@ set:
 > below **0.5**, the verdict — whatever it is — carries the pre-declared
 > qualifier **ON A DAMAGED FLOOR** (the any-direction-damage frame applied
 > to a gate-bearing subject); the qualifier scopes the claim and can never
-> create or rescue a verdict. Every matrix cell ablates the subject's
+> create or rescue a verdict. The floor is a pre-registered constant,
+> deliberately **not** fitted to any recorded cell; the recorded evidence
+> brackets it (below), and it does **not** fire on the recorded 0.5B
+> subset cells — 0.5B's exclusion from gate-bearing rests on the standing
+> pre-declared scale frame, never on this qualifier. Every matrix cell ablates the subject's
 > identical late-third layer set at λ = 1, k = 1, so the compared arms
 > differ **only in which direction is removed** — never in depth, layer
 > count, or dose (PR #7 review F2's caveat, retired structurally and stated
@@ -292,11 +302,28 @@ as the most interesting finding), the pooled arm dilutes it. Clause (2) is
 the undiluted test, and it is powered on its own — within-category pooled n
 **96 / 100 / 101** (0.5B / 1.5B / 3B), all ≥ MIN_N. The floor qualifier
 covers the failure mode neither ordering clause can see: a matrix whose
-off-diagonal is heavily damaged can still pass both orderings CI-cleanly
-(the recorded 0.5B tier cells do exactly that: `control_late` 20/28 vs
+off-diagonal is heavily damaged can still pass both orderings CI-cleanly —
+the recorded 0.5B tier cells do exactly that (`control_late` 20/28 vs
 `primed_late` 0/28 → +0.714 [+0.494, +0.847] through the project's own
-ruler), which is why 0.5B's exclusion is now backed by a measured tripwire
-rather than scale fiat alone.
+ruler).
+
+**What the floor does and does not catch, on the recorded numbers
+(corrected at this PR's round-2 review, F1 reopened — the first fix
+overclaimed this).** The qualifier is decided by the Wilson **lower**
+bound, and on the 0.5B subset cells that bound sits *above* the 0.5
+floor: recorded `control_late` 20/28 → [**0.529**, 0.847]; pooled as the
+gate would compute it, wilson(220, 308) → lower bound **0.661**. So the
+floor does **not** fire on 0.5B's recorded subset cells, and 0.5B's
+exclusion from gate-bearing remains what it has been since KICKOFF: the
+standing pre-declared any-direction-damage frame (risk 2) — a scale
+frame, not a tripwire. The regime the floor targets is grosser damage of
+the kind M1's *full-battery* 0.5B control cell shows under the same
+oracle — `control_late` 33/69 → Wilson lower bound **0.36**, well below
+the floor — a cell M3's curated subset does not re-run (the subset's S1
+core was selected for clean controls, which is precisely why its 0.5B
+control cell sits high). The floor is therefore a forward-looking drift
+guard for the gate-bearing subjects — it fires if 1.5B or 3B ever slides
+toward that regime — not the mechanism that excludes 0.5B.
 
 **Descriptive package (never gate-bearing, Wilson CIs).** The matrix itself:
 per-pair (A, B) cells are n ≤ 3, always descriptive. Reported beside, all
@@ -380,6 +407,7 @@ cross-check, not a power surprise):
 | Diagonal (the binding gate cell) | 28 | 34 | 32 | yes, all |
 | Off-diagonal (11 × gated n) | 308 | 374 | 352 | yes, all |
 | Within-category off-diagonal (gate clause 2) | 96 | 100 | 101 | yes, all |
+| Clause (2) item set, both arms + per-item collapse (≥ 1 sibling) | 24 | 28 | 29 | yes, all |
 | Cross-category off-diagonal (texture) | 212 | 274 | 251 | yes, all |
 
 Per-pair cells are n ≤ 3 — always descriptive, never verdict-bearing (D7's
@@ -396,12 +424,18 @@ not wider: worked on the recorded 0.5B rates, the inflated-n contrast reads
 intervals; that was wrong — the paired-arms widening above is small
 precisely because the diagonal arm sits near 0 hits.) The pre-registered
 **effective-n sanity check**, reported beside the gate: each contrast
-recomputed with the repeated arm collapsed to one binary per gated item —
-"survives **all 11** off-diagonal deletions" for clause (1), "survives all
-within-category sibling deletions" for clause (2) — n = the gated items
-(28 / 34 / 32), decided by the same frozen ruler. If a pooled clause is
-CI-clean but its per-item collapse is not, the per-item numbers are the
-honest ones to quote. MIN_N applies to raw n.
+recomputed with the repeated arm collapsed to one binary per gated item,
+decided by the same frozen ruler — for clause (1), "survives **all 11**
+off-diagonal deletions", n = the gated items (28 / 34 / 32); for clause
+(2), "survives all within-category sibling deletions", n = the gated items
+with **at least one within-category subset sibling** — **24 / 28 / 29**
+(0.5B / 1.5B / 3B), October's and silver's items excluded by construction,
+not by choice (this PR's review F10: with no sibling, the conjunction is
+empty and True by fiat — it would have scored silver, the pre-registered
+non-specific anti-example, as a structural survivor, in the
+anti-conservative direction this very row exists to correct). If a pooled
+clause is CI-clean but its per-item collapse is not, the per-item numbers
+are the honest ones to quote. MIN_N applies to raw n.
 
 What the recorded evidence predicts, said plainly: M1's control cells
 (30/34 surviving at 1.5B) and M2's tier texture predict the gate passes.
