@@ -4,7 +4,8 @@ The bar, frozen before any comparison ran: the port PASSES iff every recorded
 cell — per item × instruction × condition **greedy outcome** (`produced` and the
 decoded `greedy` token), for all three subjects — plus every per-item
 competence-gate membership (`gate_greedy`) and the instrument configuration
-(band, thirds, gradable/dropped item sets) matches dim-stage's recorded S4b
+(band, thirds, gradable/dropped item sets, and — since D8 — the recorded
+`protocol` block and `lens_n_prompts`) matches dim-stage's recorded S4b
 JSONs (`anchors/`, dim-stage commit e6c10b9) with **0 mismatches**. Any mismatch
 ⇒ INVALID (exit 2): investigate the port or the environment until explained —
 the bar never softens to "close enough."
@@ -33,6 +34,18 @@ CONDITIONS = (
 )
 #: D3's gating cell fields: the deterministic greedy outcome.
 CELL_FIELDS = ("produced", "greedy")
+#: D3's instrument-configuration keys, widened by D8 (M1's brief, review F4) to
+#: `protocol` (readback_tol, min_n, collapse_share, gate wording) and
+#: `lens_n_prompts`. Safe by construction: the committed artifacts already match
+#: on both, so the widening cannot flip M0's PASS — only catch future drift.
+COMPARED_CONFIG_KEYS = (
+    "model_id",
+    "band",
+    "thirds",
+    "dropped_single_token_prefilter",
+    "protocol",
+    "lens_n_prompts",
+)
 SUBJECTS = ("qwen2.5-0.5b-instruct", "qwen2.5-1.5b-instruct", "qwen2.5-3b-instruct")
 MAX_PRINTED = 20
 
@@ -41,16 +54,22 @@ def load(path: str) -> dict:
     if not os.path.exists(path):
         fail_invalid(f"{path} missing")
     try:
-        return json.load(open(path))
-    except json.JSONDecodeError as exc:
-        fail_invalid(f"{path} is not valid JSON: {exc}")
+        with open(path) as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError) as exc:
+        # F10: `os.path.exists` is true for a directory, and an artifact can be
+        # unreadable or non-UTF-8 — all of which must reach the pre-committed
+        # INVALID (exit 2), never an exit-1 traceback.
+        fail_invalid(f"{path} could not be read as JSON: {exc}")
 
 
 def config_mismatches(ours: dict, ref: dict) -> list[str]:
-    """Instrument-configuration checks: same subject, band, thirds, and item
-    sets — a port that ran a different experiment can't 'match' by luck."""
+    """Instrument-configuration checks: same subject, band, thirds, item sets,
+    and — since D8 — the recorded protocol and lens size, the fields that would
+    catch a silently softened instrument. (`lens` itself stays out: it is a path
+    and may legitimately differ between repos.)"""
     problems = []
-    for key in ("model_id", "band", "thirds", "dropped_single_token_prefilter"):
+    for key in COMPARED_CONFIG_KEYS:
         if ours.get(key) != ref.get(key):
             problems.append(f"config {key}: ours={ours.get(key)!r} != ref={ref.get(key)!r}")
     our_names = [r["name"] for r in ours.get("items", [])]

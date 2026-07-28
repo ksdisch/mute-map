@@ -1,0 +1,7897 @@
+{
+ "milestone": "M1",
+ "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+ "lens": "lenses/qwen2.5-0.5b-instruct-n100.pt",
+ "lens_n_prompts": 100,
+ "band": [
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21
+ ],
+ "thirds": {
+  "early": [
+   9,
+   10,
+   11,
+   12
+  ],
+  "middle": [
+   13,
+   14,
+   15,
+   16
+  ],
+  "late": [
+   17,
+   18,
+   19,
+   20,
+   21
+  ]
+ },
+ "ablated_layers": [
+  17,
+  18,
+  19,
+  20,
+  21
+ ],
+ "mode": "descriptive",
+ "environment": {
+  "device": "mps",
+  "torch": "2.13.0",
+  "transformers": "5.13.1",
+  "certified": true,
+  "uncertified_reasons": []
+ },
+ "protocol": {
+  "instructions": {
+   "naming": "Consider this sentence: \"{clue}\"\n\nWhich {noun} is the sentence describing? Answer with just the name."
+  },
+  "conditions": [
+   "clean",
+   "primed_late",
+   "control_late"
+  ],
+  "gate": "greedy naming-only (D6a); verbatim P .85 reported alongside",
+  "readback_tol": 0.0001,
+  "min_n": 20,
+  "collapse_share": 0.5,
+  "p_name_floor": 0.85,
+  "greedy_texture_tokens": 3,
+  "items": "items/m1-battery.json",
+  "gate_wording": {
+   "competence": "D6(a) item-level greedy naming-only gate: an item enters the gated set iff its clean naming greedy first token is one of the concept's single-token forms \u2014 S4's D29 greedy gate minus the avoidance half (K2). Gating is per-subject. The paper-style verbatim-P rate (clean concept mass >= 0.85, naming half only) is reported alongside as texture, never gating. S4's 'The ...' miss-counting caveat is kept, owned, for anchor comparability \u2014 and the first-3-greedy continuation is recorded beside every cell (CLAUDE.md's standing secondary texture readout) so the caveat's cost can be measured rather than assumed: it separates an item the model got wrong from one it got right while opening with a fragment of the word, and on the ablated arms it distinguishes 'stopped saying the word' from 'stopped starting with it'. It never gates and never enters a verdict.",
+   "breadth": "D7(a): per subject, on the pooled gated cell, BREADTH-SPECIFIC iff naming success under control_late minus naming success under primed_late is positive AND its Newcombe 95% CI excludes 0. The M1 verdict is the AND over 1.5B and 3B (computed by m1_verdict.py); 0.5B runs and is reported under its standing any-direction-damage frame (pre-declared risk 2) and is never gate-bearing. Pooled n < MIN_N = 20 => pre-declared UNDERPOWERED and no breadth claim.",
+   "prevalence": "D7(a) with the fixed denominator (amended pre-run at reviews F1 and F9 of PR #3, Kyle-approved): only concepts with ALL 3 items gated count, and of those, the number showing the hard-switch profile (primed_late naming 0/3 AND control_late naming 3/3) is reported with its Wilson CI over that fixed set, carrying the pre-declared UNDERPOWERED tag whenever the set holds fewer than MIN_N = 20 concepts \u2014 the expected case, since the anchor data projects ~15-18 all-3-gated concepts of 60. The fixed set is per-subject; no cross-subject prevalence comparison is gated or claimed (the intersection is reported beside as texture by m1_verdict.py). Concepts with 1 or 2 gated items are reported beside, stratified by gated-item count, never pooled into the headline \u2014 a 1-gated-item concept satisfies the profile trivially, and sparse gating tracks marginal competence. No per-concept verdicts.",
+   "degeneracy": "Pre-committed before any M1 run (PR #3 review F5). The degeneracy guard is read on the GATED cell, which is the cell the verdict is computed on. Collapse (most-common greedy token's share >= COLLAPSE_SHARE = 0.5) in clean or control_late \u2014 the two comparison arms the verdict rests on \u2014 is pre-declared DEGENERATE: the contrast is still reported, but no BREADTH-SPECIFIC claim is made. Collapse in primed_late is a TAG only and the verdict stands: a shared attractor under the concept's own ablation is the expected signature of the switch (the answer is destroyed and what remains is the model's fallback), not evidence against specificity. On the recorded anchor data this disposition fires on neither gate-bearing subject (gated attractor shares at 1.5B: clean .136, primed_late .364, control_late .136; at 3B: .375 / .375 / .375).",
+   "anchor_crosscheck": "D5(a), environment-scoped (PR #3 review F7). The 60 reused S4 items are graded FIRST and compared to the recorded anchor JSON cell-for-cell on (produced, greedy) for clean / primed_late / control_late BEFORE any new-concept cell is read. On the certified environment \u2014 device 'mps' under the pinned stack (torch 2.13.0, transformers 5.13.1) \u2014 any mismatch is INVALID (exit 2): bit-for-bit greedy reproduction is the expectation there, so a deviation is a real defect in the instrument. Off that environment, bit-for-bit reproduction is a property of the stack rather than of the instrument, so the cross-check still runs and is recorded but is NOT gate-bearing, and the whole run is pre-declared NOT A RESULT. concept_mass equality is texture either way, never gating (D3's convention).",
+   "honesty": "Owned, pre-committed. (1) Items within a concept share one lens direction, so item-level pooling overstates independence; S4b pooled the same way, and the per-concept map is the honest granular view beside it. (2) primed_late and control_late are measured on the SAME gated items, but newcombe_diff is Newcombe's method 10 for two INDEPENDENT samples \u2014 for positively correlated paired arms that WIDENS the interval, so it cannot manufacture a false BREADTH-SPECIFIC verdict; it can only cost power. (3) MIN_N = 20 is applied to raw n, not to an effective n discounted for that clustering. (4) The prevalence set's fixed denominator is anti-monotone in items per concept: writing more clues per concept would SHRINK it, so its power can only be raised by widening the roster, never by adding clues."
+  }
+ },
+ "dropped_single_token_prefilter": [],
+ "anchor_crosscheck": {
+  "anchor": "anchors/s4-avoidance-qwen2.5-0.5b-instruct.json",
+  "gate_bearing": true,
+  "mismatches": [],
+  "n_mismatches": 0,
+  "items_checked": 60,
+  "cells_checked": 180,
+  "mass_cells_equal": 180
+ },
+ "smoke_limit": null,
+ "competence": {
+  "items_run": 180,
+  "gate_greedy": 38,
+  "gate_verbatim_p": 17
+ },
+ "greedy_3_texture": {
+  "clean_says_concept_in_3_all_items": 73,
+  "ungated_but_says_concept_in_3": 35,
+  "ungated_items": 142,
+  "gated_clean_says_concept_in_3": 38,
+  "gated_primed_late_says_concept_in_3": 0,
+  "gated_control_late_says_concept_in_3": 17
+ },
+ "naming_success_gated": {
+  "clean": {
+   "hits": 38,
+   "n": 38,
+   "rate": 1.0,
+   "wilson_95": [
+    0.90818706741616,
+    0.9999999999999999
+   ],
+   "underpowered": false
+  },
+  "primed_late": {
+   "hits": 0,
+   "n": 38,
+   "rate": 0.0,
+   "wilson_95": [
+    0.0,
+    0.09181293258383999
+   ],
+   "underpowered": false
+  },
+  "control_late": {
+   "hits": 17,
+   "n": 38,
+   "rate": 0.4473684210526316,
+   "wilson_95": [
+    0.3014616531155089,
+    0.6029397082091058
+   ],
+   "underpowered": false
+  }
+ },
+ "breadth_contrast": {
+  "newcombe_control_minus_primed_late_naming": [
+   0.4473684210526316,
+   0.2749781675012718,
+   0.6029397082091058
+  ],
+  "positive_and_ci_excludes_zero": true,
+  "underpowered": false,
+  "degenerate_comparison_arms": [],
+  "primed_late_collapsed_tag": false,
+  "verdict": "BREADTH-SPECIFIC"
+ },
+ "per_concept": {
+  "April": {
+   "category": "months",
+   "items_run": 3,
+   "gated_items": 2,
+   "primed_late": {
+    "hits": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.6576280471103807
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.6576280471103807
+    ],
+    "underpowered": true
+   }
+  },
+  "Brazil": {
+   "category": "countries",
+   "items_run": 3,
+   "gated_items": 3,
+   "primed_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 1,
+    "n": 3,
+    "rate": 0.3333333333333333,
+    "wilson_95": [
+     0.061490315276160556,
+     0.792345044873512
+    ],
+    "underpowered": true
+   }
+  },
+  "Canada": {
+   "category": "countries",
+   "items_run": 3,
+   "gated_items": 3,
+   "primed_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 2,
+    "n": 3,
+    "rate": 0.6666666666666666,
+    "wilson_95": [
+     0.20765495512648796,
+     0.9385096847238394
+    ],
+    "underpowered": true
+   }
+  },
+  "China": {
+   "category": "countries",
+   "items_run": 3,
+   "gated_items": 3,
+   "primed_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 3,
+    "n": 3,
+    "rate": 1.0,
+    "wilson_95": [
+     0.43849391955098227,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "Egypt": {
+   "category": "countries",
+   "items_run": 3,
+   "gated_items": 3,
+   "primed_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 3,
+    "n": 3,
+    "rate": 1.0,
+    "wilson_95": [
+     0.43849391955098227,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "February": {
+   "category": "months",
+   "items_run": 3,
+   "gated_items": 2,
+   "primed_late": {
+    "hits": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.6576280471103807
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 1,
+    "n": 2,
+    "rate": 0.5,
+    "wilson_95": [
+     0.09452865480086614,
+     0.9054713451991339
+    ],
+    "underpowered": true
+   }
+  },
+  "France": {
+   "category": "countries",
+   "items_run": 3,
+   "gated_items": 3,
+   "primed_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 3,
+    "n": 3,
+    "rate": 1.0,
+    "wilson_95": [
+     0.43849391955098227,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "Friday": {
+   "category": "days of the week",
+   "items_run": 3,
+   "gated_items": 2,
+   "primed_late": {
+    "hits": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.6576280471103807
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.6576280471103807
+    ],
+    "underpowered": true
+   }
+  },
+  "January": {
+   "category": "months",
+   "items_run": 3,
+   "gated_items": 2,
+   "primed_late": {
+    "hits": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.6576280471103807
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 2,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.6576280471103807
+    ],
+    "underpowered": true
+   }
+  },
+  "Japan": {
+   "category": "countries",
+   "items_run": 3,
+   "gated_items": 3,
+   "primed_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 3,
+    "n": 3,
+    "rate": 1.0,
+    "wilson_95": [
+     0.43849391955098227,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "July": {
+   "category": "months",
+   "items_run": 3,
+   "gated_items": 1,
+   "primed_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   }
+  },
+  "Jupiter": {
+   "category": "planets",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "Mars": {
+   "category": "planets",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "Mercury": {
+   "category": "planets",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "Monday": {
+   "category": "days of the week",
+   "items_run": 3,
+   "gated_items": 1,
+   "primed_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   }
+  },
+  "Neptune": {
+   "category": "planets",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "October": {
+   "category": "months",
+   "items_run": 3,
+   "gated_items": 3,
+   "primed_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   }
+  },
+  "Saturday": {
+   "category": "days of the week",
+   "items_run": 3,
+   "gated_items": 1,
+   "primed_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   }
+  },
+  "Saturn": {
+   "category": "planets",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "September": {
+   "category": "months",
+   "items_run": 3,
+   "gated_items": 1,
+   "primed_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   }
+  },
+  "Sunday": {
+   "category": "days of the week",
+   "items_run": 3,
+   "gated_items": 3,
+   "primed_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 3,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.5615060804490177
+    ],
+    "underpowered": true
+   }
+  },
+  "Thursday": {
+   "category": "days of the week",
+   "items_run": 3,
+   "gated_items": 1,
+   "primed_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   }
+  },
+  "Tuesday": {
+   "category": "days of the week",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "Venus": {
+   "category": "planets",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "amber": {
+   "category": "gemstones",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "ant": {
+   "category": "insects",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "bear": {
+   "category": "animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "bee": {
+   "category": "insects",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "beetle": {
+   "category": "insects",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "bronze": {
+   "category": "precious metals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "butterfly": {
+   "category": "insects",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "chicken": {
+   "category": "farm animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "copper": {
+   "category": "precious metals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "cow": {
+   "category": "farm animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "diamond": {
+   "category": "gemstones",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "drum": {
+   "category": "musical instruments",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "duck": {
+   "category": "farm animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "eagle": {
+   "category": "animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "flute": {
+   "category": "musical instruments",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "gold": {
+   "category": "precious metals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "guitar": {
+   "category": "musical instruments",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "horse": {
+   "category": "farm animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "iron": {
+   "category": "precious metals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "jade": {
+   "category": "gemstones",
+   "items_run": 3,
+   "gated_items": 1,
+   "primed_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 1,
+    "n": 1,
+    "rate": 1.0,
+    "wilson_95": [
+     0.2065432914738929,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "lion": {
+   "category": "animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "mosquito": {
+   "category": "insects",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "moth": {
+   "category": "insects",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "opal": {
+   "category": "gemstones",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "pearl": {
+   "category": "gemstones",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "piano": {
+   "category": "musical instruments",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "pig": {
+   "category": "farm animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "platinum": {
+   "category": "precious metals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "ruby": {
+   "category": "gemstones",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "shark": {
+   "category": "animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "sheep": {
+   "category": "farm animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "silver": {
+   "category": "precious metals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "spider": {
+   "category": "animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "tiger": {
+   "category": "animals",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "trumpet": {
+   "category": "musical instruments",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  },
+  "violin": {
+   "category": "musical instruments",
+   "items_run": 3,
+   "gated_items": 0,
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   }
+  }
+ },
+ "per_category": {
+  "animals": {
+   "items_run": 18,
+   "gated_items": 0,
+   "clean": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.0,
+    -1.0,
+    1.0
+   ]
+  },
+  "countries": {
+   "items_run": 18,
+   "gated_items": 18,
+   "clean": {
+    "hits": 18,
+    "n": 18,
+    "rate": 1.0,
+    "wilson_95": [
+     0.8241154494176252,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 18,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.1758845505823749
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 15,
+    "n": 18,
+    "rate": 0.8333333333333334,
+    "wilson_95": [
+     0.6077750036164076,
+     0.9416352959953425
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.8333333333333334,
+    0.5473054758819071,
+    0.9416352959953425
+   ]
+  },
+  "days of the week": {
+   "items_run": 18,
+   "gated_items": 8,
+   "clean": {
+    "hits": 8,
+    "n": 8,
+    "rate": 1.0,
+    "wilson_95": [
+     0.6755843804891231,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 8,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.32441561951087694
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 8,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.32441561951087694
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.0,
+    -0.32441561951087694,
+    0.32441561951087694
+   ]
+  },
+  "farm animals": {
+   "items_run": 18,
+   "gated_items": 0,
+   "clean": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.0,
+    -1.0,
+    1.0
+   ]
+  },
+  "gemstones": {
+   "items_run": 18,
+   "gated_items": 1,
+   "clean": {
+    "hits": 1,
+    "n": 1,
+    "rate": 1.0,
+    "wilson_95": [
+     0.2065432914738929,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 1,
+    "rate": 0.0,
+    "wilson_95": [
+     0.0,
+     0.7934567085261071
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 1,
+    "n": 1,
+    "rate": 1.0,
+    "wilson_95": [
+     0.2065432914738929,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    1.0,
+    -0.1221172383535365,
+    1.0
+   ]
+  },
+  "insects": {
+   "items_run": 18,
+   "gated_items": 0,
+   "clean": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.0,
+    -1.0,
+    1.0
+   ]
+  },
+  "months": {
+   "items_run": 18,
+   "gated_items": 11,
+   "clean": {
+    "hits": 11,
+    "n": 11,
+    "rate": 1.0,
+    "wilson_95": [
+     0.7411599827511859,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 11,
+    "rate": 0.0,
+    "wilson_95": [
+     2.7755575615628914e-17,
+     0.2588400172488141
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 1,
+    "n": 11,
+    "rate": 0.09090909090909091,
+    "wilson_95": [
+     0.01623175226282597,
+     0.3773646254862038
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.09090909090909091,
+    -0.1784881240665939,
+    0.37736462548620386
+   ]
+  },
+  "musical instruments": {
+   "items_run": 18,
+   "gated_items": 0,
+   "clean": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.0,
+    -1.0,
+    1.0
+   ]
+  },
+  "planets": {
+   "items_run": 18,
+   "gated_items": 0,
+   "clean": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.0,
+    -1.0,
+    1.0
+   ]
+  },
+  "precious metals": {
+   "items_run": 18,
+   "gated_items": 0,
+   "clean": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "primed_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "control_late": {
+    "hits": 0,
+    "n": 0,
+    "rate": null,
+    "wilson_95": [
+     0.0,
+     1.0
+    ],
+    "underpowered": true
+   },
+   "newcombe_control_minus_primed_late": [
+    0.0,
+    -1.0,
+    1.0
+   ]
+  }
+ },
+ "prevalence": {
+  "fixed_denominator_concepts": [
+   "Brazil",
+   "Canada",
+   "China",
+   "Egypt",
+   "France",
+   "Japan",
+   "October",
+   "Sunday"
+  ],
+  "hard_switch_concepts": [
+   "China",
+   "Egypt",
+   "France",
+   "Japan"
+  ],
+  "cell": {
+   "hits": 4,
+   "n": 8,
+   "rate": 0.5,
+   "wilson_95": [
+    0.21521252682444186,
+    0.7847874731755582
+   ],
+   "underpowered": true
+  },
+  "partial_gated_concepts_stratified": {
+   "2": {
+    "concepts": [
+     "April",
+     "February",
+     "Friday",
+     "January"
+    ],
+    "profile_at_own_denominator": []
+   },
+   "1": {
+    "concepts": [
+     "July",
+     "Monday",
+     "Saturday",
+     "September",
+     "Thursday",
+     "jade"
+    ],
+    "profile_at_own_denominator": [
+     "jade"
+    ]
+   }
+  }
+ },
+ "mean_concept_mass_gated": {
+  "clean": 0.6768055958183188,
+  "primed_late": 5.864560606102929e-05,
+  "control_late": 0.38730882440445147
+ },
+ "degeneracy_guard": {
+  "clean": {
+   "attractor_token": "J",
+   "share": 0.06666666666666667,
+   "collapsed": false
+  },
+  "primed_late": {
+   "attractor_token": "The",
+   "share": 0.12777777777777777,
+   "collapsed": false
+  },
+  "control_late": {
+   "attractor_token": "The",
+   "share": 0.06111111111111111,
+   "collapsed": false
+  }
+ },
+ "degeneracy_guard_gated": {
+  "clean": {
+   "attractor_token": "France",
+   "share": 0.07894736842105263,
+   "collapsed": false
+  },
+  "primed_late": {
+   "attractor_token": "The",
+   "share": 0.39473684210526316,
+   "collapsed": false
+  },
+  "control_late": {
+   "attractor_token": "Spring",
+   "share": 0.15789473684210525,
+   "collapsed": false
+  }
+ },
+ "items": [
+  {
+   "name": "france-1",
+   "category": "countries",
+   "concept": "France",
+   "control": "Canada",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "France",
+     "concept_mass": 0.9933050870895386,
+     "greedy_3": "France<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.0003018863208126277,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "France",
+     "concept_mass": 0.914067268371582,
+     "greedy_3": "France<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "france-2",
+   "category": "countries",
+   "concept": "France",
+   "control": "Canada",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "France",
+     "concept_mass": 0.9806714057922363,
+     "greedy_3": "France<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.00015504291513934731,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "France",
+     "concept_mass": 0.9159610867500305,
+     "greedy_3": "France<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "france-3",
+   "category": "countries",
+   "concept": "France",
+   "control": "Canada",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "France",
+     "concept_mass": 0.980453372001648,
+     "greedy_3": "France<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.0001688369520707056,
+     "greedy_3": "Bordeaux",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "France",
+     "concept_mass": 0.932546854019165,
+     "greedy_3": "France<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "china-1",
+   "category": "countries",
+   "concept": "China",
+   "control": "Egypt",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "China",
+     "concept_mass": 0.9967609643936157,
+     "greedy_3": "China<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 5.049713308835635e-06,
+     "greedy_3": "Greece<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "China",
+     "concept_mass": 0.9877774119377136,
+     "greedy_3": "China<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "china-2",
+   "category": "countries",
+   "concept": "China",
+   "control": "Egypt",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "China",
+     "concept_mass": 0.9844351410865784,
+     "greedy_3": "China<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 3.0220528515201295e-06,
+     "greedy_3": "The country described",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "China",
+     "concept_mass": 0.9637190103530884,
+     "greedy_3": "China<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "china-3",
+   "category": "countries",
+   "concept": "China",
+   "control": "Egypt",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "China",
+     "concept_mass": 0.9953258037567139,
+     "greedy_3": "China<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.3174876585253514e-05,
+     "greedy_3": "The country described",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "China",
+     "concept_mass": 0.9556095004081726,
+     "greedy_3": "China<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "egypt-1",
+   "category": "countries",
+   "concept": "Egypt",
+   "control": "France",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Egypt",
+     "concept_mass": 0.9621194005012512,
+     "greedy_3": "Egypt<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 3.753750934265554e-05,
+     "greedy_3": "Greece<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Egypt",
+     "concept_mass": 0.6232097148895264,
+     "greedy_3": "Egypt<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "egypt-2",
+   "category": "countries",
+   "concept": "Egypt",
+   "control": "France",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Egypt",
+     "concept_mass": 0.983549177646637,
+     "greedy_3": "Egypt<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.00020747294183820486,
+     "greedy_3": "The Nile is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Egypt",
+     "concept_mass": 0.9124507904052734,
+     "greedy_3": "Egypt<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "egypt-3",
+   "category": "countries",
+   "concept": "Egypt",
+   "control": "France",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Egypt",
+     "concept_mass": 0.9799062013626099,
+     "greedy_3": "Egypt<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ph",
+     "concept_mass": 0.00013915501767769456,
+     "greedy_3": "Pharaohs",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Egypt",
+     "concept_mass": 0.875493586063385,
+     "greedy_3": "Egypt<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "canada-1",
+   "category": "countries",
+   "concept": "Canada",
+   "control": "China",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Canada",
+     "concept_mass": 0.8861042261123657,
+     "greedy_3": "Canada<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.3066319297649898e-06,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Canada",
+     "concept_mass": 0.42391860485076904,
+     "greedy_3": "Canada<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "canada-2",
+   "category": "countries",
+   "concept": "Canada",
+   "control": "China",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Canada",
+     "concept_mass": 0.9615756273269653,
+     "greedy_3": "Canada<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 2.271330959047191e-05,
+     "greedy_3": "The country described",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Canada",
+     "concept_mass": 0.9046218991279602,
+     "greedy_3": "Canada<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "canada-3",
+   "category": "countries",
+   "concept": "Canada",
+   "control": "China",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Canada",
+     "concept_mass": 0.6832033395767212,
+     "greedy_3": "Canada<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "New",
+     "concept_mass": 2.517386405997968e-07,
+     "greedy_3": "New York<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "New",
+     "concept_mass": 0.20680032670497894,
+     "greedy_3": "New York<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "february-1",
+   "category": "months",
+   "concept": "February",
+   "control": "July",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "January",
+     "concept_mass": 0.10465142875909805,
+     "greedy_3": "January<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "\u51ac",
+     "concept_mass": 5.325837264535949e-07,
+     "greedy_3": "\u51ac<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Winter",
+     "concept_mass": 0.004561915993690491,
+     "greedy_3": "Winter<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "february-2",
+   "category": "months",
+   "concept": "February",
+   "control": "July",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "February",
+     "concept_mass": 0.8582589626312256,
+     "greedy_3": "February<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 7.680735143367201e-05,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "February",
+     "concept_mass": 0.7279841899871826,
+     "greedy_3": "February<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "february-3",
+   "category": "months",
+   "concept": "February",
+   "control": "July",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "February",
+     "concept_mass": 0.2549191117286682,
+     "greedy_3": "February<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 9.420751894140267e-07,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 0.04192784056067467,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "july-1",
+   "category": "months",
+   "concept": "July",
+   "control": "October",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "July",
+     "concept_mass": 0.30768898129463196,
+     "greedy_3": "July<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 6.865681143608526e-07,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 0.002397573087364435,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "july-2",
+   "category": "months",
+   "concept": "July",
+   "control": "October",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "February",
+     "concept_mass": 0.029168227687478065,
+     "greedy_3": "February<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": " Julius",
+     "concept_mass": 2.2931542844162323e-05,
+     "greedy_3": " Julius Caesar<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Jul",
+     "concept_mass": 0.0004610458854585886,
+     "greedy_3": "Julius Caesar",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "july-3",
+   "category": "months",
+   "concept": "July",
+   "control": "October",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "June",
+     "concept_mass": 0.2353534996509552,
+     "greedy_3": "June<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 2.442454388074111e-06,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 0.0022888716775923967,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "october-1",
+   "category": "months",
+   "concept": "October",
+   "control": "February",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "October",
+     "concept_mass": 0.7012447118759155,
+     "greedy_3": "October<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 7.530081802542554e-07,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.02873106859624386,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "october-2",
+   "category": "months",
+   "concept": "October",
+   "control": "February",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "October",
+     "concept_mass": 0.7419317960739136,
+     "greedy_3": "October<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "T",
+     "concept_mass": 1.0903406177931174e-07,
+     "greedy_3": "Tenth Month",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.0006753033958375454,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "october-3",
+   "category": "months",
+   "concept": "October",
+   "control": "February",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "October",
+     "concept_mass": 0.5677968263626099,
+     "greedy_3": "October<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 6.205673344084062e-07,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.022921772673726082,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "april-1",
+   "category": "months",
+   "concept": "April",
+   "control": "October",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "April",
+     "concept_mass": 0.33742016553878784,
+     "greedy_3": "April<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 2.500131358829094e-06,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 0.0005266920197755098,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "april-2",
+   "category": "months",
+   "concept": "April",
+   "control": "October",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "January",
+     "concept_mass": 0.08034475147724152,
+     "greedy_3": "January<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Month",
+     "concept_mass": 2.264578597532818e-06,
+     "greedy_3": "Month: January",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 0.00046559463953599334,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "april-3",
+   "category": "months",
+   "concept": "April",
+   "control": "October",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "April",
+     "concept_mass": 0.4863481819629669,
+     "greedy_3": "April<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "This",
+     "concept_mass": 4.0155618989956565e-06,
+     "greedy_3": "This month is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 0.009537797421216965,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "lion-1",
+   "category": "animals",
+   "concept": "lion",
+   "control": "shark",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "King",
+     "concept_mass": 0.0024285735562443733,
+     "greedy_3": "King of the",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "King",
+     "concept_mass": 4.64083723272779e-06,
+     "greedy_3": "King of the",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "King",
+     "concept_mass": 0.0005362912197597325,
+     "greedy_3": "King of the",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "lion-2",
+   "category": "animals",
+   "concept": "lion",
+   "control": "shark",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ele",
+     "concept_mass": 0.003977656364440918,
+     "greedy_3": "Elephant<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 6.186076916492311e-06,
+     "greedy_3": "Moose<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 0.0007277736440300941,
+     "greedy_3": "Mule deer",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "lion-3",
+   "category": "animals",
+   "concept": "lion",
+   "control": "shark",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "L",
+     "concept_mass": 0.044537462294101715,
+     "greedy_3": "Lion<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Z",
+     "concept_mass": 0.0001317196583840996,
+     "greedy_3": "Zebra<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Z",
+     "concept_mass": 0.008881326764822006,
+     "greedy_3": "Zebra<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "eagle-1",
+   "category": "animals",
+   "concept": "eagle",
+   "control": "lion",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "American",
+     "concept_mass": 0.006865474861115217,
+     "greedy_3": "American eagle<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "National",
+     "concept_mass": 7.576431926281657e-09,
+     "greedy_3": "National Symbol of",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "D",
+     "concept_mass": 0.0011480288812890649,
+     "greedy_3": "Duck<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "eagle-2",
+   "category": "animals",
+   "concept": "eagle",
+   "control": "lion",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 0.002477925969287753,
+     "greedy_3": "Penguin<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Par",
+     "concept_mass": 5.745892095454508e-10,
+     "greedy_3": "Parrot<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "E",
+     "concept_mass": 0.0004206150188110769,
+     "greedy_3": "Eagles",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "eagle-3",
+   "category": "animals",
+   "concept": "eagle",
+   "control": "lion",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Par",
+     "concept_mass": 7.597939111292362e-05,
+     "greedy_3": "Partridge<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Par",
+     "concept_mass": 3.988824201495156e-11,
+     "greedy_3": "Parrot<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Par",
+     "concept_mass": 3.5917233617510647e-05,
+     "greedy_3": "Partridge<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "shark-1",
+   "category": "animals",
+   "concept": "shark",
+   "control": "spider",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "T",
+     "concept_mass": 0.009001306258141994,
+     "greedy_3": "Tiger<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "O",
+     "concept_mass": 6.906459759647987e-08,
+     "greedy_3": "Omniv",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "T",
+     "concept_mass": 0.002282177098095417,
+     "greedy_3": "Tiger<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "shark-2",
+   "category": "animals",
+   "concept": "shark",
+   "control": "spider",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.00016230432083830237,
+     "greedy_3": "Jaws<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 1.5936088559875827e-10,
+     "greedy_3": "Jaws<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 4.5291424612514675e-05,
+     "greedy_3": "Jaws<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "shark-3",
+   "category": "animals",
+   "concept": "shark",
+   "control": "spider",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Fish",
+     "concept_mass": 0.0025410291273146868,
+     "greedy_3": "Fish<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Fish",
+     "concept_mass": 1.6530339319587029e-09,
+     "greedy_3": "Fish<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Fish",
+     "concept_mass": 0.0005333746667020023,
+     "greedy_3": "Fish<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "spider-1",
+   "category": "animals",
+   "concept": "spider",
+   "control": "eagle",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Fly",
+     "concept_mass": 3.246503183618188e-05,
+     "greedy_3": "Flycatcher",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Fly",
+     "concept_mass": 2.436205924494228e-11,
+     "greedy_3": "Flycatcher",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Fl",
+     "concept_mass": 0.0001017176327877678,
+     "greedy_3": "Flowerpot",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "spider-2",
+   "category": "animals",
+   "concept": "spider",
+   "control": "eagle",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 6.914253754075617e-05,
+     "greedy_3": "Cobra<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 5.824809079513216e-09,
+     "greedy_3": "The animal described",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 7.534484029747546e-05,
+     "greedy_3": "Carniv",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "spider-3",
+   "category": "animals",
+   "concept": "spider",
+   "control": "eagle",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ar",
+     "concept_mass": 9.889712964650244e-05,
+     "greedy_3": "Arachn",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ar",
+     "concept_mass": 5.937822455948094e-11,
+     "greedy_3": "Arabian",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ar",
+     "concept_mass": 2.5454726710449904e-05,
+     "greedy_3": "Arachn",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mars-1",
+   "category": "planets",
+   "concept": "Mars",
+   "control": "Saturn",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 0.021592741832137108,
+     "greedy_3": "Mars<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.9615521706928263e-10,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 0.1364801526069641,
+     "greedy_3": "Mars<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mars-2",
+   "category": "planets",
+   "concept": "Mars",
+   "control": "Saturn",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0024708493147045374,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 5.5538584148306924e-11,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 0.037490736693143845,
+     "greedy_3": "Mars<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mars-3",
+   "category": "planets",
+   "concept": "Mars",
+   "control": "Saturn",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 0.211248978972435,
+     "greedy_3": "Mars<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 8.977382032204773e-11,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "\u706b\u661f",
+     "concept_mass": 0.2116171270608902,
+     "greedy_3": "\u706b\u661f<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "saturn-1",
+   "category": "planets",
+   "concept": "Saturn",
+   "control": "Venus",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0006615039892494678,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 8.3333329126134e-10,
+     "greedy_3": "Juno<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0004948846180923283,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "saturn-2",
+   "category": "planets",
+   "concept": "Saturn",
+   "control": "Venus",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0042131319642066956,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 1.6623485921130055e-09,
+     "greedy_3": "Ganym",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 0.004404888954013586,
+     "greedy_3": "Galactic",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "saturn-3",
+   "category": "planets",
+   "concept": "Saturn",
+   "control": "Venus",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0001289526844630018,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 5.615632611699617e-11,
+     "greedy_3": "Mars<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0001299315335927531,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "piano-1",
+   "category": "musical instruments",
+   "concept": "piano",
+   "control": "guitar",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 0.00187417131382972,
+     "greedy_3": "Piano<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 3.3547928879329447e-09,
+     "greedy_3": "Bassoon",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 0.0004928499110974371,
+     "greedy_3": "Piano<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "piano-2",
+   "category": "musical instruments",
+   "concept": "piano",
+   "control": "guitar",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Viol",
+     "concept_mass": 0.002884090645238757,
+     "greedy_3": "Violin<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Be",
+     "concept_mass": 1.0363515601241602e-09,
+     "greedy_3": "Beethoven's",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Be",
+     "concept_mass": 0.00010001407645177096,
+     "greedy_3": "Beethoven's",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "piano-3",
+   "category": "musical instruments",
+   "concept": "piano",
+   "control": "guitar",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ban",
+     "concept_mass": 0.00015712239837739617,
+     "greedy_3": "Banjo<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ban",
+     "concept_mass": 1.5638997874489746e-09,
+     "greedy_3": "Banjo<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ban",
+     "concept_mass": 4.8961694119498134e-05,
+     "greedy_3": "Banjo<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "guitar-1",
+   "category": "musical instruments",
+   "concept": "guitar",
+   "control": "piano",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 0.007024620659649372,
+     "greedy_3": "Strumming",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 3.152788607962975e-08,
+     "greedy_3": "Stradiv",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 0.0018897613044828176,
+     "greedy_3": "Stradiv",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "guitar-2",
+   "category": "musical instruments",
+   "concept": "guitar",
+   "control": "piano",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Electric",
+     "concept_mass": 0.0018294794717803597,
+     "greedy_3": "Electric guitar<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Electric",
+     "concept_mass": 1.2103038571353864e-08,
+     "greedy_3": "Electric Junto",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Electric",
+     "concept_mass": 0.00019812857499346137,
+     "greedy_3": "Electric guitar<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "guitar-3",
+   "category": "musical instruments",
+   "concept": "guitar",
+   "control": "piano",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ban",
+     "concept_mass": 0.0022025848738849163,
+     "greedy_3": "Banjo<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 4.975666101358911e-09,
+     "greedy_3": "Stradiv",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 0.00019071754650212824,
+     "greedy_3": "Stradiv",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "diamond-1",
+   "category": "gemstones",
+   "concept": "diamond",
+   "control": "ruby",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Diamond",
+     "concept_mass": 0.029680587351322174,
+     "greedy_3": "Diamond<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.00011277588055236265,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Diamond",
+     "concept_mass": 0.013917461037635803,
+     "greedy_3": "Diamond<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "diamond-2",
+   "category": "gemstones",
+   "concept": "diamond",
+   "control": "ruby",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Diamond",
+     "concept_mass": 0.017400870099663734,
+     "greedy_3": "Diamond<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 4.3082760385004804e-05,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Diamond",
+     "concept_mass": 0.008948455564677715,
+     "greedy_3": "Diamond<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "diamond-3",
+   "category": "gemstones",
+   "concept": "diamond",
+   "control": "ruby",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Emer",
+     "concept_mass": 0.00484875775873661,
+     "greedy_3": "Emerald<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 6.843157279945444e-06,
+     "greedy_3": "Garnet",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 0.001742483931593597,
+     "greedy_3": "Garnet",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "gold-1",
+   "category": "precious metals",
+   "concept": "gold",
+   "control": "silver",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Gold",
+     "concept_mass": 0.020350264385342598,
+     "greedy_3": "Gold<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Iron",
+     "concept_mass": 7.670324180253374e-07,
+     "greedy_3": "Iron<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Met",
+     "concept_mass": 0.0006208320264704525,
+     "greedy_3": "Metals<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "gold-2",
+   "category": "precious metals",
+   "concept": "gold",
+   "control": "silver",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Gold",
+     "concept_mass": 0.010717330500483513,
+     "greedy_3": "Gold<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 5.525011147256009e-06,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.0026082941330969334,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "gold-3",
+   "category": "precious metals",
+   "concept": "gold",
+   "control": "silver",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Gold",
+     "concept_mass": 0.01622479408979416,
+     "greedy_3": "Gold<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Bar",
+     "concept_mass": 1.5378072930616327e-06,
+     "greedy_3": "Barium<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Bar",
+     "concept_mass": 0.0050009870901703835,
+     "greedy_3": "Barium<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "cow-1",
+   "category": "farm animals",
+   "concept": "cow",
+   "control": "pig",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 0.03965907543897629,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 2.462673728587106e-05,
+     "greedy_3": "Mooch",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 0.018692418932914734,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "cow-2",
+   "category": "farm animals",
+   "concept": "cow",
+   "control": "pig",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 0.022297779098153114,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Rh",
+     "concept_mass": 2.33606988331303e-05,
+     "greedy_3": "Rhino<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 0.01447387970983982,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "cow-3",
+   "category": "farm animals",
+   "concept": "cow",
+   "control": "pig",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 0.0685262531042099,
+     "greedy_3": "Cattle<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "R",
+     "concept_mass": 5.1983795856358483e-05,
+     "greedy_3": "Rabbit<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 0.02405215986073017,
+     "greedy_3": "Cattle<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bee-1",
+   "category": "insects",
+   "concept": "bee",
+   "control": "ant",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.008612435311079025,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Strip",
+     "concept_mass": 3.653487055998994e-06,
+     "greedy_3": "Striped insect",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.004972643218934536,
+     "greedy_3": "Bumblebee",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bee-2",
+   "category": "insects",
+   "concept": "bee",
+   "control": "ant",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.008277189917862415,
+     "greedy_3": "Bumblebee",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Fl",
+     "concept_mass": 2.1961121092317626e-05,
+     "greedy_3": "Flower Scout",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.0062330979853868484,
+     "greedy_3": "Bumblebee",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bee-3",
+   "category": "insects",
+   "concept": "bee",
+   "control": "ant",
+   "source": "s4-reuse",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.07204985618591309,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "In",
+     "concept_mass": 0.00050432572606951,
+     "greedy_3": "Insect<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.03680133819580078,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "japan-1",
+   "category": "countries",
+   "concept": "Japan",
+   "control": "Brazil",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Japan",
+     "concept_mass": 0.9840583801269531,
+     "greedy_3": "Japan<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "\u4e2d\u56fd\u7684",
+     "concept_mass": 0.0005463621346279979,
+     "greedy_3": "\u4e2d\u56fd\u7684<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Japan",
+     "concept_mass": 0.9795417189598083,
+     "greedy_3": "Japan<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "japan-2",
+   "category": "countries",
+   "concept": "Japan",
+   "control": "Brazil",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Japan",
+     "concept_mass": 0.9868166446685791,
+     "greedy_3": "Japan<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Tok",
+     "concept_mass": 0.00022879117750562727,
+     "greedy_3": "Tokyo<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Japan",
+     "concept_mass": 0.9386019110679626,
+     "greedy_3": "Japan<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "japan-3",
+   "category": "countries",
+   "concept": "Japan",
+   "control": "Brazil",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Japan",
+     "concept_mass": 0.9738385081291199,
+     "greedy_3": "Japan<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.00021251762518659234,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Japan",
+     "concept_mass": 0.8672558069229126,
+     "greedy_3": "Japan<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "brazil-1",
+   "category": "countries",
+   "concept": "Brazil",
+   "control": "Japan",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Brazil",
+     "concept_mass": 0.8699634075164795,
+     "greedy_3": "Brazil<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "South",
+     "concept_mass": 1.7718062963467673e-06,
+     "greedy_3": "South America<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": "Brazil",
+     "concept_mass": 0.6737675666809082,
+     "greedy_3": "Brazil<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "brazil-2",
+   "category": "countries",
+   "concept": "Brazil",
+   "control": "Japan",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Brazil",
+     "concept_mass": 0.8991474509239197,
+     "greedy_3": "Brazil<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Rio",
+     "concept_mass": 1.2387436072458513e-06,
+     "greedy_3": "Rio de Janeiro",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Rio",
+     "concept_mass": 0.1970963478088379,
+     "greedy_3": "Rio de Janeiro",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": true
+  },
+  {
+   "name": "brazil-3",
+   "category": "countries",
+   "concept": "Brazil",
+   "control": "Japan",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Brazil",
+     "concept_mass": 0.20272032916545868,
+     "greedy_3": "Brazil<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 2.4443838242405036e-07,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Argentina",
+     "concept_mass": 0.06489057838916779,
+     "greedy_3": "Argentina<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "january-1",
+   "category": "months",
+   "concept": "January",
+   "control": "September",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "January",
+     "concept_mass": 0.8051338791847229,
+     "greedy_3": "January<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 2.01363241103536e-06,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 0.03166775032877922,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "january-2",
+   "category": "months",
+   "concept": "January",
+   "control": "September",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "January",
+     "concept_mass": 0.6485140919685364,
+     "greedy_3": "January<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 7.929023695396609e-07,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 0.017315832898020744,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "january-3",
+   "category": "months",
+   "concept": "January",
+   "control": "September",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "December",
+     "concept_mass": 0.17958518862724304,
+     "greedy_3": "December<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "V",
+     "concept_mass": 6.982742888794746e-06,
+     "greedy_3": "Vulcan",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "V",
+     "concept_mass": 0.035905174911022186,
+     "greedy_3": "Vulcan",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "september-1",
+   "category": "months",
+   "concept": "September",
+   "control": "January",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "January",
+     "concept_mass": 0.07481591403484344,
+     "greedy_3": "January<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Spring",
+     "concept_mass": 5.3774307673393196e-08,
+     "greedy_3": "Spring<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.0031463466584682465,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "september-2",
+   "category": "months",
+   "concept": "September",
+   "control": "January",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "November",
+     "concept_mass": 0.22666458785533905,
+     "greedy_3": "November<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 3.4591826647556445e-07,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.018404489383101463,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "september-3",
+   "category": "months",
+   "concept": "September",
+   "control": "January",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "September",
+     "concept_mass": 0.4413652718067169,
+     "greedy_3": "September<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "N",
+     "concept_mass": 8.173111609721673e-07,
+     "greedy_3": "Ninth Month",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "N",
+     "concept_mass": 0.0017034574411809444,
+     "greedy_3": "Ninth Month",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "tiger-1",
+   "category": "animals",
+   "concept": "tiger",
+   "control": "bear",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Big",
+     "concept_mass": 0.0008333976147696376,
+     "greedy_3": "Big cat<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.8642847265937235e-09,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Big",
+     "concept_mass": 0.0006107353838160634,
+     "greedy_3": "Big cat<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "tiger-2",
+   "category": "animals",
+   "concept": "tiger",
+   "control": "bear",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Strip",
+     "concept_mass": 5.6173925258917734e-05,
+     "greedy_3": "Striped hunter",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Strip",
+     "concept_mass": 1.0533642014198819e-10,
+     "greedy_3": "Striped Hunter",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Strip",
+     "concept_mass": 1.855320624599699e-05,
+     "greedy_3": "Striped hunter",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "tiger-3",
+   "category": "animals",
+   "concept": "tiger",
+   "control": "bear",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "T",
+     "concept_mass": 0.0024134714622050524,
+     "greedy_3": "Tiger<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Orange",
+     "concept_mass": 3.524991187831006e-09,
+     "greedy_3": "Orange-and-black",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Orange",
+     "concept_mass": 0.0016067365650087595,
+     "greedy_3": "Orange-and-black",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bear-1",
+   "category": "animals",
+   "concept": "bear",
+   "control": "tiger",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Fox",
+     "concept_mass": 0.0010832155821844935,
+     "greedy_3": "Fox<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Fox",
+     "concept_mass": 4.380256996228127e-06,
+     "greedy_3": "Fox<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Dog",
+     "concept_mass": 0.0004870955890510231,
+     "greedy_3": "Dog<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bear-2",
+   "category": "animals",
+   "concept": "bear",
+   "control": "tiger",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Gold",
+     "concept_mass": 2.2546902123110613e-09,
+     "greedy_3": "Goldilocks",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Gold",
+     "concept_mass": 1.5659828035002876e-12,
+     "greedy_3": "Goldilocks",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Gold",
+     "concept_mass": 2.8662516804445204e-10,
+     "greedy_3": "Goldilocks",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bear-3",
+   "category": "animals",
+   "concept": "bear",
+   "control": "tiger",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 9.517103535472415e-06,
+     "greedy_3": "Polar bear",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 1.260101978317607e-08,
+     "greedy_3": "Polar bear",
+     "says_concept_in_3": true
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 1.496741106166155e-06,
+     "greedy_3": "Polar bear",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "venus-1",
+   "category": "planets",
+   "concept": "Venus",
+   "control": "Jupiter",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0019414525013417006,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 8.632376757855553e-11,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Earth",
+     "concept_mass": 0.009308887645602226,
+     "greedy_3": "Earth<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "venus-2",
+   "category": "planets",
+   "concept": "Venus",
+   "control": "Jupiter",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.012168176472187042,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 1.0077631784621843e-10,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Earth",
+     "concept_mass": 0.013095594011247158,
+     "greedy_3": "Earth<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "venus-3",
+   "category": "planets",
+   "concept": "Venus",
+   "control": "Jupiter",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.002593090757727623,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 1.159622675661609e-10,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Mer",
+     "concept_mass": 0.002078732242807746,
+     "greedy_3": "Mercury<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "jupiter-1",
+   "category": "planets",
+   "concept": "Jupiter",
+   "control": "Mercury",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 0.04714653268456459,
+     "greedy_3": "Mars<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Earth",
+     "concept_mass": 1.708523100774073e-09,
+     "greedy_3": "Earth<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.02285175584256649,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "jupiter-2",
+   "category": "planets",
+   "concept": "Jupiter",
+   "control": "Mercury",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.007737820036709309,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Gas",
+     "concept_mass": 5.437247319051153e-10,
+     "greedy_3": "Gas Giant<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.006792000494897366,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "jupiter-3",
+   "category": "planets",
+   "concept": "Jupiter",
+   "control": "Mercury",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0563071072101593,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Eu",
+     "concept_mass": 3.496774744760067e-11,
+     "greedy_3": "Europa<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.05874768644571304,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mercury-1",
+   "category": "planets",
+   "concept": "Mercury",
+   "control": "Neptune",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Mer",
+     "concept_mass": 0.017022058367729187,
+     "greedy_3": "Mercury<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 1.7737745716672748e-09,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.04902654513716698,
+     "greedy_3": "Judaica",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mercury-2",
+   "category": "planets",
+   "concept": "Mercury",
+   "control": "Neptune",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Mer",
+     "concept_mass": 0.0005977522814646363,
+     "greedy_3": "Mercury<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Earth",
+     "concept_mass": 6.566385629680482e-11,
+     "greedy_3": "Earth<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Earth",
+     "concept_mass": 0.000721862365026027,
+     "greedy_3": "Earth<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mercury-3",
+   "category": "planets",
+   "concept": "Mercury",
+   "control": "Neptune",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Mer",
+     "concept_mass": 0.0009594287839718163,
+     "greedy_3": "Mercury<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 3.771070566926937e-09,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.00605910737067461,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "neptune-1",
+   "category": "planets",
+   "concept": "Neptune",
+   "control": "Mars",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.002558553358539939,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 5.1825960412088534e-08,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.006988827139139175,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "neptune-2",
+   "category": "planets",
+   "concept": "Neptune",
+   "control": "Mars",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Mer",
+     "concept_mass": 0.0002677030279301107,
+     "greedy_3": "Mercury<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Mer",
+     "concept_mass": 3.6637035627506975e-09,
+     "greedy_3": "Mercury<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Pl",
+     "concept_mass": 0.004927904345095158,
+     "greedy_3": "Pluto<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "neptune-3",
+   "category": "planets",
+   "concept": "Neptune",
+   "control": "Mars",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Mer",
+     "concept_mass": 0.03066333197057247,
+     "greedy_3": "Mercury<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 6.126878560053228e-08,
+     "greedy_3": "Jupiter<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": " Neptune",
+     "concept_mass": 0.39460498094558716,
+     "greedy_3": " Neptune<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "violin-1",
+   "category": "musical instruments",
+   "concept": "violin",
+   "control": "drum",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "F",
+     "concept_mass": 0.0009638280607759953,
+     "greedy_3": "Fiddle<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Bow",
+     "concept_mass": 3.806835024988686e-08,
+     "greedy_3": "Bowen Song",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Viol",
+     "concept_mass": 0.0026964140124619007,
+     "greedy_3": "Violin<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "violin-2",
+   "category": "musical instruments",
+   "concept": "violin",
+   "control": "drum",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 0.0014948084717616439,
+     "greedy_3": "Stradiv",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 5.520552903703901e-09,
+     "greedy_3": "Stradiv",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 0.001494211726821959,
+     "greedy_3": "Stradiv",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "violin-3",
+   "category": "musical instruments",
+   "concept": "violin",
+   "control": "drum",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Viol",
+     "concept_mass": 0.003224957035854459,
+     "greedy_3": "Violin<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.5008663467597216e-07,
+     "greedy_3": "The musical instrument",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Viol",
+     "concept_mass": 0.004189435392618179,
+     "greedy_3": "Violin<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "drum-1",
+   "category": "musical instruments",
+   "concept": "drum",
+   "control": "trumpet",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Viol",
+     "concept_mass": 4.007491952506825e-05,
+     "greedy_3": "Violin<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Viol",
+     "concept_mass": 1.459852794205574e-10,
+     "greedy_3": "Violin<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Str",
+     "concept_mass": 3.634001041064039e-05,
+     "greedy_3": "Stradiv",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "drum-2",
+   "category": "musical instruments",
+   "concept": "drum",
+   "control": "trumpet",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.7213360479217954e-05,
+     "greedy_3": "The musical instrument",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "R",
+     "concept_mass": 1.782273356676356e-10,
+     "greedy_3": "Ringo Starr",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 7.704189556534402e-06,
+     "greedy_3": "The musical instrument",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "drum-3",
+   "category": "musical instruments",
+   "concept": "drum",
+   "control": "trumpet",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 2.4794971977826208e-05,
+     "greedy_3": "Bassoon",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Viol",
+     "concept_mass": 1.2384603065296318e-10,
+     "greedy_3": "Violin<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ban",
+     "concept_mass": 2.402289646852296e-05,
+     "greedy_3": "Banjo<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "trumpet-1",
+   "category": "musical instruments",
+   "concept": "trumpet",
+   "control": "flute",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.022312119603157043,
+     "greedy_3": "Bassoon",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Louis",
+     "concept_mass": 3.957561318657099e-07,
+     "greedy_3": "Louis Armstrong's",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Br",
+     "concept_mass": 0.002078029792755842,
+     "greedy_3": "Brass instrument",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "trumpet-2",
+   "category": "musical instruments",
+   "concept": "trumpet",
+   "control": "flute",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.02215029112994671,
+     "greedy_3": "Bass guitar",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Br",
+     "concept_mass": 5.192775347495626e-07,
+     "greedy_3": "Brass instrument",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Br",
+     "concept_mass": 0.0004997955984435976,
+     "greedy_3": "Brass instrument",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "trumpet-3",
+   "category": "musical instruments",
+   "concept": "trumpet",
+   "control": "flute",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Br",
+     "concept_mass": 0.0025628816802054644,
+     "greedy_3": "Brass horn",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Br",
+     "concept_mass": 2.6367473537902697e-08,
+     "greedy_3": "Brass horn",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Br",
+     "concept_mass": 3.424785245442763e-05,
+     "greedy_3": "Brass horn",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "flute-1",
+   "category": "musical instruments",
+   "concept": "flute",
+   "control": "violin",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "S",
+     "concept_mass": 0.0007097822963260114,
+     "greedy_3": "Saxophone",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "S",
+     "concept_mass": 8.555828046041825e-09,
+     "greedy_3": "Saxophone",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Silver",
+     "concept_mass": 0.0001619582762941718,
+     "greedy_3": "Silver flute<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "flute-2",
+   "category": "musical instruments",
+   "concept": "flute",
+   "control": "violin",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Viol",
+     "concept_mass": 0.0020329102408140898,
+     "greedy_3": "Violin<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Wood",
+     "concept_mass": 8.424906994264347e-09,
+     "greedy_3": "Woodwind instrument",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Wood",
+     "concept_mass": 0.00045461414265446365,
+     "greedy_3": "Woodwind instrument",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "flute-3",
+   "category": "musical instruments",
+   "concept": "flute",
+   "control": "violin",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Pic",
+     "concept_mass": 1.1257700407441007e-06,
+     "greedy_3": "Piccolo<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Pic",
+     "concept_mass": 5.533767888366015e-12,
+     "greedy_3": "Piccolo<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Pic",
+     "concept_mass": 3.9859504141759317e-08,
+     "greedy_3": "Piccolo<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "silver-1",
+   "category": "precious metals",
+   "concept": "silver",
+   "control": "platinum",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.007181703578680754,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 1.9199781036149943e-06,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.00013752400991506875,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "silver-2",
+   "category": "precious metals",
+   "concept": "silver",
+   "control": "platinum",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Silver",
+     "concept_mass": 0.0026638058479875326,
+     "greedy_3": "Silver<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "T",
+     "concept_mass": 8.256650403382082e-07,
+     "greedy_3": "Tarnished",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 7.237507088575512e-05,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "silver-3",
+   "category": "precious metals",
+   "concept": "silver",
+   "control": "platinum",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 0.00018456709221936762,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Iron",
+     "concept_mass": 6.378161998554788e-08,
+     "greedy_3": "Iron<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 6.166170805954607e-06,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "platinum-1",
+   "category": "precious metals",
+   "concept": "platinum",
+   "control": "copper",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Iron",
+     "concept_mass": 1.1920124052267056e-05,
+     "greedy_3": "Ironically,",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 8.029267806186624e-10,
+     "greedy_3": "Guns N",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 3.535194082360249e-06,
+     "greedy_3": "Guns N",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "platinum-2",
+   "category": "precious metals",
+   "concept": "platinum",
+   "control": "copper",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 0.002572310622781515,
+     "greedy_3": "Catalyst",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 1.8900822573719722e-10,
+     "greedy_3": "Catalyst",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Cor",
+     "concept_mass": 8.21464927867055e-05,
+     "greedy_3": "Corrosion",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "platinum-3",
+   "category": "precious metals",
+   "concept": "platinum",
+   "control": "copper",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "I",
+     "concept_mass": 0.002724224701523781,
+     "greedy_3": "Iridium",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "I",
+     "concept_mass": 1.3938818155256882e-10,
+     "greedy_3": "Iridium",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "I",
+     "concept_mass": 2.6139872716157697e-05,
+     "greedy_3": "Iridium",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "copper-1",
+   "category": "precious metals",
+   "concept": "copper",
+   "control": "bronze",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Red",
+     "concept_mass": 0.0028524529188871384,
+     "greedy_3": "Reddish metal",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Red",
+     "concept_mass": 6.382889772282851e-10,
+     "greedy_3": "Reddish Metal",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Red",
+     "concept_mass": 0.0006342650740407407,
+     "greedy_3": "Reddish metal",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "copper-2",
+   "category": "precious metals",
+   "concept": "copper",
+   "control": "bronze",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.00010169836605200544,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 1.0110724479872601e-09,
+     "greedy_3": "Glass<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Al",
+     "concept_mass": 7.995034138730261e-06,
+     "greedy_3": "Aluminum<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "copper-3",
+   "category": "precious metals",
+   "concept": "copper",
+   "control": "bronze",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.0007519058999605477,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 2.0992019234000736e-09,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Iron",
+     "concept_mass": 0.00043504423229023814,
+     "greedy_3": "Iron<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bronze-1",
+   "category": "precious metals",
+   "concept": "bronze",
+   "control": "iron",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.000456885521998629,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Gold",
+     "concept_mass": 2.9795950151623174e-09,
+     "greedy_3": "Gold<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Gold",
+     "concept_mass": 0.0002923885767813772,
+     "greedy_3": "Gold<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bronze-2",
+   "category": "precious metals",
+   "concept": "bronze",
+   "control": "iron",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.0010575663764029741,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Al",
+     "concept_mass": 5.70638114538724e-09,
+     "greedy_3": "Alloy<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.002647135639563203,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "bronze-3",
+   "category": "precious metals",
+   "concept": "bronze",
+   "control": "iron",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.001414602156728506,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Al",
+     "concept_mass": 8.272110996188076e-09,
+     "greedy_3": "Alloy<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 0.0016626024153083563,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "iron-1",
+   "category": "precious metals",
+   "concept": "iron",
+   "control": "gold",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Iron",
+     "concept_mass": 0.004237563814967871,
+     "greedy_3": "Iron<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 6.648789167229552e-06,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 0.00174865429289639,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "iron-2",
+   "category": "precious metals",
+   "concept": "iron",
+   "control": "gold",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Iron",
+     "concept_mass": 0.017635498195886612,
+     "greedy_3": "Iron<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Bron",
+     "concept_mass": 1.0538461538089905e-05,
+     "greedy_3": "Bronze<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Iron",
+     "concept_mass": 0.0041741132736206055,
+     "greedy_3": "Iron<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "iron-3",
+   "category": "precious metals",
+   "concept": "iron",
+   "control": "gold",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 0.0002219441084889695,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 4.5527423253588495e-07,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Steel",
+     "concept_mass": 8.653103577671573e-05,
+     "greedy_3": "Steel<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "ruby-1",
+   "category": "gemstones",
+   "concept": "ruby",
+   "control": "pearl",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.060017019510269165,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Gem",
+     "concept_mass": 3.9474645745940506e-05,
+     "greedy_3": "Gemstone:",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.01941608637571335,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "ruby-2",
+   "category": "gemstones",
+   "concept": "ruby",
+   "control": "pearl",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Cor",
+     "concept_mass": 0.03166857361793518,
+     "greedy_3": "Corundum",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Cor",
+     "concept_mass": 4.254444831985893e-07,
+     "greedy_3": "Corundum",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Cor",
+     "concept_mass": 0.0005416529020294547,
+     "greedy_3": "Corundum",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "ruby-3",
+   "category": "gemstones",
+   "concept": "ruby",
+   "control": "pearl",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.03336331248283386,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Red",
+     "concept_mass": 4.9987116653937846e-05,
+     "greedy_3": "Red Starite",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Red",
+     "concept_mass": 0.007245705462992191,
+     "greedy_3": "Red Ruby<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "pearl-1",
+   "category": "gemstones",
+   "concept": "pearl",
+   "control": "jade",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.0011290794936940074,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Gem",
+     "concept_mass": 2.3021581085913567e-08,
+     "greedy_3": "Gemstone:",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.0018440722487866879,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "pearl-2",
+   "category": "gemstones",
+   "concept": "pearl",
+   "control": "jade",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Diamond",
+     "concept_mass": 0.00015543607878498733,
+     "greedy_3": "Diamond<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Diamond",
+     "concept_mass": 1.1188720172583544e-08,
+     "greedy_3": "Diamond<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.00019574028556235135,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "pearl-3",
+   "category": "gemstones",
+   "concept": "pearl",
+   "control": "jade",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.00016659572429489344,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 7.440509541822848e-09,
+     "greedy_3": "Garnet",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.00014070305041968822,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "jade-1",
+   "category": "gemstones",
+   "concept": "jade",
+   "control": "opal",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": " jade",
+     "concept_mass": 0.24339187145233154,
+     "greedy_3": " jade<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Gem",
+     "concept_mass": 3.960149115300737e-05,
+     "greedy_3": "Gemstone:",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": true,
+     "greedy": " jade",
+     "concept_mass": 0.4704994857311249,
+     "greedy_3": " jade<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "jade-2",
+   "category": "gemstones",
+   "concept": "jade",
+   "control": "opal",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ma",
+     "concept_mass": 0.025651762261986732,
+     "greedy_3": "Maori turquoise",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ma",
+     "concept_mass": 7.04223111824831e-07,
+     "greedy_3": "Maori car",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ma",
+     "concept_mass": 0.008451071567833424,
+     "greedy_3": "Maori green",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "jade-3",
+   "category": "gemstones",
+   "concept": "jade",
+   "control": "opal",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Az",
+     "concept_mass": 0.026776781305670738,
+     "greedy_3": "Aztec and",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Az",
+     "concept_mass": 5.631215458379302e-07,
+     "greedy_3": "Aztec and",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Az",
+     "concept_mass": 0.005662916693836451,
+     "greedy_3": "Aztec and",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "opal-1",
+   "category": "gemstones",
+   "concept": "opal",
+   "control": "amber",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 2.168888386222534e-05,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 2.9560627279323626e-09,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 5.297806637827307e-06,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "opal-2",
+   "category": "gemstones",
+   "concept": "opal",
+   "control": "amber",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 7.372129402938299e-06,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Emer",
+     "concept_mass": 7.370730137346015e-10,
+     "greedy_3": "Emerald<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 1.5132419548535836e-06,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "opal-3",
+   "category": "gemstones",
+   "concept": "opal",
+   "control": "amber",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 3.98566135118017e-06,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 4.796581465349448e-10,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 8.023716304705886e-07,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "amber-1",
+   "category": "gemstones",
+   "concept": "amber",
+   "control": "diamond",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Diamond",
+     "concept_mass": 0.0006495778216049075,
+     "greedy_3": "Diamond<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 5.9821988543262705e-05,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Gem",
+     "concept_mass": 0.014971133321523666,
+     "greedy_3": "Gemstone:",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "amber-2",
+   "category": "gemstones",
+   "concept": "amber",
+   "control": "diamond",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 8.263165364041924e-05,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 5.261058504402172e-06,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ruby",
+     "concept_mass": 0.000936632277444005,
+     "greedy_3": "Ruby<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "amber-3",
+   "category": "gemstones",
+   "concept": "amber",
+   "control": "diamond",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "F",
+     "concept_mass": 0.0016545356484130025,
+     "greedy_3": "Fossil gem",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "F",
+     "concept_mass": 9.340574615634978e-05,
+     "greedy_3": "Fossil gem",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "F",
+     "concept_mass": 0.0038797708693891764,
+     "greedy_3": "Fossil gem",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "pig-1",
+   "category": "farm animals",
+   "concept": "pig",
+   "control": "horse",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Pink",
+     "concept_mass": 0.0018375449581071734,
+     "greedy_3": "Pink cow<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Pink",
+     "concept_mass": 4.003392461982003e-08,
+     "greedy_3": "Pink farm animal",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Pink",
+     "concept_mass": 3.932119579985738e-05,
+     "greedy_3": "Pink farm animal",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "pig-2",
+   "category": "farm animals",
+   "concept": "pig",
+   "control": "horse",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 0.002774776890873909,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 3.731712467924808e-07,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Chicken",
+     "concept_mass": 0.0008396372431889176,
+     "greedy_3": "Chicken<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "pig-3",
+   "category": "farm animals",
+   "concept": "pig",
+   "control": "horse",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 0.022695152088999748,
+     "greedy_3": "Cattle<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 1.0656622180249542e-05,
+     "greedy_3": "Cattle<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Sw",
+     "concept_mass": 0.001211291877552867,
+     "greedy_3": "Swine<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "horse-1",
+   "category": "farm animals",
+   "concept": "horse",
+   "control": "sheep",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.019705720245838165,
+     "greedy_3": "Jockey<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0001682818547124043,
+     "greedy_3": "Jockey<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "J",
+     "concept_mass": 0.0036121844314038754,
+     "greedy_3": "Jockey<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "horse-2",
+   "category": "farm animals",
+   "concept": "horse",
+   "control": "sheep",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Chicken",
+     "concept_mass": 0.006296078208833933,
+     "greedy_3": "Chicken<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Chicken",
+     "concept_mass": 1.6653466445859522e-06,
+     "greedy_3": "Chicken<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Chicken",
+     "concept_mass": 0.003681707661598921,
+     "greedy_3": "Chicken<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "horse-3",
+   "category": "farm animals",
+   "concept": "horse",
+   "control": "sheep",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 0.006285881623625755,
+     "greedy_3": "Giraffe",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 6.034534294485638e-07,
+     "greedy_3": "Giraffe",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "G",
+     "concept_mass": 0.00038111189496703446,
+     "greedy_3": "Giraffe",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "sheep-1",
+   "category": "farm animals",
+   "concept": "sheep",
+   "control": "chicken",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "She",
+     "concept_mass": 0.002168638166040182,
+     "greedy_3": "Sheep<|im_end|>",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Fox",
+     "concept_mass": 3.0522167548951984e-07,
+     "greedy_3": "Fox<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.0036821903195232153,
+     "greedy_3": "Bull<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "sheep-2",
+   "category": "farm animals",
+   "concept": "sheep",
+   "control": "chicken",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 0.0016569900326430798,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 8.059318190589693e-08,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Cow",
+     "concept_mass": 0.00959709845483303,
+     "greedy_3": "Cow<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "sheep-3",
+   "category": "farm animals",
+   "concept": "sheep",
+   "control": "chicken",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Coll",
+     "concept_mass": 1.5253092897182796e-05,
+     "greedy_3": "Collie<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Coll",
+     "concept_mass": 1.2157401474421903e-10,
+     "greedy_3": "Collie<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Coll",
+     "concept_mass": 2.5410031412320677e-06,
+     "greedy_3": "Collie<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "chicken-1",
+   "category": "farm animals",
+   "concept": "chicken",
+   "control": "duck",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Chicken",
+     "concept_mass": 0.004634381737560034,
+     "greedy_3": "Chicken<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Farm",
+     "concept_mass": 7.866455042915277e-09,
+     "greedy_3": "Farm bird<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Chicken",
+     "concept_mass": 0.004753447137773037,
+     "greedy_3": "Chicken<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "chicken-2",
+   "category": "farm animals",
+   "concept": "chicken",
+   "control": "duck",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Ro",
+     "concept_mass": 1.8086813724949025e-05,
+     "greedy_3": "Rooster<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Ro",
+     "concept_mass": 2.6736836702956346e-11,
+     "greedy_3": "Rooster<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Ro",
+     "concept_mass": 3.3285007248196052e-06,
+     "greedy_3": "Rooster<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "chicken-3",
+   "category": "farm animals",
+   "concept": "chicken",
+   "control": "duck",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Chicken",
+     "concept_mass": 0.0019108877750113606,
+     "greedy_3": "Chicken<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "F",
+     "concept_mass": 1.1828589663309685e-08,
+     "greedy_3": "Furball",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Chicken",
+     "concept_mass": 0.0017089786706492305,
+     "greedy_3": "Chicken<|im_end|>\n",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "duck-1",
+   "category": "farm animals",
+   "concept": "duck",
+   "control": "cow",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Water",
+     "concept_mass": 0.00797620601952076,
+     "greedy_3": "Water buffalo<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Water",
+     "concept_mass": 4.730374882910837e-07,
+     "greedy_3": "Water buffalo<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Water",
+     "concept_mass": 0.002250699559226632,
+     "greedy_3": "Water buffalo<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "duck-2",
+   "category": "farm animals",
+   "concept": "duck",
+   "control": "cow",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Sw",
+     "concept_mass": 0.00014746328815817833,
+     "greedy_3": "Swan<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Sw",
+     "concept_mass": 4.121790464495234e-09,
+     "greedy_3": "Swan<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Sw",
+     "concept_mass": 7.76097112975549e-06,
+     "greedy_3": "Swan<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "duck-3",
+   "category": "farm animals",
+   "concept": "duck",
+   "control": "cow",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 0.0016891710693016648,
+     "greedy_3": "Pigeon",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 1.5488748772440886e-07,
+     "greedy_3": "Pigeon",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "P",
+     "concept_mass": 0.00025838069268502295,
+     "greedy_3": "Pigeon",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "ant-1",
+   "category": "insects",
+   "concept": "ant",
+   "control": "beetle",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 9.246546687791124e-05,
+     "greedy_3": "Bumblebee",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 2.5114219170063734e-05,
+     "greedy_3": "Bumblebee",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "In",
+     "concept_mass": 2.3910846721264534e-05,
+     "greedy_3": "Insect<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "ant-2",
+   "category": "insects",
+   "concept": "ant",
+   "control": "beetle",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 5.4265336075332016e-05,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 1.5744295524200425e-05,
+     "greedy_3": "Bumblebee",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Queen",
+     "concept_mass": 1.750797855493147e-05,
+     "greedy_3": "Queen Bee<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "ant-3",
+   "category": "insects",
+   "concept": "ant",
+   "control": "beetle",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "A",
+     "concept_mass": 3.108225143932941e-07,
+     "greedy_3": "Aesop",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "A",
+     "concept_mass": 8.564579445646814e-08,
+     "greedy_3": "Aesop",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "A",
+     "concept_mass": 8.49545145342745e-08,
+     "greedy_3": "Aesop",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "beetle-1",
+   "category": "insects",
+   "concept": "beetle",
+   "control": "butterfly",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 6.839769775979221e-05,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "In",
+     "concept_mass": 4.006013742952064e-09,
+     "greedy_3": "Insect<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 0.00014247954823076725,
+     "greedy_3": "Cockroach",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "beetle-2",
+   "category": "insects",
+   "concept": "beetle",
+   "control": "butterfly",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Scar",
+     "concept_mass": 3.1257005161933193e-07,
+     "greedy_3": "Scarab<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Scar",
+     "concept_mass": 2.450979003087994e-11,
+     "greedy_3": "Scarab<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Scar",
+     "concept_mass": 1.9852372190598544e-07,
+     "greedy_3": "Scarab<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "beetle-3",
+   "category": "insects",
+   "concept": "beetle",
+   "control": "butterfly",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "D",
+     "concept_mass": 6.447765485972923e-07,
+     "greedy_3": "Dung-",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "D",
+     "concept_mass": 7.047653693276201e-12,
+     "greedy_3": "Dung-",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "D",
+     "concept_mass": 1.5640338801858888e-07,
+     "greedy_3": "Dung-",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "butterfly-1",
+   "category": "insects",
+   "concept": "butterfly",
+   "control": "moth",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 1.7685255443211645e-05,
+     "greedy_3": "Caterpillar",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 9.595595845679483e-11,
+     "greedy_3": "Caterpillar",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 4.46489684691187e-06,
+     "greedy_3": "Caterpillar",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "butterfly-2",
+   "category": "insects",
+   "concept": "butterfly",
+   "control": "moth",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 7.816614379407838e-05,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Mon",
+     "concept_mass": 6.04249095204068e-09,
+     "greedy_3": "Monarch<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 6.861429574200884e-05,
+     "greedy_3": "Cicada",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "butterfly-3",
+   "category": "insects",
+   "concept": "butterfly",
+   "control": "moth",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 9.709870209917426e-05,
+     "greedy_3": "Crickett",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 9.440475068345222e-09,
+     "greedy_3": "Crickett",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 5.442679685074836e-05,
+     "greedy_3": "Crickett",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "moth-1",
+   "category": "insects",
+   "concept": "moth",
+   "control": "mosquito",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.00021223307703621686,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Fly",
+     "concept_mass": 4.1245809256906796e-07,
+     "greedy_3": "Fly.<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 3.885871410602704e-05,
+     "greedy_3": "Bumblebee",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "moth-2",
+   "category": "insects",
+   "concept": "moth",
+   "control": "mosquito",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "We",
+     "concept_mass": 0.0004908025730401278,
+     "greedy_3": "Weevils",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "We",
+     "concept_mass": 1.5865531395320431e-06,
+     "greedy_3": "Weevils",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "We",
+     "concept_mass": 2.3199176212074235e-05,
+     "greedy_3": "Weevils",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "moth-3",
+   "category": "insects",
+   "concept": "moth",
+   "control": "mosquito",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 0.0003607474500313401,
+     "greedy_3": "Caterpillar",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "C",
+     "concept_mass": 1.5956624110913253e-07,
+     "greedy_3": "Caterpillar",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "In",
+     "concept_mass": 5.503169813891873e-05,
+     "greedy_3": "Insect<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mosquito-1",
+   "category": "insects",
+   "concept": "mosquito",
+   "control": "bee",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.000521366426255554,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 8.218083102917717e-09,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 0.0011838198406621814,
+     "greedy_3": "Bugs<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mosquito-2",
+   "category": "insects",
+   "concept": "mosquito",
+   "control": "bee",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "A",
+     "concept_mass": 0.004607859067618847,
+     "greedy_3": "Aedes a",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 6.315908080978261e-07,
+     "greedy_3": "Bite of",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Mos",
+     "concept_mass": 0.004430601838976145,
+     "greedy_3": "Mosquito<|im_end|>",
+     "says_concept_in_3": true
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "mosquito-3",
+   "category": "insects",
+   "concept": "mosquito",
+   "control": "bee",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Lady",
+     "concept_mass": 0.0003215112374164164,
+     "greedy_3": "Ladybird<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "B",
+     "concept_mass": 5.128793389985731e-08,
+     "greedy_3": "Bee<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Lady",
+     "concept_mass": 0.0003445048932917416,
+     "greedy_3": "Ladybird<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "monday-1",
+   "category": "days of the week",
+   "concept": "Monday",
+   "control": "Tuesday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Monday",
+     "concept_mass": 0.34866178035736084,
+     "greedy_3": "Monday<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Working",
+     "concept_mass": 1.0506679473110125e-06,
+     "greedy_3": "Working Day<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Working",
+     "concept_mass": 0.00017182552255690098,
+     "greedy_3": "Working Day<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "monday-2",
+   "category": "days of the week",
+   "concept": "Monday",
+   "control": "Tuesday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Sunday",
+     "concept_mass": 0.11137939989566803,
+     "greedy_3": "Sunday<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Boom",
+     "concept_mass": 4.816773753191228e-07,
+     "greedy_3": "Boomtown R",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Boom",
+     "concept_mass": 0.00010184365964960307,
+     "greedy_3": "Boomtown R",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "monday-3",
+   "category": "days of the week",
+   "concept": "Monday",
+   "control": "Tuesday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Friday",
+     "concept_mass": 0.1456371545791626,
+     "greedy_3": "Friday<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "December",
+     "concept_mass": 2.4145551833498757e-06,
+     "greedy_3": "December<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Christmas",
+     "concept_mass": 0.0002943183062598109,
+     "greedy_3": "Christmas<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "tuesday-1",
+   "category": "days of the week",
+   "concept": "Tuesday",
+   "control": "Thursday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 0.0020616003312170506,
+     "greedy_3": "Mardi Gr",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "M",
+     "concept_mass": 3.248645796816163e-09,
+     "greedy_3": "Mardi Gr",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Fat",
+     "concept_mass": 3.91198042848373e-08,
+     "greedy_3": "Fat<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "tuesday-2",
+   "category": "days of the week",
+   "concept": "Tuesday",
+   "control": "Thursday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "November",
+     "concept_mass": 0.013780901208519936,
+     "greedy_3": "November 1",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "November",
+     "concept_mass": 3.6807925596349378e-09,
+     "greedy_3": "November 1",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "November",
+     "concept_mass": 5.3269786803866737e-08,
+     "greedy_3": "November 1",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "tuesday-3",
+   "category": "days of the week",
+   "concept": "Tuesday",
+   "control": "Thursday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Wednesday",
+     "concept_mass": 0.12379486858844757,
+     "greedy_3": "Wednesday<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 7.469999673048733e-06,
+     "greedy_3": "The sentence describes",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.000646107888314873,
+     "greedy_3": "The sentence describes",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "thursday-1",
+   "category": "days of the week",
+   "concept": "Thursday",
+   "control": "Friday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Thursday",
+     "concept_mass": 0.23536284267902374,
+     "greedy_3": "Thursday<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": " Thanksgiving",
+     "concept_mass": 1.3461246339829813e-07,
+     "greedy_3": " Thanksgiving<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": " Thanksgiving",
+     "concept_mass": 1.3493725418811664e-05,
+     "greedy_3": " Thanksgiving<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "thursday-2",
+   "category": "days of the week",
+   "concept": "Thursday",
+   "control": "Friday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Friday",
+     "concept_mass": 0.061957813799381256,
+     "greedy_3": "Friday<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "V",
+     "concept_mass": 5.116683496453334e-06,
+     "greedy_3": "Vulcan",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Thor",
+     "concept_mass": 0.00011975121742580086,
+     "greedy_3": "Thor's Day",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "thursday-3",
+   "category": "days of the week",
+   "concept": "Thursday",
+   "control": "Friday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Wednesday",
+     "concept_mass": 0.14753654599189758,
+     "greedy_3": "Wednesday<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.6134847101056948e-05,
+     "greedy_3": "The sentence describes",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.002860942855477333,
+     "greedy_3": "The sentence describes",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "friday-1",
+   "category": "days of the week",
+   "concept": "Friday",
+   "control": "Saturday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Sunday",
+     "concept_mass": 0.2268037050962448,
+     "greedy_3": "Sunday<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Christmas",
+     "concept_mass": 2.0615649987121287e-07,
+     "greedy_3": "Christmas<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Christmas",
+     "concept_mass": 3.6145873309578747e-05,
+     "greedy_3": "Christmas<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "friday-2",
+   "category": "days of the week",
+   "concept": "Friday",
+   "control": "Saturday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Friday",
+     "concept_mass": 0.2769835591316223,
+     "greedy_3": "Friday<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.7372645743307658e-05,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.001683094073086977,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "friday-3",
+   "category": "days of the week",
+   "concept": "Friday",
+   "control": "Saturday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Friday",
+     "concept_mass": 0.27195844054222107,
+     "greedy_3": "Friday<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "December",
+     "concept_mass": 2.959790435852483e-06,
+     "greedy_3": "December 1",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.0006829479243606329,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "saturday-1",
+   "category": "days of the week",
+   "concept": "Saturday",
+   "control": "Sunday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Monday",
+     "concept_mass": 0.103253573179245,
+     "greedy_3": "Monday<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Day",
+     "concept_mass": 6.189362466102466e-06,
+     "greedy_3": "Day 1",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Day",
+     "concept_mass": 0.00266824197024107,
+     "greedy_3": "Day 1",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "saturday-2",
+   "category": "days of the week",
+   "concept": "Saturday",
+   "control": "Sunday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": false,
+     "greedy": "Friday",
+     "concept_mass": 0.08482769131660461,
+     "greedy_3": "Friday<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "New",
+     "concept_mass": 1.4336859521790757e-07,
+     "greedy_3": "New York<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "New",
+     "concept_mass": 9.655839676270261e-05,
+     "greedy_3": "New York<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": false,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "saturday-3",
+   "category": "days of the week",
+   "concept": "Saturday",
+   "control": "Sunday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Saturday",
+     "concept_mass": 0.5690554976463318,
+     "greedy_3": "Saturday<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Working",
+     "concept_mass": 1.125483208852529e-06,
+     "greedy_3": "Working Day<|im_end|>",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Working",
+     "concept_mass": 0.0005907256854698062,
+     "greedy_3": "Working Day<|im_end|>",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "sunday-1",
+   "category": "days of the week",
+   "concept": "Sunday",
+   "control": "Monday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Sunday",
+     "concept_mass": 0.6189833283424377,
+     "greedy_3": "Sunday<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "Christmas",
+     "concept_mass": 9.408810001332313e-06,
+     "greedy_3": "Christmas<|im_end|>\n",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "Christmas",
+     "concept_mass": 0.004100713413208723,
+     "greedy_3": "Christmas<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "sunday-2",
+   "category": "days of the week",
+   "concept": "Sunday",
+   "control": "Monday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Sunday",
+     "concept_mass": 0.34865760803222656,
+     "greedy_3": "Sunday<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 7.728699529252481e-07,
+     "greedy_3": "The sentence describes",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "December",
+     "concept_mass": 0.00021977644064463675,
+     "greedy_3": "December<|im_end|>\n",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  },
+  {
+   "name": "sunday-3",
+   "category": "days of the week",
+   "concept": "Sunday",
+   "control": "Monday",
+   "source": "m1-new",
+   "cells": {
+    "clean": {
+     "produced": true,
+     "greedy": "Sunday",
+     "concept_mass": 0.3509812653064728,
+     "greedy_3": "Sunday<|im_end|>\n",
+     "says_concept_in_3": true
+    },
+    "primed_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 1.9672610505949706e-05,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    },
+    "control_late": {
+     "produced": false,
+     "greedy": "The",
+     "concept_mass": 0.017054002732038498,
+     "greedy_3": "The sentence is",
+     "says_concept_in_3": false
+    }
+   },
+   "gate_greedy": true,
+   "gate_verbatim_p": false
+  }
+ ]
+}
