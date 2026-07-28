@@ -48,6 +48,19 @@ the grid (7/11, 27/33, 6/11). M1's and M2's single control cell had sampled
 silver's column and been read as a fact about silver's row. This is a
 re-attribution, not a retraction — M1's and M2's numbers stand as published.
 
+**One carry-forward M3 creates, found at its own adversarial review (PR #9 F1).**
+M3's gate is a conjunction, but D17's frozen degeneracy scope names only clause
+(1)'s surviving arm (`off_diagonal`) as dispositive — clause (2)'s
+(`within_category_off_diagonal`) is guarded nowhere, and it is the *more*
+collapse-prone arm on every subject (wrong-opening shares 0.052 / 0.030 / 0.010
+vs 0.016 / 0.008 / 0.014). Nothing here is affected — no arm came within an order
+of magnitude of COLLAPSE_SHARE = 0.5 — and `m3_matrix.GATE_WORDING` was **not**
+amended, because it is byte-frozen with three subjects' artifacts and editing a
+pre-registration after seeing results is what D9/D10 exist to prevent. Owned in
+M3-BRIEF's Honest limits, and carried here: **any later stage whose gate is a
+conjunction must put every surviving-side comparison arm on the dispositive
+degeneracy list, and its frozen wording must enumerate them explicitly.**
+
 All four of M2's carry-forwards landed as the brief dispositioned them: PR #7 F2
 (the tier-width caveat, retired structurally and stated affirmatively in D17's
 frozen wording), F5 + F4 (D18's two run-time bars, span and ASCII, on the
@@ -90,5 +103,9 @@ and must stay identical in all of them; adversarial review before any merge.
 
 ## Open questions / blockers
 
-- None. M3 is closed and the v1 chain with it. The only inherited obligation is
-  S2's boundary-class decision, and it only fires if S2 is started.
+- None blocking. M3 is closed and the v1 chain with it. Two inherited
+  obligations, both conditional on a later stage existing: **(1)** S2's brief
+  owes the `oracle._BOUNDARY` boundary-class decision before it freezes any
+  non-ASCII list; **(2)** any stage whose gate is a **conjunction** must put
+  every surviving-side comparison arm on the dispositive degeneracy list and
+  enumerate them in its frozen wording (PR #9 F1, above).

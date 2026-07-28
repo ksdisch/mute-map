@@ -33,8 +33,10 @@ silences that concept and leaves the other eleven almost untouched: at 1.5B the
 diagonal names **0/34** while the pooled off-diagonal names **363/374**
 (+0.971 [+0.867, +0.983]); at 3B 3/32 vs 343/352 (+0.881 [+0.731, +0.943]). The
 same contrast restricted to *same-category* pairs — the arm the lineage's single
-control actually tested — is +0.950 and +0.891, likewise CI-clean. 132 of the
-matrix's ordered pairs had never been measured before. What the gate did not
+control actually tested — is +0.950 and +0.891, likewise CI-clean. Of the
+matrix's 132 ordered off-diagonal pairs, **126 had never been measured before**
+(the other 6 are M1's own country control cells, which this run re-certifies
+bit-for-bit before it reads anything new). What the gate did not
 ask: collateral concentrates on a few fragile **probes** rather than being caused
 by damaging **primes** (`silver`'s direction damages *nothing*, while `silver`
 itself is the most fragile probe in the grid — inverting what a single control

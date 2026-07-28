@@ -256,7 +256,8 @@ time a tokenizer revision ships.
 
 **The gate was the least interesting thing in the milestone.** MATRIX-SPECIFIC
 passed at every scale with enormous margins (1.5B: 363/374 off-diagonal vs 0/34
-diagonal). What the 132 never-measured ordered pairs bought was structure the
+diagonal). What the 126 never-measured ordered pairs bought — 132 off-diagonal
+pairs, less the 6 that are M1's own country control cells — was structure the
 gate never asked about: collateral concentrates on a handful of fragile *probes*
 rather than being caused by damaging *primes*; category-block collateral is real
 and CI-clean at 0.5B (+0.105 [+0.032, +0.196]) and dissolves into noise by 1.5B;

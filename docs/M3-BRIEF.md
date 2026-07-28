@@ -690,6 +690,39 @@ side.
 
 ### Honest limits (carried forward, plus what the run adds)
 
+**D17's degeneracy scope guards only one of the gate's two surviving arms —
+found at this PR's adversarial review (F1), post-run, and owned rather than
+patched.** M3's gate is a conjunction: clause (1)'s surviving side is the pooled
+`off_diagonal` arm, clause (2)'s is `within_category_off_diagonal`. D17's frozen
+wording enumerates four degeneracy scopes — pooled off-diagonal (dispositive),
+pooled diagonal (TAG only), a single direction's row, a per-pair cell (both
+texture) — and never names clause (2)'s arm, so `m3_matrix.py` puts only
+`off_diagonal` on the dispositive list. The consequence, stated plainly: a
+wrong-opening collapse confined to the within-category arm (at most 100 of 374
+pooled cells at 1.5B) could not lift the pooled share near COLLAPSE_SHARE = 0.5,
+so a run could in principle print MATRIX-SPECIFIC with clause (2) resting on a
+degenerate cell. This is a gap in the **pre-registration**, not a coding error —
+and it is not a hypothetical worth dismissing, because the unguarded arm is the
+*more* collapse-prone one on every subject: within-category wrong-opening shares
+of **0.052 / 0.030 / 0.010** against the guarded arm's 0.016 / 0.008 / 0.014
+(0.5B / 1.5B / 3B), 3–6× higher at the two smaller subjects, which is what
+pooling six same-category country probes should do.
+
+**Nothing here is affected**: 0.052 is an order of magnitude below the 0.5
+threshold, no arm collapsed on any subject, and adding the arm would change no
+number and no verdict. `m3_matrix.GATE_WORDING` is therefore **not amended** —
+it is byte-frozen with three subjects' artifacts, and editing a pre-registration
+after seeing the results is the exact move D9/D10 exist to prevent, so the
+correction lives here and in the carry-forward below. This is the M1 (PR #3
+F5–F7) and M2 (PR #7 F2) precedent applied a third time.
+
+> **Carry-forward, named:** any later stage whose gate is a **conjunction** must
+> put **every** surviving-side comparison arm on the dispositive degeneracy list,
+> not only the widest one — and its frozen wording must enumerate those arms
+> explicitly. M2's own wording got this right for its two-clause gate
+> (`m2_depth.py` lists both `primed_early` and `primed_middle`); M3's dropped the
+> second arm when the clause count survived but the arm names changed.
+
 Every honesty row from D17 stands as pre-committed. The three that actually bind
 on these numbers:
 
