@@ -24,10 +24,24 @@ characterized here.* The anchor is our own S4b numbers (dim-stage
 
 **M0 PASSED (2026-07-27):** the ported instrument reproduced dim-stage's
 recorded S4b JSONs bit-for-bit, ×3 subjects (0 mismatches over 840 cells each;
-see `docs/M0-BRIEF.md` results). `m0_anchor.py` is certified post-gate — cut
-new runners from it, never edit it. **Now: M1 — breadth battery**
-(`docs/M1-BRIEF.md`; D4–D8 frozen 2026-07-27 — next: freeze `items/`, cut the
-M1 runner from `m0_anchor.py`).
+`docs/M0-BRIEF.md`). `m0_anchor.py` is certified post-gate — cut new runners
+from it, never edit it.
+
+**M1 PASSED (2026-07-28):** BREADTH-SPECIFIC at 1.5B and 3B over a 60-concept /
+180-item battery (`docs/M1-BRIEF.md`).
+
+**M2 PASSED (2026-07-28):** LATE-LOCALIZED at 1.5B and 3B on the pre-registered
+12-concept subset; the dose curve is a dimmer, not a step (`docs/M2-BRIEF.md`).
+M2 also widened the primary oracle to the greedy-span prefix rule (D9b, frozen
+in `oracle.py`) and published the M1 re-score beside M1's standing numbers
+(D10a). **Now: M3 — specificity matrix** (brief first, `docs/M3-BRIEF.md`; its
+first decision is whether to reuse M2's 12-concept subset).
+
+**Each milestone's `GATE_WORDING` is byte-frozen with its artifacts** —
+`m1_battery.GATE_WORDING` and `m2_depth.GATE_WORDING` are never edited; a later
+stage freezes its own and records where it departs. Each runner is cut from its
+predecessor, not shared with it; `oracle.py` is the one deliberate exception,
+shared so the reanalysis and the runner apply a byte-identical rule.
 
 ## How to run
 

@@ -164,10 +164,18 @@ owned miss-counting caveat).
   as a named unit-test case in the M2 code PR). The residual this buys, owned
   (review F12): for the three concepts whose bare form fills the span (beetle,
   butterfly, trumpet) the boundary is unobservable, so a longer word sharing
-  those three tokens ("Beetlejuice") would score as a hit for beetle — zero
-  such cells occur in the recorded data, none of the three is in M2's subset,
-  and the accepted behaviour is pinned by its own unit-test case rather than
-  left implied.
+  those three tokens would score as a hit for beetle — "Beetlejuice" tokenizes
+  as ['Be','et','le','ju','ice'] and so truncates to exactly 'Beetle'.
+  **Corrected at this PR's review (F14), before any M2 run:** this clause
+  originally read "zero such cells occur in the recorded data", which claims
+  more than a truncated recording can support. What is actually the case —
+  **six recorded cells fill the span** (beetle-1, butterfly-1 on two arms,
+  trumpet-3: the same six that decide the span-end reading above), each a
+  completed word on inspection and each the item's own intended answer, while
+  the truncation cannot rule out a longer continuation. The residual is
+  therefore **owned, not excluded**; none of the three concepts is in M2's
+  subset, and the accepted behaviour is pinned by its own unit-test case rather
+  than left implied.
   This is still a deterministic oracle: greedy decoding is deterministic and
   the rule is a fixed string comparison on that deterministic span, frozen as
   code with unit tests — not free-text parsing, and never a judge. The
@@ -457,13 +465,192 @@ the map S4b never drew.
 
 36 items × (1 clean + 6 tier + 10/11/14 newly-run window + 3 dose) = 20 / 21 /
 24 conditions → 720 / 756 / 864 cells per subject, ×3 forwards each (the
-3-token texture span) ≈ 2.2–2.6k forwards per subject — about 1.4–1.5× an M1
-subject run.
+3-token texture span) ≈ 2.2 / 2.3 / 2.6k forwards per subject. An M1 subject
+run was 180 items × 3 conditions × 3 forwards = 1,620, so the comparison is
+**1.3× / 1.4× / 1.6×** an M1 subject run (0.5B / 1.5B / 3B) — restated at this
+PR's review, F13, from a "1.4–1.5×" range that did not span the actual spread.
 All three subjects comfortably under an hour on MPS, $0, run backgrounded with
 untracked logs. Cross-check cells graded first (D14). The D10 reanalysis costs
 no model time at all. Standard machinery regardless of decisions: wrong-arm
 input exits INVALID; `--dry-run` validates and stops; `--limit` is smoke,
 never a result; gate wording frozen as code before any real run.
+
+## Results (2026-07-28) — GATE PASSED, and the map has a shape
+
+**M2 verdict: LATE-LOCALIZED at 1.5B AND 3B.** Both gate-bearing subjects show
+naming under `primed_early` and under `primed_middle` CI-cleanly above
+`primed_late` on the pooled gated cell, so the pre-committed gate passes. Every
+run re-certified the instrument on the way in: the subset's `clean` /
+`primed_late` / `control_late` cells reproduced `results/m1-battery-*.json`
+**bit-for-bit, 108/108 cells, with `concept_mass` floats exact 108/108**, on all
+three subjects — graded before a single window or dose cell was read.
+
+| Subject | Gated n / 36 | `primed_early` | `primed_middle` | `primed_late` | early − late [Newcombe 95%] | middle − late [Newcombe 95%] | Verdict |
+|---|---|---|---|---|---|---|---|
+| 0.5B *(context only, never gate-bearing)* | 28 | 17/28 | 17/28 | 0/28 | **+0.607** [+0.388, +0.764] | **+0.607** [+0.388, +0.764] | LATE-LOCALIZED |
+| 1.5B *(gate-bearing)* | 34 | 29/34 | 27/34 | 0/34 | **+0.853** [+0.668, +0.936] | **+0.794** [+0.603, +0.897] | LATE-LOCALIZED |
+| 3B *(gate-bearing)* | 32 | 27/32 | 25/32 | 3/32 | **+0.750** [+0.531, +0.857] | **+0.688** [+0.463, +0.812] | LATE-LOCALIZED |
+
+**The pre-registration was exact, not approximate.** Because gating is a property
+of the deterministic clean arm that M1 had already recorded, this brief predicted
+the gated ns *before the runs*: 28 / 34 / 32. They came in at 28 / 34 / 32. Every
+pooled cell clears MIN_N = 20 on every subject, so nothing is UNDERPOWERED.
+
+Control tiers, reported beside as specificity texture (never gate-bearing): 0.5B
+23 / 24 / 20 of 28 at early / middle / late; 1.5B 33 / 32 / 30 of 34; 3B 31 / 31
+/ 30 of 32. The late contrast M1 gated on is re-shown here descriptively and is
+unchanged in kind — at the late tier the concept's own direction mutes and the
+same-category control's does not.
+
+**No degeneracy fired anywhere**, so the re-frozen disposition changed no verdict
+— and one structural check landed exactly as D14 predicted: on the `clean` arm
+the wrong-opening share is **0.000 on all three subjects**, because every gated
+item is by construction produced on the clean arm. That is the F3 correction made
+visible: `clean` could never have been a dispositive comparison arm. The highest
+wrong-opening share anywhere is `primed_late` at 0.5B (0.464, attractor `'The'`),
+below COLLAPSE_SHARE = 0.5 — and a TAG-only arm regardless.
+
+### The localization map: a floor of depth-nonspecific damage, with a late cliff on top
+
+Naming survival under the primed arm, per window position (descriptive, never
+gate-bearing; ° = no layer in the band, * = the late-third gate cell, reused):
+
+| Subject | Window curve (start → naming / gated n) |
+|---|---|
+| 0.5B (width 5, n = 28) | L0°15, L1°15, L3°14, L5 16, L7 16, L9 16, L11 19, L13 15, L15 13, **L17\* 0**, L18 0 |
+| 1.5B (width 6, n = 34) | L0°33, L1°32, L3°27, L5°28, L7 28, L9 27, L11 25, L13 23, L15 23, L17 1, **L19\* 0**, L21 0 |
+| 3B (width 7, n = 32) | L0°32, L2°32, L4°31, L6°30, L8 30, L10 29, L12 29, L14 25, L16 25, L18 25, L20 24, L22 16, L24 11, **L26\* 3**, L28 1 |
+
+Three things the curve says, each labelled for what it is:
+
+- **Fact — the switch is genuinely a *late* phenomenon, not a band-wide one.**
+  Removing the very same direction at the very same strength anywhere before the
+  late third leaves most naming intact; only the late window drives it to floor.
+  The transition is sharp at 0.5B and 1.5B (13/28 → 0/28 and 23/34 → 1/34 across
+  a single stride-2 step) and **noticeably more gradual at 3B**, which descends
+  24 → 16 → 11 → 3 over four positions. Stride 2 localizes the 1.5B edge to
+  ±2 layers: it sits between window starts L15 and L17.
+- **Fact — out-of-band ablation is cheap at 1.5B and 3B and expensive at 0.5B,
+  quoted as ranges.** Over the windows with no layer in the band at all, naming
+  survives **27–33 of 34 at 1.5B** (3–21% lost), **30–32 of 32 at 3B** (0–6%
+  lost) and **14–15 of 28 at 0.5B** (46–50% lost). Only 3B has a genuinely free
+  out-of-band position (two windows at 32/32); 1.5B's best still costs one item. *(Corrected at this PR's
+  round-1 review, F3: this bullet originally quoted the range for 0.5B but only
+  the single best window for 1.5B and 3B — "33/34 and 32/32" — which made the
+  contrast look cleaner than it is. 1.5B's worst out-of-band position, L3–L8,
+  loses 21% of naming: the same kind of depth-nonspecific damage the bullet
+  attributes mainly to 0.5B, an order of magnitude smaller but not absent.)*
+  The ordering is what survives the correction: the concept direction is largely
+  redundant outside the band at 3B, mildly load-bearing there at 1.5B, and
+  substantially load-bearing at 0.5B.
+- **Inference — 0.5B's LATE-LOCALIZED verdict sits on a raised floor.** Its late
+  cell is a genuine cliff (0/28 against a ~15/28 baseline), so the localization
+  shape is real there too. But 0.5B is the one subject where the "everywhere
+  else is benign" half of the story fails: ablating the concept direction at the
+  wrong depth already destroys ≈48% of naming. This is precisely the standing
+  any-direction-damage frame 0.5B is read under, now visible as a curve rather
+  than as a single cell — and it is why 0.5B is not gate-bearing.
+
+### The dose curve: a dimmer with a steep knee, and it softens with scale
+
+Naming and mean concept mass under partial removal at the late third (primed arm;
+λ = 0 is `clean` and λ = 1 is `primed_late`, both reused not re-measured; mass
+scoped per D13/F2 to the 22 / 24 / 21 gated items whose bare spelling is
+single-token):
+
+| λ | 0.5B naming (mass) | 1.5B naming (mass) | 3B naming (mass) |
+|---|---|---|---|
+| 0 | 28/28 (0.833) | 34/34 (0.913) | 32/32 (0.942) |
+| 0.25 | 13/28 (0.362) | 20/34 (0.594) | 21/32 (0.782) |
+| 0.5 | 0/28 (0.022) | 3/34 (0.115) | 10/32 (0.342) |
+| 0.75 | 0/28 (0.001) | 1/34 (0.037) | 4/32 (0.197) |
+| 1 | 0/28 (0.000) | 0/34 (0.017) | 3/32 (0.120) |
+
+- **Fact — it is a dimmer, not a step function.** KICKOFF's open question is
+  answered descriptively: partial removal produces intermediate naming rates and
+  intermediate probability mass at every subject. Nothing here behaves like a
+  binary switch that flips at some threshold.
+- **Fact — the knee is steep, and it moves right with scale.** Interpolating the
+  half-mute point on the grid gives λ ≈ **0.23 / 0.29 / 0.36** (0.5B / 1.5B /
+  3B); the graded mass channel tells the same story more smoothly (at λ = 0.5
+  the mass retained is 0.022 / 0.115 / 0.342). Larger models need more of the
+  direction removed before the word goes. *(The half-mute figures are linear
+  interpolations between two grid points, not measurements — the grid is frozen
+  at five values and nothing here re-fits it.)*
+- **Texture — the two channels agree, which is the point of having both.** The
+  binary rate can only step; the mass channel can move continuously. They fall
+  together here, so the dimmer reading does not rest on the binary readout alone.
+
+### The pre-registered strata did their jobs
+
+- **S1 (hard-switch core)** behaved as a core should: 5/5 concepts at 0/3 naming
+  under `primed_late` on every subject.
+- **S2 (readout-unlocked)** — the four concepts the widened oracle exists to make
+  visible — gated 6 / 10 / 11 items across the three subjects and muted at the
+  late tier throughout (`primed_late` 0 on all four at every subject). The owned
+  convention holds up: the direction is keyed to the leading-space unembed row,
+  the oracle scores the bare spelling, and the mute is measured all the same.
+- **S3 (leaky switch)** replicated its own leak: Egypt at 3B names 2/3 under
+  `primed_late` and October 1/2 — the two cells the stratum was selected for.
+- **S4 (the non-specific anti-example)** did what it was pre-registered to do,
+  which is to fail the pattern. `silver` at 1.5B gates 3/3 and reads
+  `primed_late` 0/3 **and `control_late` 0/3** — the control direction mutes it
+  too — while its `primed_early` is 1/3 and `primed_middle` 0/3, i.e. silver is
+  damaged at *every* depth. Having one concept in the subset that is neither
+  concept-specific nor late-localized is what keeps the aggregate honest: the
+  pooled curves above include it.
+
+### Honest limits (carried forward, plus one new)
+
+M1's honesty rows all carry over: within-concept clustering means item-level
+pooling overstates independence; the tier arms are paired but scored with an
+independent-samples Newcombe, which widens the interval and so can only cost
+power; MIN_N applies to raw n. **New in M2:** the same 28 / 34 / 32 gated items
+appear in *every* window and dose cell, so the curves are within-item correlated
+across positions. That is fine for the pairwise gate — which compares two arms on
+one shared item set — and it is one more reason the map itself is reported as
+descriptive and never gated on. Per-concept-per-window cells are n ≤ 3 and are
+never verdict-bearing.
+
+**The tier arms do not ablate the same number of layers — added at this PR's
+round-1 review (F2), and it belongs in the gate's own honesty list.** The ported
+`sub_band_thirds` convention (S4b's D28, unchanged) gives the **late** tier the
+band's remainder, so the thirds are 4 / 4 / **5** at 0.5B, 4 / 4 / **6** at 1.5B
+and 6 / 6 / **7** at 3B. The localization gate therefore compares a 4-layer
+ablation against a 6-layer one at 1.5B: what differs between the arms is not
+purely *depth*, it is depth **and** intervention size (50% more layers at 1.5B).
+D12 already treats layer count as a dose dimension when it rejects the
+single-layer sweep for "under-dosing the intervention" — so the confound was
+understood in one place and unowned in the place it bites.
+
+What retires it is already in this milestone, and it is worth being explicit that
+the check is the *descriptive* half rescuing the gated half: the sliding window
+holds width **constant**, so equal-width comparisons are available at every
+depth. At 1.5B the width-6 window at L11–L16 scores **25/34** against the
+width-6 late window's **0/34**; at 3B the width-7 L12–L18 scores 29/32 against
+3/32. The late position mutes and a same-width mid-depth position does not, so
+the conclusion does not rest on the extra layers. But the *gate* was computed on
+unequal-width arms, and that is now stated rather than implied. (README's "the
+identical removal at the early or middle third" was corrected in the same pass —
+the removal is at the same strength, not over the same number of layers.)
+
+**Why `m2_depth.GATE_WORDING` was not amended to say so.** It is byte-frozen with
+three subjects' artifacts already produced under it, and this project's standing
+rule is that editing a milestone's gate wording forces a full re-run of that
+milestone. The M1 precedent (PR #3's F5–F7) is to record the correction in the
+brief and carry it into the **next** milestone's frozen wording, which is what
+M3 inherits. The numbers here are unaffected either way: the caveat is a
+disclosure, not a re-scoring.
+
+One further bound worth stating plainly: the window sweep's **above-band coverage
+is structurally thin** (1–2 layers of room, owned in the extraction table before
+the run), so "the switch is late" is well-measured on its early side and only
+weakly probed on its far side. No window is ever *fully* above the band — the
+deepest one at 3B, L28–L34, still has 5 of its 7 layers inside it and reaches
+only two layers past the ceiling. It mutes slightly *more* than the gate cell
+(1/32 vs 3/32), which is suggestive of the switch sitting at or beyond the
+band's top edge rather than in its middle, but it rests on a single position and
+the sweep structurally cannot go further.
 
 ## What M2 does NOT decide
 

@@ -3,53 +3,94 @@
 _Last updated: 2026-07-28_
 
 ## What was just done
-- **M2 start-of-stage brief written and frozen** (2026-07-28, PR #5,
-  `docs/M2-BRIEF.md`). It opened with the oracle question M1 owed, and Kyle
-  froze all six decisions: **D9 (b)** greedy-span prefix oracle
-  (case-insensitive, word-boundary, deterministic string rule on the recorded
-  3-token span; first-token recorded beside every cell); **D10 (a)** offline
-  M1 re-score as a labelled reanalysis beside the standing numbers; **D11 (a)**
-  the shared stratified 12-concept subset (Brazil, Canada, China, Egypt,
-  France, Japan, Jupiter, Mars, October, piano, silver, violin); **D12 (b)**
-  tier gate cells + width-late-third stride-2 sliding sweep incl. outside-band
-  probes; **D13 (a)** primed-only dose at the late third, λ ∈ {0,.25,.5,.75,1};
-  **D14** as written (LATE-LOCALIZED gate wording, degeneracy re-freeze
-  carrying PR #4's F3, the M1-cell cross-check, verdict precedence).
-- Every number in the brief was recomputed this session from the committed
-  `results/m1-battery-*.json` and the three Qwen2.5 tokenizers (they agree
-  exactly; max bare form = 3 tokens — what makes the offline re-score sound).
+
+**M2 built, run, and PASSED** (2026-07-28) — localization + dose, per the frozen
+`docs/M2-BRIEF.md` (D9–D14). Landed in one PR with its docs spine:
+
+- **`oracle.py`** — D9(b)'s greedy-span prefix rule frozen as code (shared
+  byte-for-byte by the reanalysis and the runner, so the two can never diverge).
+- **`m1_rescore.py`** — D10(a)'s labelled reanalysis of M1 under the widened
+  oracle: a pure function of the committed M1 JSONs, no model run, which
+  refuses to write unless it first reproduces M1's *published* first-token
+  numbers exactly. Emits `results/m1-rescore-*.json` + a REANALYSIS-labelled
+  addendum in M1-BRIEF. Carries PR #4's F5 per-source split under both oracles.
+- **`m2_depth.py` + `m2_verdict.py`** — the M2 runner cut from `m1_battery.py`
+  (never `m0_anchor.py`), with its own frozen `GATE_WORDING`, the 12-concept
+  subset, tier cells, the late-anchored stride-2 window sweep, the new partial-λ
+  operator with a generalized read-back, and the M1 cross-check graded before
+  any new cell. Plus `test_m2.py` (~100 cases); full suite 187 → green.
+
+**Results: LATE-LOCALIZED at 1.5B AND 3B.** Early−late +0.853 [+0.668, +0.936]
+and middle−late +0.794 [+0.603, +0.897] at 1.5B; +0.750 [+0.531, +0.857] and
++0.688 [+0.463, +0.812] at 3B. 0.5B also LATE-LOCALIZED, off-gate, but on a
+raised damage floor. The M1 cross-check re-certified the instrument bit-for-bit
+on every run (108/108 cells, `concept_mass` exact, ×3 subjects). No degeneracy
+fired anywhere. Every pre-registered gated n (28 / 34 / 32) came in exactly.
+
+**The two descriptive findings the gate did not ask for:** the window curve has
+a *floor* of depth-nonspecific damage that shrinks with scale (≈48% of naming
+lost at 0.5B for windows entirely outside the band, ~0–6% at 3B), with a sharp
+late cliff at 0.5B/1.5B that becomes a ramp at 3B; and the dose curve is a
+**dimmer, not a step**, with the half-mute point sliding right with scale
+(λ ≈ 0.23 / 0.29 / 0.36).
+
+Riding follow-ups all landed: PR #4's F4 (widened `torch.load` except tuple),
+F5, F6, F7 (`forbidden_forms` keys validated against the roster), F11; PR #5's
+F13 (wall-clock restated 1.3×/1.4×/1.6×), F14 (the span-fill clause replaced by
+the inspection-based qualifier — six cells fill the span, truncation cannot rule
+out a continuation, so the residual is *owned*, not excluded), and the stale
+`# bare form — M1 convention` comment in `m1_battery.py`.
 
 ## Where things stand
-Chain: ~~M0~~ → ~~M1~~ → **M2 (brief frozen; build next)** → M3; S1/S2
-stretches optional. Full D9–D14 DECISIONS.md entries land with the M2 code PR,
-per the M0/M1 pattern.
+
+Chain: ~~M0~~ → ~~M1~~ → ~~M2~~ → **M3 (specificity matrix — brief first)**;
+S1/S2 stretches optional. `docs/DECISIONS.md` now runs D1–D14.
 
 ## Immediate next move
-**Cut M2's code from the frozen brief** (fresh build session):
 
-1. `m1_rescore.py` — D10 (a): pure function of the committed M1 JSONs, no
-   model run; emits `results/m1-rescore-*.json` + a REANALYSIS-labelled
-   addendum in M1-BRIEF's results; carries PR #4 F5's per-source split.
-2. The M2 runner, cut from `m1_battery.py` (never `m0_anchor.py`, which stays
-   certified and un-editable): frozen GATE_WORDING first, wrong-arm INVALID,
-   `--dry-run`, `--limit` smoke; subset loader; window edits; partial-λ
-   operator (new code, generalized read-back, unit-covered); the M1-cell
-   cross-check graded before any new cell.
-3. Follow-ups riding along — from PR #4's review: F4, F5 (in the rescore
-   artifact), F6, F7, F11. From PR #5's review (full disposition table in the
-   PR #5 comment): F13 — restate the wall-clock M1-comparison range as
-   1.3–1.6×; F14 — replace the brief's "zero such cells" span-fill clause with
-   the inspection-based qualifier (six recorded cells fill the span, each a
-   completed word on inspection; the truncated recording cannot rule out a
-   longer continuation); and correct the stale "# bare form — M1 convention"
-   comment in `m1_battery.py` (false for the 26 multi-token-bare words; PR #5
-   review F3 triage).
+**Write the M3 start-of-stage brief** (`docs/M3-BRIEF.md`), per the per-stage
+rhythm: plain-terms explanation, design extraction from S4/S4b verbatim, then
+decisions for Kyle to freeze — code only after that. M3's gate per KICKOFF:
+diagonal suppression > off-diagonal collateral, CI-clean at 1.5B AND 3B.
+
+**Three carry-forwards for M3's brief, from M2's round-1 adversarial review**
+(all accepted, all recorded in the PR comment; none blocks the merge):
+
+1. **The tier-width caveat belongs in M3's frozen `GATE_WORDING`** (review F2).
+   `sub_band_thirds` gives the late tier the band remainder, so M2's gate
+   compared a 4-layer ablation against a 6-layer one at 1.5B — depth *and*
+   intervention size differ. M2 owns it in its brief's Honest limits and shows
+   the equal-width window cells that retire it, but M2's own wording could not
+   be amended post-run (byte-frozen with its artifacts). If M3 uses tiers, its
+   wording should say this up front.
+2. **Pin the "3 tokens ≥ longest bare form" premise as a run-time bar** (F5).
+   It carries D10(a)'s whole soundness argument and no test reproduces it. The
+   suggested shape: in the runner's `main()`, where the tokenizer is already
+   loaded, require every planned concept's bare form to tokenize to
+   ≤ `SPAN_TOKENS` or exit INVALID. This matters the moment M3 touches the
+   roster — a 4-token bare form would be silently unscoreable.
+3. **Decide the oracle's boundary class if M3 adds non-ASCII vocabulary** (F4).
+   `oracle._BOUNDARY` is ASCII-only, so a non-ASCII continuation would score as
+   a hit. No live path today; switching to `\w` flips `_` and is a rule change,
+   so it needs a decision rather than a fix.
+
+Also carried, non-blocking (F6): `m2_depth.main()` loads the checkpoint before
+validating inputs (inherited from `m1_battery.py`, so `--dry-run` and wrong-arm
+exits still pay a full load), and `validate()` parses the M1 results JSON only
+to discard it, so `main()` parses it twice.
+
+M3's own first decision, per M2's "what M2 does not decide": whether M3 reuses
+M2's 12-concept subset or re-derives one from M1 + M2 evidence. M2 gives it new
+evidence to work with — a per-concept late-tier map on 12 concepts, a named
+non-specific anti-example (`silver`), and a leak stratum that replicated
+(Egypt, October at 3B).
 
 Standing constraints unchanged: certified environment = `mps` + torch 2.13.0 +
-transformers 5.13.1 (off it: NOT A RESULT); editing `m1_battery.GATE_WORDING`
-is forbidden without a full re-run (M2 freezes its *own* wording instead —
-D14); adversarial review before any merge.
+transformers 5.13.1 (off it: NOT A RESULT); `m0_anchor.py` stays certified and
+un-editable, and `m1_battery.GATE_WORDING` / `m2_depth.GATE_WORDING` are
+byte-frozen with their artifacts (editing either forces a full re-run of that
+milestone); adversarial review before any merge.
 
 ## Open questions / blockers
-- None. The oracle question is resolved (D9b frozen); the build is fully
-  specified by `docs/M2-BRIEF.md`.
+
+- None. M2 is closed; M3 is a fresh brief with no inherited blocker.

@@ -123,3 +123,79 @@ in a decision, before the next run, with the old numbers still reported.
 3. Planets scored 0 gated items on all three subjects. Does that mean the models
    don't have an off-switch for planets? What evidence in the run answers this,
    and which direction does the readout's bias push the control arm?
+
+## M2 — localization + dose (2026-07-28)
+
+**A pre-registration you can *compute* is worth more than one you can only
+promise.** M2's expected-power section didn't project its sample sizes — it
+*derived* them. Gating depends only on the clean arm, which is deterministic and
+was already recorded by M1, so the brief could state "the gated ns will be 28,
+34, 32" before any run. They came in at 28, 34, 32. That flips the usual
+relationship: a disagreement wouldn't have been a power surprise to explain
+away, it would have been a cross-check failure meaning the instrument had
+drifted. When a number is knowable in advance, pinning it turns a hope into a
+tripwire.
+
+**Changing a measurement mid-project is legitimate exactly once you make it a
+decision.** M1 discovered its readout was the thing limiting its reach (26 of 60
+words invisible to a one-token oracle). The tempting move — rescore M1 and
+report the better numbers — is the illegitimate one, because you'd be choosing a
+measurement *after* seeing what it does to your result. The legitimate move is
+what D9/D10 did: freeze the new oracle in a decision before any new run, keep
+the old numbers as published, and put the re-score beside them under a
+REANALYSIS label. Same arithmetic, completely different epistemics.
+
+**Make the reanalysis prove itself against the analysis.** `m1_rescore.py`
+recomputes M1's *published* first-token numbers from the same file and refuses to
+write anything unless they match exactly. It costs three lines and it means the
+widened numbers can't be an artifact of a parsing bug — a reanalysis that can't
+reproduce the analysis it sits beside is not evidence of anything.
+
+**Refactors are safe when a bit-for-bit check is watching.** M2 precomputes the
+lens vectors once per (layer, word) instead of rebuilding them per item — a real
+change to hot code. It needed no separate argument for safety: the M1 cross-check
+compares 108 reused cells bit-for-bit, so if the caching had moved a single
+value, the run would have exited INVALID before reading a new cell. A strong
+enough invariant lets you refactor without holding your breath.
+
+**A guard that can't fire isn't a guard.** M1's degeneracy rule listed `clean`
+among the arms whose collapse would sink the verdict. It was inert — `clean` is
+the *gate* arm, so on the gated cell its answers are correct by construction and
+can't concentrate on one token. M2's run makes that visible: the wrong-opening
+share on `clean` is exactly 0.000 on all three subjects. The related lesson is
+that widening the oracle broke the old guard's *meaning* too — under a span rule,
+a good arm legitimately concentrates its first tokens on fragments that open
+correct answers, so the guard had to be re-aimed at the arm's *wrong* answers
+only.
+
+**Pre-register something you expect to fail.** The subset deliberately included
+`silver`, chosen because M1 showed its *control* direction muted it too. It
+behaved exactly that badly (1.5B: primed_late 0/3 **and** control_late 0/3,
+damaged at every depth). Keeping a known counter-example inside the pooled
+average is what stops the aggregate from being a curated one.
+
+**The map's shape was the payoff, not the gate.** The gate only asked "is late
+different from early and middle?". The window sweep answered questions nobody
+gated on: the effect has a *floor* of depth-nonspecific damage that shrinks with
+scale (≈48% of naming at 0.5B, ~0–6% at 3B for out-of-band windows), the
+transition is a cliff at 1.5B but a ramp at 3B, and partial removal produces
+intermediate naming — a dimmer, not a step, with the half-mute point sliding
+right with model size. Descriptive results don't need a gate to be the most
+interesting thing in the milestone; they need to be clearly labelled as
+descriptive.
+
+### Recall questions
+
+1. The M2 brief predicted gated ns of 28 / 34 / 32 *before* the runs, and the
+   runs returned 28 / 34 / 32. Why was that prediction possible at all — and if
+   a run had come back with 33 instead of 34, what would the correct response
+   have been, and why is it *not* "note the power difference and continue"?
+2. M2 changed the oracle that decides whether the model "said the word", which
+   directly changes every naming number. Two things kept that from being
+   result-shopping. Name both — and explain why the M1 cross-check still worked
+   as a check even though the two milestones score cells with different oracles.
+3. At 0.5B, naming under the late-window ablation is 0/28 while windows entirely
+   outside the band still leave only ~15/28 intact. At 3B the out-of-band
+   windows leave 30–32/32 intact. Both subjects returned LATE-LOCALIZED. What
+   does the 0.5B curve tell you that its verdict alone does not, and which
+   pre-declared frame does it land in?
