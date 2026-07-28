@@ -90,9 +90,13 @@ either gate-bearing subject. A pre-committed rule you haven't sanity-checked is
 just a guess with better manners.
 
 **The lesson M1 actually taught: your readout decides what you can see.** The
-oracle is the greedy *first token*, so a concept is only scorable if its spelling
-at the answer position is one token. 26 of 60 roster words aren't: the model
-answers "Mercury" but emits `'Mer'` first, and the gate records a miss. Whole
+oracle is the greedy *first token*, so a concept is scorable only when its
+spelling at the answer position is one token. For 26 of 60 roster words the bare
+spelling isn't: the model answers "Mercury" but emits `'Mer'` first, and the gate
+records a miss. (Not *never* — the same word is one token *with* a leading space,
+so those 26 do occasionally gate when the model emits that form; `jade` did, 1–2
+times per subject. The bias is heavy, not absolute, and saying so is the
+difference between a caveat and an overclaim.) Whole
 categories — planets, musical instruments — scored zero gated items on all three
 subjects for this reason alone. The finding survived (the contrast is computed
 *inside* the gated set, and the bias runs *against* the claim), but the claim's

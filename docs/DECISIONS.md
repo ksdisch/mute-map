@@ -55,6 +55,14 @@ failed the single-token filter — an owned deviation, declared in the frozen
 file's `new_list_words` and in M1-BRIEF's deviations table. Every one of the 60
 words was re-verified single-token on all three Qwen2.5 tokenizers at freeze
 time (0 dropped by the prefilter, confirmed by each subject's dry-run).
+**What "single-token" means here, precisely** (review F8): the prefilter's test
+is `harness.token_forms(w, tok)` non-empty — i.e. **the bare form *or* the
+leading-space form** is one token. All 60 pass *that* bar, which is why 0 items
+were dropped. It is a weaker property than the one the greedy-first-token oracle
+actually needs (a single-token **bare** form), which only 34 of the 60 have —
+the gap M1's results section then had to report. The two senses are distinguished
+everywhere they appear from this decision onward.
+
 Uniform category size is what makes the per-category map legible; the
 naming-only competence gate, not list authorship, does the honest filtering.
 Each concept lives in exactly one category (spider stays in animals per S4

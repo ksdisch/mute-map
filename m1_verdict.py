@@ -68,6 +68,15 @@ def check_is_a_result(path: str, run: dict) -> None:
         fail_invalid(
             f"{path} carries {crosscheck['n_mismatches']} anchor cross-check mismatches"
         )
+    # Review F1: a clean cross-check that compared a *subset* of the reused items is
+    # not a re-certification. The expected counts travel in the artifact itself
+    # rather than being re-bound here, so this bar cannot drift from the runner's.
+    checked, expected = crosscheck.get("items_checked"), crosscheck.get("items_expected")
+    if expected is None or checked != expected:
+        fail_invalid(
+            f"{path} cross-checked {checked} of {expected} reused items — a subset "
+            "cross-check cannot feed the verdict (D5a)"
+        )
 
 
 def main() -> None:

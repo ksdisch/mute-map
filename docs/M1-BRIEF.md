@@ -324,9 +324,12 @@ be scored if its spelling at the answer position is a single token. **26 of the
 60 roster words have a multi-token bare (no-leading-space) form** — Mars, Venus,
 Jupiter, Mercury, Neptune, piano, guitar, violin, trumpet, flute, platinum,
 copper, bronze, pearl, jade, sheep, chicken, beetle, butterfly, mosquito and
-others — and at the answer position the model spells them without the leading
-space. Its first token is then a fragment (`'Mer'`, `'Viol'`, `'Fl'`), which the
-gate scores as a miss. This is the general form of S4's owned "The …"
+others — and at the answer position the model *usually* spells them without the
+leading space. Its first token is then a fragment (`'Mer'`, `'Viol'`, `'Fl'`),
+which the gate scores as a miss. Usually, not always: the same words are single
+tokens *with* a leading space, so one occasionally gates when the model emits
+that form — `jade` gated 1/2/1 times across the three subjects on a clean greedy
+of `' jade'`. The bias is heavy, not absolute. This is the general form of S4's owned "The …"
 miss-counting caveat; at 20 concepts it was a nuisance, at 60 it removes half
 the roster.
 

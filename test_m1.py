@@ -359,7 +359,20 @@ def _anchor_file(tmp_path, cells=None):
 def test_crosscheck_passes_on_an_exact_reproduction(tmp_path):
     problems, texture = anchor_crosscheck([_record()], _anchor_file(tmp_path))
     assert problems == []
-    assert texture == {"items_checked": 1, "cells_checked": 3, "mass_cells_equal": 3}
+    assert texture == {
+        "items_checked": 1, "items_expected": REUSED_ITEMS,
+        "cells_checked": 3, "cells_expected": REUSED_ITEMS * len(CONDITIONS),
+        "mass_cells_equal": 3,
+    }
+
+
+def test_crosscheck_reports_the_expected_counts_so_coverage_is_checkable(tmp_path):
+    """F1: '0 mismatches' only re-certifies the instrument if all 60 reused items
+    were actually compared, so the artifact must carry the expected counts —
+    and it must carry them as data, not as a constant re-bound by each consumer."""
+    _, texture = anchor_crosscheck([_record()], _anchor_file(tmp_path))
+    assert texture["items_expected"] == REUSED_ITEMS == 60
+    assert texture["items_checked"] < texture["items_expected"]  # a subset, and it says so
 
 
 def test_crosscheck_catches_a_flipped_produced_and_a_drifted_greedy_token(tmp_path):
@@ -528,6 +541,20 @@ def test_verdict_precedence_is_frozen():
     assert breadth_verdict(False, [], False, True).startswith("NOT A RESULT")
 
 
+def test_a_smoke_run_says_so_in_the_verdict_field_not_just_the_banner():
+    """F2: `--limit` is the project's other pre-declared not-a-result condition
+    (CLAUDE.md: '--limit is smoke, never a result'), and it must outrank every
+    other branch — including a certified environment with a holding contrast."""
+    assert breadth_verdict(True, [], False, True, limit=30) == (
+        "NOT A RESULT — smoke run (--limit 30)"
+    )
+    assert breadth_verdict(False, ["clean"], True, False, limit=1).startswith(
+        "NOT A RESULT — smoke run"
+    )
+    # and it must not perturb a real run: limit=None is the pre-fix behaviour
+    assert breadth_verdict(True, [], False, True, limit=None) == "BREADTH-SPECIFIC"
+
+
 def test_degeneracy_disposition_would_not_have_fired_on_the_anchor_subjects():
     """The disposition is pre-committed, so it must be checked against the data
     that already exists: on both gate-bearing anchors, neither comparison arm
@@ -552,7 +579,9 @@ def _run(verdict="BREADTH-SPECIFIC", fixed=("lion", "Mars"), hard=("lion",), **k
         "milestone": "M1",
         "smoke_limit": None,
         "environment": {"certified": True, "uncertified_reasons": []},
-        "anchor_crosscheck": {"n_mismatches": 0},
+        "anchor_crosscheck": {
+            "n_mismatches": 0, "items_checked": 60, "items_expected": 60,
+        },
         "competence": {"gate_greedy": 40, "items_run": 180},
         "naming_success_gated": {
             c: {"hits": 40 if c != "primed_late" else 0, "n": 40} for c in CONDITIONS
@@ -630,6 +659,13 @@ def test_prevalence_intersection_is_reported_as_texture(monkeypatch, tmp_path, c
          "NOT A RESULT"),
         ({"milestone": "M0"}, "not an M1 battery run"),
         ({"anchor_crosscheck": {"n_mismatches": 4}}, "cross-check mismatches"),
+        # F1: a clean cross-check over a SUBSET of the reused items is not a
+        # re-certification, and must not be able to feed the verdict either.
+        ({"anchor_crosscheck": {
+            "n_mismatches": 0, "items_checked": 59, "items_expected": 60,
+        }}, "cross-checked 59 of 60 reused items"),
+        ({"anchor_crosscheck": {"n_mismatches": 0, "items_checked": 60}},
+         "cross-checked 60 of None reused items"),
     ],
 )
 def test_a_run_that_is_not_a_result_cannot_feed_the_verdict(

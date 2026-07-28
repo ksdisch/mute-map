@@ -438,7 +438,9 @@ def anchor_crosscheck(records: list[dict], anchor_path: str) -> tuple[list[str],
             equal += ours["concept_mass"] == theirs["concept_mass"]
     return mismatches, {
         "items_checked": checked,
+        "items_expected": REUSED_ITEMS,
         "cells_checked": total,
+        "cells_expected": REUSED_ITEMS * len(CONDITIONS),
         "mass_cells_equal": equal,
     }
 
@@ -616,11 +618,23 @@ def descriptive_package(records: list[dict]) -> dict:
 
 
 def breadth_verdict(
-    certified: bool, degenerate_arms: list[str], underpowered: bool, holds: bool
+    certified: bool,
+    degenerate_arms: list[str],
+    underpowered: bool,
+    holds: bool,
+    limit: int | None = None,
 ) -> str:
     """The pre-committed verdict resolution, in its frozen precedence order: a
     run that is not a result outranks a degenerate comparison arm, which
-    outranks too little data, which outranks the contrast itself."""
+    outranks too little data, which outranks the contrast itself.
+
+    The project pre-declares **two** not-a-result conditions, and both belong
+    here so the verdict *field* says so and not merely the console banner
+    (review F2): an uncertified environment, and a `--limit` smoke run
+    (CLAUDE.md: "`--limit` is smoke, never a result").
+    """
+    if limit is not None:
+        return f"NOT A RESULT — smoke run (--limit {limit})"
     if not certified:
         return "NOT A RESULT — uncertified environment"
     if degenerate_arms:
@@ -728,6 +742,18 @@ def main() -> None:
             f"{anchor} on the certified environment — the instrument drifted (D5a); "
             "no new-concept cell was read"
         )
+    # Review F1: "0 mismatches" is only a re-certification if all 60 reused items
+    # were actually compared. An item lost to the single-token prefilter never
+    # reaches `records`, so it is invisible to the cell walk above — exactly the
+    # tokenizer/version drift D5(a) exists to catch. Coverage is a property of the
+    # run, not of the environment, so this bar is unscoped.
+    if args.limit is None and mass_texture["items_checked"] != REUSED_ITEMS:
+        fail_invalid(
+            f"anchor cross-check compared only {mass_texture['items_checked']} of "
+            f"{REUSED_ITEMS} reused items ({len(dropped)} item(s) dropped by the "
+            "single-token prefilter) — the frozen battery did not run as frozen, "
+            "so 0 mismatches is not a re-certification (D5a)"
+        )
     if mismatches:
         print(
             "  ^ recorded, NOT gate-bearing: bit-for-bit reproduction is a property "
@@ -766,6 +792,7 @@ def main() -> None:
         degenerate_arms,
         contrast["underpowered"],
         contrast["positive_and_ci_excludes_zero"],
+        args.limit,
     )
     contrast["verdict"] = verdict
 

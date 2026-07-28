@@ -86,7 +86,9 @@
   "mismatches": [],
   "n_mismatches": 0,
   "items_checked": 60,
+  "items_expected": 60,
   "cells_checked": 180,
+  "cells_expected": 180,
   "mass_cells_equal": 180
  },
  "smoke_limit": null,

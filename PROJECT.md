@@ -23,8 +23,10 @@ opens with the oracle question M1 surfaced (see below) before any M2 design.
   naming-only gate (K2) took 0.5B from n = 5 to n = 38 and the contrast is
   CI-clean. The lineage's "specificity emerges by scale" story weakens.
 - Unresolved — **The oracle bounds the map.** 26 of 60 roster words are
-  multi-token in bare form, so the greedy-first-token readout cannot score
-  them; planets and musical instruments gate 0 items on all three subjects.
+  multi-token in bare form, so the greedy-first-token readout can score them
+  only on the runs where the model happens to emit the leading-space form —
+  which it rarely does (those 26 contribute 1, 2 and 1 gated items at
+  0.5B/1.5B/3B); planets and musical instruments gate 0 items on all three.
   M1's breadth claim holds over the vocabulary the readout can see. Widening
   the oracle is a decision owed at M2, and any M1 re-scoring under it must be
   reported as a labelled reanalysis beside the pre-committed numbers.
