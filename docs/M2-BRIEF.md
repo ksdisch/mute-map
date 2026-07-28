@@ -530,11 +530,18 @@ Three things the curve says, each labelled for what it is:
   a single stride-2 step) and **noticeably more gradual at 3B**, which descends
   24 → 16 → 11 → 3 over four positions. Stride 2 localizes the 1.5B edge to
   ±2 layers: it sits between window starts L15 and L17.
-- **Fact — outside-band ablation is nearly free at 1.5B and 3B, and expensive at
-  0.5B.** Windows with no layer in the band at all leave 33/34 and 32/32 naming
-  intact at 1.5B and 3B, but only 14–15/28 at 0.5B. The concept direction is
-  redundant outside the band in the larger models; at 0.5B, deleting it anywhere
-  costs about half the naming.
+- **Fact — out-of-band ablation is cheap at 1.5B and 3B and expensive at 0.5B,
+  quoted as ranges.** Over the windows with no layer in the band at all, naming
+  survives **27–33 of 34 at 1.5B** (0–21% lost), **30–32 of 32 at 3B** (0–6%
+  lost) and **14–15 of 28 at 0.5B** (46–50% lost). *(Corrected at this PR's
+  round-1 review, F3: this bullet originally quoted the range for 0.5B but only
+  the single best window for 1.5B and 3B — "33/34 and 32/32" — which made the
+  contrast look cleaner than it is. 1.5B's worst out-of-band position, L3–L8,
+  loses 21% of naming: the same kind of depth-nonspecific damage the bullet
+  attributes mainly to 0.5B, an order of magnitude smaller but not absent.)*
+  The ordering is what survives the correction: the concept direction is largely
+  redundant outside the band at 3B, mildly load-bearing there at 1.5B, and
+  substantially load-bearing at 0.5B.
 - **Inference — 0.5B's LATE-LOCALIZED verdict sits on a raised floor.** Its late
   cell is a genuine cliff (0/28 against a ~15/28 baseline), so the localization
   shape is real there too. But 0.5B is the one subject where the "everywhere
@@ -603,6 +610,36 @@ across positions. That is fine for the pairwise gate — which compares two arms
 one shared item set — and it is one more reason the map itself is reported as
 descriptive and never gated on. Per-concept-per-window cells are n ≤ 3 and are
 never verdict-bearing.
+
+**The tier arms do not ablate the same number of layers — added at this PR's
+round-1 review (F2), and it belongs in the gate's own honesty list.** The ported
+`sub_band_thirds` convention (S4b's D28, unchanged) gives the **late** tier the
+band's remainder, so the thirds are 4 / 4 / **5** at 0.5B, 4 / 4 / **6** at 1.5B
+and 6 / 6 / **7** at 3B. The localization gate therefore compares a 4-layer
+ablation against a 6-layer one at 1.5B: what differs between the arms is not
+purely *depth*, it is depth **and** intervention size (50% more layers at 1.5B).
+D12 already treats layer count as a dose dimension when it rejects the
+single-layer sweep for "under-dosing the intervention" — so the confound was
+understood in one place and unowned in the place it bites.
+
+What retires it is already in this milestone, and it is worth being explicit that
+the check is the *descriptive* half rescuing the gated half: the sliding window
+holds width **constant**, so equal-width comparisons are available at every
+depth. At 1.5B the width-6 window at L11–L16 scores **25/34** against the
+width-6 late window's **0/34**; at 3B the width-7 L12–L18 scores 29/32 against
+3/32. The late position mutes and a same-width mid-depth position does not, so
+the conclusion does not rest on the extra layers. But the *gate* was computed on
+unequal-width arms, and that is now stated rather than implied. (README's "the
+identical removal at the early or middle third" was corrected in the same pass —
+the removal is at the same strength, not over the same number of layers.)
+
+**Why `m2_depth.GATE_WORDING` was not amended to say so.** It is byte-frozen with
+three subjects' artifacts already produced under it, and this project's standing
+rule is that editing a milestone's gate wording forces a full re-run of that
+milestone. The M1 precedent (PR #3's F5–F7) is to record the correction in the
+brief and carry it into the **next** milestone's frozen wording, which is what
+M3 inherits. The numbers here are unaffected either way: the caveat is a
+disclosure, not a re-scoring.
 
 One further bound worth stating plainly: the window sweep's **above-band coverage
 is structurally thin** (1–2 layers of room, owned in the extraction table before

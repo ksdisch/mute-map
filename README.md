@@ -29,8 +29,8 @@ here* — the anchor is dim-stage's own recorded result, not a paper claim.
 
 **Status: M2 PASSED 2026-07-28** — on a pre-registered 12-concept subset, the
 off-switch is **localized to the late third**: removing the concept direction
-there mutes the word, while the identical removal at the early or middle third
-leaves most naming intact (early − late naming +0.853 [+0.668, +0.936] at 1.5B
+there mutes the word, while removing that same direction at the early or middle
+third leaves most naming intact (early − late naming +0.853 [+0.668, +0.936] at 1.5B
 and +0.750 [+0.531, +0.857] at 3B; middle − late +0.794 and +0.688, all
 CI-clean). Two descriptive findings the gate never asked for: ablating the
 direction *outside* the band is nearly free at 3B (~0–6% of naming) but costs

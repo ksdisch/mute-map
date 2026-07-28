@@ -53,6 +53,32 @@ rhythm: plain-terms explanation, design extraction from S4/S4b verbatim, then
 decisions for Kyle to freeze — code only after that. M3's gate per KICKOFF:
 diagonal suppression > off-diagonal collateral, CI-clean at 1.5B AND 3B.
 
+**Three carry-forwards for M3's brief, from M2's round-1 adversarial review**
+(all accepted, all recorded in the PR comment; none blocks the merge):
+
+1. **The tier-width caveat belongs in M3's frozen `GATE_WORDING`** (review F2).
+   `sub_band_thirds` gives the late tier the band remainder, so M2's gate
+   compared a 4-layer ablation against a 6-layer one at 1.5B — depth *and*
+   intervention size differ. M2 owns it in its brief's Honest limits and shows
+   the equal-width window cells that retire it, but M2's own wording could not
+   be amended post-run (byte-frozen with its artifacts). If M3 uses tiers, its
+   wording should say this up front.
+2. **Pin the "3 tokens ≥ longest bare form" premise as a run-time bar** (F5).
+   It carries D10(a)'s whole soundness argument and no test reproduces it. The
+   suggested shape: in the runner's `main()`, where the tokenizer is already
+   loaded, require every planned concept's bare form to tokenize to
+   ≤ `SPAN_TOKENS` or exit INVALID. This matters the moment M3 touches the
+   roster — a 4-token bare form would be silently unscoreable.
+3. **Decide the oracle's boundary class if M3 adds non-ASCII vocabulary** (F4).
+   `oracle._BOUNDARY` is ASCII-only, so a non-ASCII continuation would score as
+   a hit. No live path today; switching to `\w` flips `_` and is a rule change,
+   so it needs a decision rather than a fix.
+
+Also carried, non-blocking (F6): `m2_depth.main()` loads the checkpoint before
+validating inputs (inherited from `m1_battery.py`, so `--dry-run` and wrong-arm
+exits still pay a full load), and `validate()` parses the M1 results JSON only
+to discard it, so `main()` parses it twice.
+
 M3's own first decision, per M2's "what M2 does not decide": whether M3 reuses
 M2's 12-concept subset or re-derives one from M1 + M2 evidence. M2 gives it new
 evidence to work with — a per-concept late-tier map on 12 concepts, a named

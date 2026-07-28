@@ -654,6 +654,45 @@ def test_the_gate_wording_is_frozen_as_code_and_names_its_own_departures():
     assert "drops `clean` from the dispositive list" in m2_depth.GATE_WORDING["degeneracy"]
 
 
+def test_every_published_artifact_carries_the_wording_it_was_produced_under():
+    """Round 1 review F1. The guardrail is "wording included ... written verbatim
+    into the results JSON so prose and code can never drift" — but it was only
+    ever *enforced* for M1's artifacts (the test below). The rescore artifacts
+    were generated, then `ORACLE_WORDING` was corrected for review F14, and the
+    artifacts silently kept publishing the retracted sentence. Nothing detected
+    it because nothing was looking. Both directions are now pinned, so a future
+    wording edit fails the suite instead of orphaning the artifacts it governs."""
+    for subject in SUBJECTS:
+        rescore = json.load(open(f"results/m1-rescore-{subject}.json"))
+        assert rescore["oracle_wording"] == oracle.ORACLE_WORDING, subject
+        depth = json.load(open(f"results/m2-depth-{subject}.json"))
+        assert depth["protocol"]["gate_wording"] == m2_depth.GATE_WORDING, subject
+
+
+def test_the_late_tier_is_wider_than_the_arms_it_is_compared_against():
+    """Round 1 review F2, pinned so the confound is a known quantity rather than
+    an unstated one. `sub_band_thirds` gives the late tier the band's remainder,
+    so the localization gate compares a 4-layer ablation against a 6-layer one at
+    1.5B — intervention *size* differs between the arms, not only depth. The
+    equal-width sliding window is what retires the objection empirically (it is
+    descriptive, never gating); see the brief's Honest limits."""
+    widths = {}
+    for n_layers, band in ((24, range(9, 22)), (28, range(11, 25)), (36, range(14, 33))):
+        thirds = m2_depth.sub_band_thirds(list(band))
+        widths[n_layers] = {t: len(thirds[t]) for t in TIERS}
+        assert widths[n_layers]["late"] > widths[n_layers]["early"], n_layers
+        assert widths[n_layers]["early"] == widths[n_layers]["middle"], n_layers
+    assert widths[28] == {"early": 4, "middle": 4, "late": 6}
+    # and the equal-width check that retires it: a mid-depth window of the SAME
+    # width as the late third leaves naming largely intact at 1.5B
+    run = json.load(open("results/m2-depth-qwen2.5-1.5b-instruct.json"))
+    by_name = {w["name"]: w for w in run["window_map"]}
+    late = next(w for w in run["window_map"] if w["is_gate_cell"])
+    mid = by_name["window_L11-L16"]
+    assert len(mid["layers"]) == len(late["layers"]) == 6
+    assert mid["cell"]["hits"] == 25 and late["cell"]["hits"] == 0
+
+
 def test_m1s_gate_wording_stays_byte_frozen_with_m1s_artifacts():
     """Editing `m1_battery.GATE_WORDING` would force a full M1 re-run, so M2
     freezes its own instead. This pins that M1's was not quietly amended."""
