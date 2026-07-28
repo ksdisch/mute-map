@@ -22,11 +22,11 @@ characterized here.* The anchor is our own S4b numbers (dim-stage
 
 ## Where we are
 
-Scaffolded 2026-07-27. **Next: M0 — port + anchor gate** (port the
-projection-removal operator + band definitions from dim-stage, source lens
-artifacts with SHA256 provenance, re-run S4b's core cells; gate = shared cells
-reproduce exactly or the port is INVALID). M0's start-of-stage brief comes first,
-per the rhythm.
+**M0 PASSED (2026-07-27):** the ported instrument reproduced dim-stage's
+recorded S4b JSONs bit-for-bit, ×3 subjects (0 mismatches over 840 cells each;
+see `docs/M0-BRIEF.md` results). `m0_anchor.py` is certified post-gate — cut
+new runners from it, never edit it. **Now: M1 — breadth battery**
+(`docs/M1-BRIEF.md`; decisions D4–D8 freeze before items or code).
 
 ## How to run
 
@@ -38,6 +38,12 @@ per the rhythm.
   dim-stage copies, decision K3; provenance recorded in M0's brief).
 - No API keys, no `.env` — everything local. Models pull from HuggingFace on
   first use.
+- **Anchor re-certification** (after touching `harness.py`, `intervention.py`,
+  `subject.py`, or the environment pins): the standing `m0_port_gate.py --all`
+  compares two committed files and is tautological on its own. First regenerate
+  the left side — `uv run python -u m0_anchor.py --model-id <id> --lens
+  lenses/<file>.pt` per subject, rewriting `results/anchor-*.json` — then run
+  `uv run python m0_port_gate.py --all`.
 
 ## Methodology guardrails (load-bearing — do not drift)
 
