@@ -27,8 +27,10 @@ pre-registered gates frozen as code before any run):
 **The honest framing:** an effect *found during a replication, characterized
 here* — the anchor is dim-stage's own recorded result, not a paper claim.
 
-**Status: scaffolded 2026-07-27 — M0 next.** Models: Qwen2.5-0.5B/1.5B/3B-Instruct,
-local MPS, forward-only; core chain $0.
+**Status: M0 PASSED 2026-07-27** — ported instrument certified bit-for-bit
+against dim-stage's recorded S4b results, ×3 subjects (0 mismatches over 840
+cells each) — **M1 (breadth) in progress.** Models:
+Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS, forward-only; core chain $0.
 
 Full brief: [`docs/KICKOFF.md`](docs/KICKOFF.md). The 12-idea backlog this was
 picked from: dim-stage
