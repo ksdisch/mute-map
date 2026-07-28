@@ -532,8 +532,9 @@ Three things the curve says, each labelled for what it is:
   ±2 layers: it sits between window starts L15 and L17.
 - **Fact — out-of-band ablation is cheap at 1.5B and 3B and expensive at 0.5B,
   quoted as ranges.** Over the windows with no layer in the band at all, naming
-  survives **27–33 of 34 at 1.5B** (0–21% lost), **30–32 of 32 at 3B** (0–6%
-  lost) and **14–15 of 28 at 0.5B** (46–50% lost). *(Corrected at this PR's
+  survives **27–33 of 34 at 1.5B** (3–21% lost), **30–32 of 32 at 3B** (0–6%
+  lost) and **14–15 of 28 at 0.5B** (46–50% lost). Only 3B has a genuinely free
+  out-of-band position (two windows at 32/32); 1.5B's best still costs one item. *(Corrected at this PR's
   round-1 review, F3: this bullet originally quoted the range for 0.5B but only
   the single best window for 1.5B and 3B — "33/34 and 32/32" — which made the
   contrast look cleaner than it is. 1.5B's worst out-of-band position, L3–L8,
