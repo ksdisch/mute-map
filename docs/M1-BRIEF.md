@@ -86,6 +86,11 @@ candidate roster below was checked against the shared Qwen2.5 tokenizer
 
 ## Decisions to freeze (Kyle picks; recommendations flagged)
 
+*Frozen (Kyle, 2026-07-27): D4 (b) 10 × 6 with minimal top-up; D5 (a) 3 per
+concept + S4 reuse; D6 (a) item-level greedy; D7 (a) no per-concept verdicts;
+D8 (a) widen the comparison. Full DECISIONS.md entries land with the M1 code
+PR, per the M0 pattern.*
+
 ### D4 — The roster (categories × concepts)
 
 - **(a) Measured-only, uneven categories.** Every concept from a shipped S2/M3
