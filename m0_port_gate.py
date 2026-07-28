@@ -40,7 +40,10 @@ MAX_PRINTED = 20
 def load(path: str) -> dict:
     if not os.path.exists(path):
         fail_invalid(f"{path} missing")
-    return json.load(open(path))
+    try:
+        return json.load(open(path))
+    except json.JSONDecodeError as exc:
+        fail_invalid(f"{path} is not valid JSON: {exc}")
 
 
 def config_mismatches(ours: dict, ref: dict) -> list[str]:
@@ -119,7 +122,9 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if args.all == bool(args.ours or args.reference):
+    if bool(args.ours) != bool(args.reference):
+        fail_invalid("--ours and --reference must be given together")
+    if args.all == bool(args.ours and args.reference):
         fail_invalid("pass either --all or both --ours and --reference")
     pairs = (
         [

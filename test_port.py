@@ -4,14 +4,16 @@ The heavyweight proof that the port is faithful is the M0 anchor gate itself
 (bit-for-bit vs dim-stage's recorded JSONs); these tests pin the pure-geometry
 and pure-logic pieces so a regression is caught in milliseconds, not a model run.
 """
-import copy
 import json
+import sys
 
 import pytest
 import torch
 
+import m0_anchor
+import m0_port_gate
 from harness import FROZEN_BANDS, proportional_band, rate_cell, token_forms
-from intervention import ablate, jlens_vector
+from intervention import ablate, edit_residuals, jlens_vector
 from m0_anchor import ITEMS_PATH, load_items, sub_band_thirds
 from m0_port_gate import SUBJECTS, compare_pair
 
@@ -124,12 +126,112 @@ def test_rate_cell_shape():
     assert 0.0 <= lb < 0.3 < ub <= 1.0
 
 
-# --- frozen items -------------------------------------------------------------
+# --- frozen items + INVALID guards (ported from dim-stage test_avoidance.py) --
 
 def test_frozen_items_load_and_pass_guards():
     items = load_items(ITEMS_PATH)
     assert len(items) == 60
     assert len({i["name"] for i in items}) == 60
+    assert len({i["concept"] for i in items}) == 20
+
+
+def test_load_items_guards_shape_and_leakage(tmp_path):
+    bad = tmp_path / "items.json"
+    bad.write_text(json.dumps({"items": [{"name": "x"}]}))
+    with pytest.raises(ValueError, match="drifted"):
+        load_items(str(bad))
+
+    leaky = {
+        "items": [
+            {
+                "name": f"i{k}", "category": "c", "noun": "thing",
+                "concept": "France", "control": "Canada",
+                "clue": "A sentence about France." if k == 0 else "A clean clue.",
+            }
+            for k in range(60)
+        ]
+    }
+    bad.write_text(json.dumps(leaky))
+    with pytest.raises(ValueError, match="contains 'France'"):
+        load_items(str(bad))
+
+
+def test_sub_band_thirds_ordered_slices():
+    band = list(range(9, 22))  # 0.5B: 13 layers
+    thirds = sub_band_thirds(band)
+    assert thirds["early"] == band[:4]
+    assert thirds["middle"] == band[4:8]
+    assert thirds["late"] == band[8:]
+
+
+def test_concept_ablation_edit_zeroes_exactly_the_concept_coordinate():
+    # Identity Jacobian + basis-vector unembedding row: the edit must zero
+    # coordinate 1 at every position and leave every other coordinate exact.
+    d = 8
+    u = torch.zeros(d)
+    u[1] = 1.0
+    edits = m0_anchor.concept_ablation_edits({0: torch.eye(d)}, [0], u)
+    h = torch.randn(1, 5, d, generator=torch.Generator().manual_seed(0))
+    out = edits[0](h.clone())
+    assert torch.allclose(out[0, :, 1], torch.zeros(5), atol=1e-6)
+    keep = [i for i in range(d) if i != 1]
+    assert torch.allclose(out[0][:, keep], h[0][:, keep], atol=1e-6)
+
+
+def test_concept_ablation_readback_fires_invalid_on_a_rigged_operator(monkeypatch):
+    monkeypatch.setattr(m0_anchor, "ablate", lambda h, v: h + 1.0)  # broken operator
+    d = 8
+    u = torch.zeros(d)
+    u[1] = 1.0
+    edits = m0_anchor.concept_ablation_edits({0: torch.eye(d)}, [0], u)
+    h = torch.randn(1, 3, d, generator=torch.Generator().manual_seed(1))
+    with pytest.raises(SystemExit) as exc:
+        edits[0](h)
+    assert exc.value.code == 2
+
+
+def test_conditions_carry_the_d31_control_tiers():
+    assert m0_anchor.CONDITIONS == (
+        "clean",
+        "primed_early", "primed_middle", "primed_late",
+        "control_early", "control_middle", "control_late",
+    )
+    for c in m0_anchor.CONDITIONS[1:]:
+        kind, tier = c.split("_")
+        assert kind in ("primed", "control") and tier in ("early", "middle", "late")
+
+
+def test_concept_mass_sums_softmax_over_forms():
+    logits = torch.log(torch.tensor([0.5, 0.25, 0.125, 0.125]))
+    assert m0_anchor.concept_mass(logits, [1, 2]) == pytest.approx(0.375, abs=1e-6)
+
+
+def test_validate_rejects_a_mismatched_lens():
+    class FakeSubject:
+        d_model = 4
+        n_layers = 24
+
+    class Args:
+        model_id = "Qwen/Qwen2.5-0.5B-Instruct"
+
+    artifact = {"model_id": "Qwen/Qwen2.5-1.5B-Instruct", "d_model": 4, "J": {}}
+    with pytest.raises(SystemExit) as exc:
+        m0_anchor.validate(Args(), artifact, FakeSubject())
+    assert exc.value.code == 2
+
+
+def test_edit_hooks_apply_and_are_removed_on_exit():
+    layers = torch.nn.ModuleList([torch.nn.Identity(), torch.nn.Identity()])
+
+    def forward(x):
+        for layer in layers:
+            x = layer(x)
+        return x
+
+    x = torch.ones(1, 2, 4)
+    with edit_residuals(layers, {0: lambda h: h + 1.0}):
+        assert torch.equal(forward(x.clone()), x + 1.0)
+    assert torch.equal(forward(x.clone()), x)  # hooks gone after the context exits
 
 
 # --- the D3 comparator --------------------------------------------------------
@@ -200,6 +302,34 @@ def test_compare_pair_mass_drift_is_texture_not_failure():
     problems, texture = compare_pair(ours, ref)
     assert problems == []
     assert texture["mass_cells_equal"] == 13
+
+
+def test_port_gate_rejects_a_half_specified_pair(monkeypatch):
+    """F2 regression: --ours alone must exit 2 with the gate's INVALID wording,
+    never a TypeError traceback."""
+    monkeypatch.setattr(sys, "argv", ["m0_port_gate.py", "--ours", "x.json"])
+    with pytest.raises(SystemExit) as exc:
+        m0_port_gate.main()
+    assert exc.value.code == 2
+
+
+def test_port_gate_rejects_all_mixed_with_a_pair_flag(monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["m0_port_gate.py", "--all", "--ours", "x.json"])
+    with pytest.raises(SystemExit) as exc:
+        m0_port_gate.main()
+    assert exc.value.code == 2
+
+
+def test_port_gate_invalid_on_corrupt_json(monkeypatch, tmp_path):
+    bad = tmp_path / "bad.json"
+    bad.write_text("{not json")
+    monkeypatch.setattr(
+        sys, "argv",
+        ["m0_port_gate.py", "--ours", str(bad), "--reference", str(bad)],
+    )
+    with pytest.raises(SystemExit) as exc:
+        m0_port_gate.main()
+    assert exc.value.code == 2
 
 
 # --- anchor meta-guard --------------------------------------------------------
