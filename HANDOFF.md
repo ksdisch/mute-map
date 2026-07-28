@@ -48,12 +48,17 @@ S1/S2 stretches optional. `docs/DECISIONS.md` now runs D1–D14.
 
 ## Immediate next move
 
-**Write the M3 start-of-stage brief** (`docs/M3-BRIEF.md`), per the per-stage
-rhythm: plain-terms explanation, design extraction from S4/S4b verbatim, then
-decisions for Kyle to freeze — code only after that. M3's gate per KICKOFF:
-diagonal suppression > off-diagonal collateral, CI-clean at 1.5B AND 3B.
+**Kyle freezes D15–D18.** The M3 start-of-stage brief is written
+(`docs/M3-BRIEF.md`, 2026-07-28): plain-terms explanation, design extraction
+(KICKOFF M3 scope + S4b D28/D31 verbatim), explicit dispositions for all
+three review carry-forwards below (F2 → stated retired in D17's wording;
+F5 + F4 → D18's run-time bars), and decisions D15–D18 — D15 recommends
+reusing M2's pre-registered 12 verbatim. **No code until Kyle freezes.**
+M3's gate per KICKOFF: diagonal suppression > off-diagonal collateral,
+CI-clean at 1.5B AND 3B.
 
-**Three carry-forwards for M3's brief, from M2's round-1 adversarial review**
+**Three carry-forwards, now dispositioned in the M3 brief, from M2's round-1
+adversarial review**
 (all accepted, all recorded in the PR comment; none blocks the merge):
 
 1. **The tier-width caveat belongs in M3's frozen `GATE_WORDING`** (review F2).
