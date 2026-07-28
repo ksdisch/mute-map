@@ -35,8 +35,15 @@ per the M0/M1 pattern.
    `--dry-run`, `--limit` smoke; subset loader; window edits; partial-λ
    operator (new code, generalized read-back, unit-covered); the M1-cell
    cross-check graded before any new cell.
-3. PR #4 follow-ups riding along: F4, F5 (in the rescore artifact), F6, F7,
-   F11.
+3. Follow-ups riding along — from PR #4's review: F4, F5 (in the rescore
+   artifact), F6, F7, F11. From PR #5's review (full disposition table in the
+   PR #5 comment): F13 — restate the wall-clock M1-comparison range as
+   1.3–1.6×; F14 — replace the brief's "zero such cells" span-fill clause with
+   the inspection-based qualifier (six recorded cells fill the span, each a
+   completed word on inspection; the truncated recording cannot rule out a
+   longer continuation); and correct the stale "# bare form — M1 convention"
+   comment in `m1_battery.py` (false for the 26 multi-token-bare words; PR #5
+   review F3 triage).
 
 Standing constraints unchanged: certified environment = `mps` + torch 2.13.0 +
 transformers 5.13.1 (off it: NOT A RESULT); editing `m1_battery.GATE_WORDING`
