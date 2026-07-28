@@ -34,8 +34,14 @@ from it, never edit it.
 12-concept subset; the dose curve is a dimmer, not a step (`docs/M2-BRIEF.md`).
 M2 also widened the primary oracle to the greedy-span prefix rule (D9b, frozen
 in `oracle.py`) and published the M1 re-score beside M1's standing numbers
-(D10a). **Now: M3 — specificity matrix** (brief first, `docs/M3-BRIEF.md`; its
-first decision is whether to reuse M2's 12-concept subset).
+(D10a).
+
+**M3 PASSED (2026-07-28):** MATRIX-SPECIFIC at 1.5B and 3B on the full 12 × 12
+prime × probe grid, both gate clauses CI-clean and the collateral floor clear on
+every subject (`docs/M3-BRIEF.md`). **The v1 chain (M0–M3) is closed.** Nothing
+is pre-committed next; the S1 (7B) and S2 (lexical vs semantic scope) stretches
+are optional, and S2's brief owes the `oracle._BOUNDARY` boundary-class decision
+before it freezes any non-ASCII list.
 
 **Each milestone's `GATE_WORDING` is byte-frozen with its artifacts** —
 `m1_battery.GATE_WORDING` and `m2_depth.GATE_WORDING` are never edited; a later
