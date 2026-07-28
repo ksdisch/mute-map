@@ -541,6 +541,23 @@ def test_verdict_precedence_is_frozen():
     assert breadth_verdict(False, [], False, True).startswith("NOT A RESULT")
 
 
+@pytest.mark.parametrize("limit", [0, -1])
+def test_a_non_positive_limit_is_wrong_arm_input(limit, monkeypatch, capsys):
+    """F9: `--limit` is read as `is not None` in one place and as truthiness in
+    two others. `--limit 0` used to satisfy the first and fail the others —
+    writing a zero-item run over the real results artifact with a verdict
+    string that said 'smoke' and a banner that did not. Rejecting a
+    non-positive limit makes every reading agree."""
+    monkeypatch.setattr(sys, "argv", [
+        "m1_battery.py", "--model-id", "Qwen/Qwen2.5-0.5B-Instruct",
+        "--lens", "lenses/qwen2.5-0.5b-instruct-n100.pt", "--limit", str(limit),
+    ])
+    with pytest.raises(SystemExit) as exc:
+        m1_battery.main()
+    assert exc.value.code == 2
+    assert "--limit must be a positive item count" in capsys.readouterr().out
+
+
 def test_a_smoke_run_says_so_in_the_verdict_field_not_just_the_banner():
     """F2: `--limit` is the project's other pre-declared not-a-result condition
     (CLAUDE.md: '--limit is smoke, never a result'), and it must outrank every

@@ -661,6 +661,14 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    # Review F9: `--limit` is read in three places, one of which tests
+    # `is not None` while the others test truthiness. Rejecting a non-positive
+    # limit as wrong-arm input makes those readings agree on every value that
+    # survives, rather than leaving `--limit 0` to write a zero-item run over a
+    # real artifact with a verdict that says "smoke" and a banner that doesn't.
+    if args.limit is not None and args.limit < 1:
+        fail_invalid(f"--limit must be a positive item count, got {args.limit}")
+
     if args.device == "auto":
         device = "mps" if torch.backends.mps.is_available() else "cpu"
     else:
