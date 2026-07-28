@@ -9,10 +9,10 @@ __pycache__/
 .env
 
 # Fitted lens weights are large binary artifacts (70–560MB per model), sourced
-# from local dim-stage copies with recorded provenance (M0 decision) — never tracked.
+# from local dim-stage copies with recorded provenance (lenses/PROVENANCE.md,
+# which IS tracked) — the weights themselves never are.
 *.pt
 *.safetensors
-lenses/
 
 # Run logs (results that matter get written into docs/ and results/ JSONs)
 *.log

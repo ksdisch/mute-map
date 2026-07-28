@@ -3,11 +3,12 @@
 **One-liner:** Map the late-band J-lens output off-switch found in dim-stage S4b —
 breadth, localization, dose, specificity — on small local Qwen models.
 
-**Status:** Scaffolded (2026-07-27). v1 = M0–M3 per `docs/KICKOFF.md`; S1/S2
-stretches optional.
+**Status:** M0 PASSED (2026-07-27) — ported instrument certified bit-for-bit
+against dim-stage's recorded S4b results, ×3 subjects. v1 = M0–M3 per
+`docs/KICKOFF.md`; S1/S2 stretches optional.
 
-**Next action:** M0 start-of-stage brief → Kyle freezes decisions → port + anchor
-gate run.
+**Next action:** M1 start-of-stage brief (breadth battery) → Kyle freezes →
+items frozen → run.
 
 **Key facts**
 - Fact — Anchor: S4b (dim-stage), concept-specific off-switch at 1.5B, +.727
