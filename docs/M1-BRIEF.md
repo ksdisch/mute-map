@@ -251,6 +251,8 @@ comparison is a change to a frozen bar, so it gets its own decision:
 | 7 new-list concept words (D4b) | D27c's measured-only rule | KICKOFF sanctions "extended by new frozen lists"; the competence gate does the honest filtering; all 7 marked † in the frozen file |
 | Item-level pooling in the gate cell | independence assumption | Items within a concept correlate; S4b precedent; per-concept map reported beside |
 | M1 runner cut from `m0_anchor.py`, not shared | single-runner reuse | Certified file stays untouched post-gate; divergences (naming-only, 3 conditions, F5/F7 cleanups) owned in the runner docstring |
+| Word-prefix + `forbidden_forms` leak guard | S4's substring leak test | With 60 short concepts a substring test makes "plant" a leak for "ant"; the prefix test still catches every suffixed derivative and the frozen list catches the root-changing ones. All 60 reused S4 items pass the stricter guard unchanged (D5) |
+| First-3-greedy continuation recorded per cell | `m0_anchor.py` records none | CLAUDE.md's standing secondary-texture readout, implementable for the first time in our own runner; never gating, never in a verdict. M1 is where it earns its keep — see the tokenization caveat in the results |
 
 ## Expected power (honest math)
 
@@ -258,9 +260,21 @@ S4's clean-naming pass rates were 20/28/21 of 60 items (0.5B/1.5B/3B) — the
 naming-only gate at those rates projects pooled gated n ≈ 60/84/63 from 180
 items. KICKOFF's "pooled n ≥ 100" expectation needs a ~56% pass rate; plausible
 if the new categories (days, planets, metals) name more easily than S4's mix,
-but not guaranteed. Either way every pooled cell clears MIN_N = 20 with a wide
-margin — and the realized gated n per category is itself reported cartography
-(which vocabulary the model can name unablated is part of the map).
+but not guaranteed. Either way every pooled **item** cell clears MIN_N = 20 with
+a wide margin — and the realized gated n per category is itself reported
+cartography (which vocabulary the model can name unablated is part of the map).
+
+**The one pre-declared exception (review F11).** The prevalence readout's cell
+is a *concept* count, not a pooled item cell, and its fixed denominator
+(concepts with all 3 items gated) projects to ~15/18/15 of 60 on the anchor
+data — **below MIN_N = 20**. It therefore carries the pre-declared UNDERPOWERED
+tag per D7(a), and it is the only cell in M1 that does. Stated here so the
+power section and the D7 wording agree rather than leaving a reader who stops at
+"Expected power" with a rosier picture than the brief's own gate supports. The
+direction of the projection's error is safe: it linearly scales the 20 S4
+concepts' gating rate onto a roster whose 40 new concepts have never-measured
+clues, so if the new vocabulary gates *worse*, the set is smaller and the tag is
+*more* certain, not less.
 
 ## Wall-clock plan
 
@@ -270,6 +284,129 @@ comfortably inside an hour, $0, run in background with untracked logs. Standard
 machinery regardless of decisions: wrong-arm input exits INVALID; `--dry-run`
 validates and stops; `--limit` is smoke, never a result; gate wording frozen as
 code before any real run.
+
+## Results (2026-07-28) — GATE PASSED, with a readout caveat that bounds the claim
+
+**M1 verdict: BREADTH-SPECIFIC at 1.5B AND 3B.** Both gate-bearing subjects show
+pooled `control_late` naming CI-cleanly above `primed_late`, so the pre-committed
+gate passes. Every run re-certified the instrument on the way in: the 60 reused
+S4 items reproduced the recorded anchors **bit-for-bit, 180/180 cells, with
+`concept_mass` floats exact 180/180**, on all three subjects.
+
+| Subject | Gated n / 180 | `primed_late` | `control_late` | control − primed [Newcombe 95%] | Verdict |
+|---|---|---|---|---|---|
+| 0.5B *(context only, never gate-bearing)* | 38 | 0/38 | 17/38 | **+0.447** [+0.275, +0.603] | BREADTH-SPECIFIC |
+| 1.5B *(gate-bearing)* | 61 | 0/61 | 40/61 | **+0.656** [+0.517, +0.763] | BREADTH-SPECIFIC |
+| 3B *(gate-bearing)* | 44 | 6/44 | 34/44 | **+0.636** [+0.443, +0.759] | BREADTH-SPECIFIC |
+
+Prevalence, fixed denominator (all three carry the **pre-declared UNDERPOWERED**
+tag, exactly as forecast): 0.5B **4/8**, 1.5B **9/11**, 3B **6/8** concepts show
+the hard-switch profile. Texture only, per D7(a): the three subjects share 6
+all-3-gated concepts, of which 3 show the profile in all three (China, France,
+Japan); the two gate-bearing subjects share 6, of which 5 do (Brazil, Canada,
+China, France, Japan). No degeneracy: no gated arm collapsed on any subject, so
+the pre-committed disposition never fired.
+
+**0.5B came in BREADTH-SPECIFIC too — and the pre-declared frame says what that
+means.** S4b's 0.5B cell did *not* show specificity, on a gated n of 5. Here the
+naming-only gate (K2) lifts 0.5B to n = 38 and the contrast is CI-clean. The
+honest reading is the one the deviations table forecast: S4b's 0.5B null was
+**underpowered, not evidence of absence**, and the lineage's "specificity emerges
+by scale" story weakens accordingly. M1 does not claim a scale story; it reports
+that all three subjects show the switch once each has the power to see it.
+
+### The caveat that bounds the breadth claim: the readout, not the model, sets the coverage
+
+The competence gate admitted 38 / 61 / 44 of 180 items. The dominant reason is
+**not** that the model doesn't know the answers — it is a property of the
+readout. The primary oracle is the greedy *first token*, and a concept can only
+be scored if its spelling at the answer position is a single token. **26 of the
+60 roster words have a multi-token bare (no-leading-space) form** — Mars, Venus,
+Jupiter, Mercury, Neptune, piano, guitar, violin, trumpet, flute, platinum,
+copper, bronze, pearl, jade, sheep, chicken, beetle, butterfly, mosquito and
+others — and at the answer position the model *usually* spells them without the
+leading space. Its first token is then a fragment (`'Mer'`, `'Viol'`, `'Fl'`),
+which the gate scores as a miss. Usually, not always: the same words are single
+tokens *with* a leading space, so one occasionally gates when the model emits
+that form — `jade` gated 1/2/1 times across the three subjects on a clean greedy
+of `' jade'`. The bias is heavy, not absolute. This is the general form of S4's owned "The …"
+miss-counting caveat; at 20 concepts it was a nuisance, at 60 it removes half
+the roster.
+
+The first-3-greedy texture readout (added here per CLAUDE.md's standing
+secondary-texture guardrail) measures the cost directly rather than assuming it:
+
+- Gated items come almost entirely from the 34 single-bare-token concepts —
+  **37/38, 59/61, 43/44**. The other 26 concepts contribute 1, 2 and 1 gated
+  items respectively.
+- Among *ungated* items the model still said the concept within 3 tokens in
+  **35/142 (0.5B), 54/119 (1.5B), 80/136 (3B)** — competence the primary readout
+  cannot see.
+- Whole categories therefore gate near zero at every subject — planets and
+  musical instruments gate **0 items on all three subjects**, because every one
+  of their six members is multi-token in bare form. The per-category map is
+  consequently, in part, a map of tokenizer geometry rather than of concepts.
+
+**What this does and does not undermine.** It does *not* threaten the gate: the
+contrast is computed within the gated set, and gating is a property of the
+`clean` arm alone, decided before any ablation. It *does* bound the claim's
+reach — M1 establishes breadth over *the vocabulary the single-token greedy
+readout can see*, which is not the same as the whole measured vocabulary, and
+the per-category structure should not be read as a map of which concepts have
+switches.
+
+Crucially, the texture also shows **the readout bias runs against the finding,
+not for it**. On the gated cell the model said the concept within 3 tokens in
+`control_late` **17/17, 46/40, 36/34** — i.e. at 1.5B and 3B the control arm
+sometimes says the word without *starting* with it, so the primary readout
+*understates* control-arm survival. Under `primed_late` it said the concept
+**0/38, 0/61, 6/44** — exactly matching the primary count. So the mute is real:
+under a concept's own late-band ablation the model does not say the word at all
+within three tokens, while the arm it is compared against is, if anything,
+scored too harshly.
+
+**Follow-up owed (not a post-hoc gate change).** The gate stayed exactly as
+pre-committed; nothing here was rescored. The obvious instrument fix — accepting
+the leading-space form, or scoring on the 3-token span — is a *change to the
+oracle*, so it belongs in a decision, not in a results section. M2 should open
+with it, and any re-scoring of M1 under a widened oracle must be reported as a
+separate, clearly-labelled reanalysis alongside these pre-committed numbers.
+
+## Addenda landed with the M1 code PR (PR #3 review follow-ups)
+
+All four were accepted at PR #3's review and deferred here by design: each one
+belongs in the runner's pre-committed gate wording, which is frozen as code in
+`m1_battery.GATE_WORDING` and written verbatim into every results JSON, so the
+prose and the code cannot drift. Full text in `docs/DECISIONS.md` D5 and D7.
+
+- **F5 — degeneracy disposition.** The guard is read on the **gated** cell (the
+  cell the verdict is computed on). Collapse in `clean` or `control_late` — the
+  two comparison arms — is pre-declared DEGENERATE and no BREADTH-SPECIFIC claim
+  is made; collapse in `primed_late` is a TAG only and the verdict stands,
+  because a shared attractor under the concept's own ablation is the expected
+  signature of the switch rather than evidence against it. Checked against the
+  already-recorded anchors before freezing: it fires on neither gate-bearing
+  subject (gated attractor shares 1.5B .136/.364/.136, 3B .375/.375/.375), so it
+  changes no existing verdict. Precedence, frozen in `breadth_verdict()`:
+  NOT A RESULT > DEGENERATE > UNDERPOWERED > the contrast.
+- **F6 — the honesty row owns the paired-arms violation too.** `primed_late` and
+  `control_late` are measured on the *same* gated items while `newcombe_diff` is
+  Newcombe's method 10 for two *independent* samples; for positively correlated
+  paired arms that **widens** the interval, so it can cost power but cannot
+  manufacture a false BREADTH-SPECIFIC verdict. Added in the same row: MIN_N = 20
+  is applied to raw n, not to an effective n discounted for the within-concept
+  clustering the row's first clause already owns.
+- **F7 — the cross-check is environment-scoped.** Bit-for-bit greedy
+  reproduction is a property of the certified stack (device `mps`, torch 2.13.0,
+  transformers 5.13.1), not of the instrument alone. On that stack a mismatch is
+  INVALID (exit 2); off it the cross-check still runs and is recorded but is not
+  gate-bearing, and the whole run is pre-declared NOT A RESULT — `m1_verdict.py`
+  refuses to let such a run feed the verdict. The runner also **grades the 60
+  reused items first** (`order_reused_first`), which is what makes "before any
+  new cell is read" literally true rather than aspirational.
+- **F11 — the expected-power section names its own exception.** See the clause
+  added to "Expected power" above: the prevalence concept-set is the single
+  pre-declared sub-MIN_N cell in M1.
 
 ## What M1 does NOT decide
 

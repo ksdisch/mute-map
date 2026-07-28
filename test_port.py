@@ -254,6 +254,14 @@ def _fake_results(model_id="Qwen/Test"):
         "band": [1, 2, 3],
         "thirds": {"early": [1], "middle": [2], "late": [3]},
         "dropped_single_token_prefilter": [],
+        "lens": "lenses/whichever-copy.pt",
+        "lens_n_prompts": 100,
+        "protocol": {
+            "gate": "greedy-based (D29); verbatim P .85/.15 reported alongside",
+            "readback_tol": 1e-4,
+            "min_n": 20,
+            "collapse_share": 0.5,
+        },
         "competence": {"gate_greedy": 1},
         "items": [
             {
@@ -348,6 +356,64 @@ def test_port_gate_invalid_on_corrupt_json(monkeypatch, tmp_path):
     with pytest.raises(SystemExit) as exc:
         m0_port_gate.main()
     assert exc.value.code == 2
+
+
+def test_port_gate_invalid_on_an_unreadable_artifact(monkeypatch, capsys):
+    """F10 regression: `os.path.exists` is true for a directory, so a plausible
+    path typo used to die with an exit-1 IsADirectoryError traceback instead of
+    the pre-committed INVALID."""
+    monkeypatch.setattr(
+        sys, "argv", ["m0_port_gate.py", "--ours", "anchors", "--reference", "anchors"]
+    )
+    with pytest.raises(SystemExit) as exc:
+        m0_port_gate.main()
+    assert exc.value.code == 2
+    assert "could not be read as JSON" in capsys.readouterr().out
+
+
+#: F11: the only two inputs that actually REACH the --all/pair mutual-exclusion
+#: guard — everything else short-circuits on the half-pair guard before it.
+COMPLETE_PAIR = [
+    "--ours", "results/anchor-qwen2.5-0.5b-instruct.json",
+    "--reference", "anchors/s4-avoidance-qwen2.5-0.5b-instruct.json",
+]
+
+
+@pytest.mark.parametrize(
+    "argv", [[], ["--all"] + COMPLETE_PAIR], ids=["no-arguments", "all-plus-a-full-pair"]
+)
+def test_port_gate_rejects_neither_or_both_selection_modes(argv, monkeypatch, capsys):
+    monkeypatch.setattr(sys, "argv", ["m0_port_gate.py"] + argv)
+    with pytest.raises(SystemExit) as exc:
+        m0_port_gate.main()
+    assert exc.value.code == 2
+    assert "pass either --all or both" in capsys.readouterr().out
+
+
+# --- D8: the widened configuration comparison ---------------------------------
+
+def test_compare_pair_catches_a_softened_protocol_block():
+    """D8: the fields that would catch a silently softened instrument — a
+    loosened read-back tolerance, a lowered MIN_N, reworded gate — are compared."""
+    ours, ref = _fake_results(), _fake_results()
+    ours["protocol"]["readback_tol"] = 1e-2
+    problems, _ = compare_pair(ours, ref)
+    assert len(problems) == 1 and problems[0].startswith("config protocol")
+
+
+def test_compare_pair_catches_a_different_lens_fit_size():
+    ours, ref = _fake_results(), _fake_results()
+    ours["lens_n_prompts"] = 50
+    problems, _ = compare_pair(ours, ref)
+    assert len(problems) == 1 and problems[0].startswith("config lens_n_prompts")
+
+
+def test_compare_pair_still_allows_the_lens_path_to_differ():
+    """`lens` is deliberately NOT compared: it is a path, and the two repos
+    legitimately hold their copies of the same weights in different places."""
+    ours, ref = _fake_results(), _fake_results()
+    ours["lens"] = "/somewhere/else/qwen.pt"
+    assert compare_pair(ours, ref)[0] == []
 
 
 # --- anchor meta-guard --------------------------------------------------------

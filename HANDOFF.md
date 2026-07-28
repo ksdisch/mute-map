@@ -1,35 +1,54 @@
 # HANDOFF.md — mute-map
 
-_Last updated: 2026-07-27_
+_Last updated: 2026-07-28_
 
 ## What was just done
-- **M1 design frozen** (2026-07-27, PR #3): `docs/M1-BRIEF.md` written — design
-  extraction + decisions **D4–D8 all frozen by Kyle**: D4(b) 10×6 roster (7
-  new-list words, every word single-token-verified), D5(a) 3 clues/concept +
-  S4-item reuse with the built-in anchor cross-check, D6(a) item-level greedy
-  naming-only gate, D7(a) pooled BREADTH-SPECIFIC wording with
-  fixed-denominator prevalence (amended pre-run at PR #3 review F1), D8(a)
-  comparator widened to `protocol` + `lens_n_prompts`. PR #2 follow-ups F6
-  (status refresh) and F3 (re-certification recipe) landed in the same PR.
-- Earlier same day: **M0 complete, gate PASSED** — instrument certified
-  bit-for-bit ×3 subjects (see `docs/M0-BRIEF.md` results).
+- **M1 built and PASSED** (2026-07-28): frozen 60-concept / 180-item breadth
+  battery (`items/m1-battery.json`), runner `m1_battery.py` cut from the
+  certified `m0_anchor.py`, cross-subject `m1_verdict.py`, 93 tests green.
+  Verdict: **BREADTH-SPECIFIC at 1.5B AND 3B** — control − primed late naming
+  +0.656 [+0.517, +0.763] (n = 61) and +0.636 [+0.443, +0.759] (n = 44). 0.5B
+  also CI-clean (+0.447 [+0.275, +0.603], n = 38) but never gate-bearing.
+  Prevalence 9/11, 6/8, 4/8 concepts with the hard-switch profile, all carrying
+  the pre-declared UNDERPOWERED tag. No degeneracy on any gated arm.
+- **The instrument re-certified itself on every run**: the 60 reused S4 items
+  reproduced the recorded anchors bit-for-bit, 180/180 cells, `concept_mass`
+  floats exact, on all three subjects.
+- Decisions **D4–D8** written up in `docs/DECISIONS.md`; PR #3 review
+  follow-ups F5/F6/F7/F11 landed as brief addenda + frozen gate wording in
+  `m1_battery.GATE_WORDING`; PR #2 follow-ups F5/F7/F9/F10/F11 and D8's
+  comparator widening landed with tests (mutation-probed).
 
 ## Where things stand
-Instrument certified (M0); M1 design frozen (`docs/M1-BRIEF.md`). Chain:
-~~M0~~ → M1 (breadth — design frozen, build next) → M2 (localization + dose) →
-M3 (specificity matrix); optional S1/S2 stretches. Anchor results in
-`results/anchor-*.json`.
+Chain: ~~M0~~ → ~~M1~~ → **M2 (localization + dose)** → M3 (specificity
+matrix); S1/S2 stretches optional. Results in `results/m1-battery-*.json`.
 
 ## Immediate next move
-Build M1 against the frozen D4–D8: freeze `items/m1-battery.json` (60 reused
-S4 items + 120 new clues by the D27c rules, construction_rules block, guards
-as code), cut the M1 runner from `m0_anchor.py` (naming-only, 3 conditions),
-gates + dry-run INVALID machinery before any real run. Fold in the queued
-review follow-ups — from PR #2: F5 dead imports, F7 MIN_N/COLLAPSE_SHARE
-dedupe (import from `harness`), F9/F11 test tightening, F10 `load()`
-hardening; from PR #3: F5 degeneracy-guard disposition and F7 environment
-scoping (both into the runner's pre-committed gate wording), F6 paired-arms
-honesty-row sentence. DECISIONS.md entries D4–D8 land with that PR.
+**M2 start-of-stage brief** — but it must open with the question M1 surfaced,
+before any M2 design work:
+
+> **The oracle bounds the map.** The primary readout is the greedy *first
+> token*, so a concept is only scorable when its bare (no-leading-space)
+> spelling is a single token. **26 of the 60 roster words are not** — planets
+> and musical instruments gated **0 items on all three subjects**. The
+> first-3-greedy texture shows the models often *did* say those words
+> (35/142, 54/119, 80/136 of ungated items). M1's gate is unaffected (the
+> contrast lives inside the gated set, and the bias runs *against* the claim —
+> the control arm is scored too harshly, never the primed arm), but the reach
+> of the breadth claim is bounded.
+
+So M2's brief owes a decision on **widening the oracle** (accept the
+leading-space form? score the 3-token span?). It is a change to the
+measurement, so it goes in a decision *before* a run, never in a results
+section — and any re-scoring of M1 under a widened oracle must be published as
+a clearly-labelled reanalysis *beside* the pre-committed M1 numbers, which
+stand as they are.
+
+Also carried into M2: `m0_anchor.py` remains certified and un-editable; cut new
+runners from `m1_battery.py` or `m0_anchor.py`. The pins (torch 2.13.0,
+transformers 5.13.1) and the `mps` device are what make the anchor cross-check
+gate-bearing — off that stack a run is pre-declared NOT A RESULT.
 
 ## Open questions / blockers
-- None.
+- None blocking. The oracle question above is the first agenda item for M2, not
+  a blocker on anything already recorded.
