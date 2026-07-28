@@ -119,7 +119,7 @@ word" (transformer-circuits.pub/2026/workspace). The matrix asks how *private*
 each word's intention-to-say machinery is: one direction per word, or shared
 machinery that collapses in blocks.
 
-## Dispositions for M2's three review carry-forwards (explicit, per HANDOFF)
+## Dispositions for M2's review carry-forwards — three blocking + one non-blocking (explicit, per HANDOFF)
 
 **PR #7 F2 — the tier-width caveat and M3's `GATE_WORDING`.** The caveat: M2's gate
 compared tiers of unequal layer count (the late third takes the band
@@ -186,7 +186,13 @@ the span bar widened per follow-up F5 (max of bare and space form ≤
 M0/M1/M2 pattern. Amended pre-freeze at PR #8's adversarial review: F1–F4
 and F10 fixed and verified in-run; F11 and F13 fixed at freeze; the seven
 follow-ups (F5–F9, F12, F14) all pulled in at freeze, Kyle-approved
-("pull all 7").*
+("pull all 7"). Amended post-freeze, pre-run, at the same review's round 4
+(F15 + F16): the floor readout's collapsed statistic is the cluster-mean,
+not the all-11 conjunction — the honest item-level n Kyle froze is
+unchanged; the conjunction it replaced was decided by correlation
+structure, not damage — and the recorded-proxy paragraph replaces a false
+ceiling claim with the measured in/out-of-matrix split. Flagged for Kyle's
+ratification in the merge brief.*
 
 ### D15 — The matrix roster: reuse M2's 12 or re-derive (decide first)
 
@@ -305,17 +311,28 @@ set:
 > on-diagonal, so the verdict — whatever it is — carries the pre-declared
 > qualifier **ON A DAMAGED FLOOR** (the any-direction-damage frame applied
 > to a gate-bearing subject) if the floor readout's Wilson 95% lower bound
-> is below **0.5**. The floor readout is the **per-item collapse** (this
-> PR's review F11): the fraction of gated items that survive **all 11**
-> off-diagonal deletions, n = the gated items (28 / 34 / 32) — never the
-> pooled per-cell rate, whose 11×-inflated n narrows the interval and
-> under-fires exactly when it matters (off-diagonal survival 0.57–0.68
-> fires on the honest n and clears on the pooled one); the pooled reading
-> is reported beside as the permissive comparison, never dispositive. The
-> qualifier scopes the claim and can never create or rescue a verdict.
-> The 0.5 floor is a pre-registered constant, deliberately **not** fitted
-> to any recorded cell; 0.5B's exclusion from gate-bearing rests on the
-> standing pre-declared scale frame, never on this qualifier. Every matrix cell ablates the subject's
+> is below **0.5**. The floor readout is the **cluster-collapsed per-cell
+> survival** (re-defined at this PR's round-4 review, F15, keeping the
+> honest item-level n its F11 re-definition introduced): each gated item
+> contributes its *fraction* of the 11 off-diagonal deletions survived,
+> and the readout is wilson(k, n) with k = ⌊the sum of those fractions⌋
+> and n = the gated items (28 / 34 / 32). This keeps the quantity the
+> floor is about — the per-cell collateral rate (the 0.57–0.68 damage
+> band still fires: at those rates on n = 28 the lower bound reads
+> 0.39–0.49) — while refusing both dishonest denominators: the pooled
+> rate at n = 308 under-fires (its 11×-inflated n narrows the interval —
+> F11), and a survives-all-11 conjunction is decided by the unmeasured
+> correlation structure across the 11 deletions rather than by damage
+> (per-direction survival 0.882 reads ≈ 0.88 if failures cluster on the
+> same items and 0.882¹¹ ≈ 0.25 if independent — F15). A binomial
+> interval on a mean of bounded fractions is approximate by
+> construction — owned, and acceptable only because the qualifier is
+> never dispositive. The pooled per-cell reading is reported beside as
+> the permissive comparison. The qualifier scopes the claim and can never
+> create or rescue a verdict. The 0.5 floor is a pre-registered constant,
+> deliberately **not** fitted to any recorded cell; 0.5B's exclusion from
+> gate-bearing rests on the standing pre-declared scale frame, never on
+> this qualifier. Every matrix cell ablates the subject's
 > identical late-third layer set at λ = 1, k = 1, so the compared arms
 > differ **only in which direction is removed** — never in depth, layer
 > count, or dose (PR #7 review F2's caveat, retired structurally and stated
@@ -347,16 +364,24 @@ ruler).
 
 **What the floor does and does not catch, on the recorded numbers
 (corrected at this PR's round-2 review, F1 reopened — the first fix
-overclaimed this; floor readout re-defined per F11).** The qualifier is
-decided by the Wilson **lower** bound of the per-item collapse. That
-collapse cannot be computed from any recorded artifact — only each item's
-one frozen control direction has ever been run, never all 11 — so the
-recorded evidence gives a *ceiling*, not the number: an item that fails
-its single control deletion certainly fails "all 11", so the survives-all-11
-rate can only sit at or below the recorded single-direction rate. On 0.5B
-that ceiling is `control_late` 20/28 → [**0.529**, 0.847]: the recorded
-proxy clears the floor, and whether the full collapse would is genuinely
-open until the matrix runs — which is fine, because 0.5B's exclusion from
+overclaimed this; floor readout re-defined per F11 and again per F15).**
+The qualifier is decided by the Wilson **lower** bound of the
+cluster-collapsed per-cell survival, and no recorded artifact can compute
+it: each item's recorded control cell samples exactly **one** deletion
+direction — and for six of the twelve concepts (October→February,
+Mars→Saturn, Jupiter→Mercury, piano→guitar, violin→drum, silver→platinum)
+that direction is not even among the item's 11 matrix deletions, so the
+recorded cells are indicative proxies, **neither ceiling nor floor** (this
+PR's review F16 — an earlier draft claimed a ceiling, which is false for
+exactly those six concepts). The measured split on the recorded subset
+control cells under D9(b), checked 2026-07-28: items whose control
+direction is in-matrix survive **15/18 / 18/18 / 18/18** (0.5B / 1.5B /
+3B); items whose control is out-of-matrix survive **5/10 / 12/16 /
+12/14** — at both gate-bearing subjects, every recorded control failure
+comes from a direction outside the matrix. On 0.5B the single-direction
+proxy reads 20/28 → [**0.529**, 0.847], above the floor; whether the full
+collapse would clear it is genuinely open until the matrix runs — which is
+fine, because 0.5B's exclusion from
 gate-bearing remains what it has been since KICKOFF: the standing
 pre-declared any-direction-damage frame (risk 2), a scale frame, not a
 tripwire. The regime the floor targets is grosser damage of the kind M1's
@@ -416,7 +441,7 @@ The two review-added elements — clause (2) and the floor qualifier, from
 this PR's F2 and F1 — were the strikeable parts: each strengthens or scopes
 the gate and neither weakens it, and both were kept at Kyle's freeze.)*
 
-### D18 — Run-time instrument bars (the F5 + F4 pins)
+### D18 — Run-time instrument bars (the PR #7 F5 + F4 pins)
 
 - **(a) Both bars in the runner's `main()`, pre-trial, plus unit tests
   (recommended).** After the tokenizer loads and before any trial: (1) every
@@ -434,7 +459,7 @@ the gate and neither weakens it, and both were kept at Kyle's freeze.)*
   against a fabricated SPAN_TOKENS=1; a fabricated 4-token word; a
   fabricated non-ASCII word). `oracle.py` is untouched.
 - **(b) Unit tests only, no run-time bar.** Catches a roster edit at test
-  time but not an environment/tokenizer drift at run time — F5's review point
+  time but not an environment/tokenizer drift at run time — PR #7 F5's point
   was precisely that the premise should hold *at the moment of measurement*.
   Not recommended.
 - **(c) Also widen `_BOUNDARY` to `\w` now.** A measurement-rule change with
@@ -484,8 +509,9 @@ precisely because the diagonal arm sits near 0 hits.) The pre-registered
 **effective-n sanity check**, reported beside the gate: each contrast
 recomputed with the repeated arm collapsed to one binary per gated item,
 decided by the same frozen ruler — for clause (1), "survives **all 11**
-off-diagonal deletions", n = the gated items (28 / 34 / 32) — the same
-collapse that decides D17's collateral-floor qualifier (F11); for clause
+off-diagonal deletions", n = the gated items (28 / 34 / 32) — note the
+collateral-floor qualifier uses the cluster-mean collapse instead (F15),
+not this conjunction; for clause
 (2), "survives all within-category sibling deletions", n = the gated items
 with **at least one within-category subset sibling** — **24 / 28 / 29**
 (0.5B / 1.5B / 3B), October's and silver's items excluded by construction,
