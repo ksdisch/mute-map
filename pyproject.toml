@@ -4,8 +4,11 @@ version = "0.1.0"
 description = "Cartography of the late-band J-lens output off-switch first observed in dim-stage S4b: breadth, localization, dose, specificity."
 requires-python = ">=3.12"
 dependencies = [
-    "torch>=2.4",
-    "transformers>=4.44",
+    # Pinned to dim-stage's uv.lock at anchor time (torch 2.13.0,
+    # transformers 5.13.1) — the M0 bit-for-bit anchor gate depends on the
+    # exact inference stack; relaxing these is a DECISIONS.md entry.
+    "torch==2.13.0",
+    "transformers==5.13.1",
 ]
 
 [dependency-groups]

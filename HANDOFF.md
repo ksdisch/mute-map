@@ -3,20 +3,25 @@
 _Last updated: 2026-07-27_
 
 ## What was just done
-- Project kicked off and scaffolded (2026-07-27): approved KICKOFF brief in
-  `docs/KICKOFF.md`, CLAUDE.md conventions, stats ruler ported from dim-stage
-  (tests green at scaffold), public GitHub repo created.
+- **M0 complete, gate PASSED** (2026-07-27, same day as kickoff): D1–D3 frozen
+  (copy+SHA256 lens provenance, M0-only verbatim port, full bit-for-bit gate);
+  environment pinned (`torch==2.13.0`, `transformers==5.13.1` — dim-stage's
+  lock); port built (`subject.py`, `intervention.py` subset, `harness.py`,
+  `m0_anchor.py`, `m0_port_gate.py`; 23 tests green); anchor re-run ×3 subjects
+  reproduced dim-stage's recorded S4b JSONs with **0 mismatches over 840 cells
+  each, concept_mass floats exact**. Spine updated (DECISIONS, ROADMAP,
+  LEARNING, M0-BRIEF results).
 
 ## Where things stand
-No measurement work yet. The chain is M0 (port + anchor gate) → M1 (breadth
-battery) → M2 (localization + dose) → M3 (specificity matrix), with optional
-S1 (7B scale) and S2 (lexical-vs-semantic scope) stretches.
+The instrument is certified. Chain: ~~M0~~ → M1 (breadth battery) → M2
+(localization + dose) → M3 (specificity matrix); optional S1 (7B) / S2 (scope)
+stretches. Anchor results in `results/anchor-*.json`; logs `anchor-*.log`
+(untracked).
 
 ## Immediate next move
-M0 start-of-stage brief (per-stage rhythm): decisions to freeze — lens artifact
-sourcing/provenance detail, operator port scope, anchor-gate wording. Kyle
-freezes; then code.
+M1 start-of-stage brief: the ~60-concept battery — category list, item
+construction recipe (S4's constrained-construction rules extended), naming-only
+competence gate wording, pooled-contrast gate wording. Kyle freezes; then code.
 
 ## Open questions / blockers
-- None. All M0 inputs (dim-stage lenses, S4b protocol + recorded cells) exist
-  locally in `~/Projects/dim-stage`.
+- None.

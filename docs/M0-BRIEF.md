@@ -104,3 +104,28 @@ hour total on MPS (S4b precedent), $0.
 - The M1 battery's categories, item recipe, or gate wording (M1's brief).
 - The partial-ablation operator or window scheme (M2's brief).
 - Anything about 7B (S1 stretch, only if reached).
+
+## Results — M0 anchor gate (2026-07-27)
+
+**PASS on all three subjects, at the D3 bar.** `m0_port_gate.py --all`:
+
+| Subject | Cells compared | Mismatches | Gate n (ref) | D31 verdict reproduced |
+|---|---|---|---|---|
+| 0.5B | 840 (60 items × 2 instructions × 7 conditions) | **0** | 5 | not shown, UNDERPOWERED (+.200 [−.264, +.624]) |
+| 1.5B | 840 | **0** | 22 | **concept-SPECIFIC** (+.727 [+.471, +.868]) |
+| 3B | 840 | **0** | 8 | concept-SPECIFIC, UNDERPOWERED (+1.000 [+.541, +1.000]) |
+
+Texture (beyond the gate's bar): the `concept_mass` softmax floats reproduced
+**exactly, 840/840 cells on every subject**, and every `gate_verbatim_p` flag
+agreed — the pinned environment (`torch==2.13.0`, `transformers==5.13.1`, D1)
+didn't just preserve the greedy argmax, it preserved the full computed
+distribution to the last bit. Dry-runs validated all three subjects before any
+real trial (bands L9–21 / L11–24 / L14–32, thirds identical to the recordings,
+60/60 items gradable); read-back and degeneracy guards stayed silent
+throughout. All local MPS, forward-only, $0; the three-subject chain completed
+well inside the wall-clock plan. Run logs `anchor-*.log`; per-trial JSONs
+`results/anchor-*.json`; suite green (23 tests).
+
+**Consequence:** every M1–M3 measurement now runs on an instrument certified
+identical to the one that produced the S4b anchor. The port is closed; the next
+brief is M1's.
