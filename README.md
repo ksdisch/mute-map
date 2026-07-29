@@ -21,13 +21,15 @@ pre-registered gates frozen as code before any run):
 | M1 | Breadth | How much of the (measurable) vocabulary has an off-switch? |
 | M2 | Localization + dose | Where does the switch live, and how much removal does it take? |
 | M3 | Specificity | The full prime × probe collateral matrix. |
-| S1 (stretch) | Scale | The specificity-emergence curve, extended to 7B. |
-| S2 (stretch) | Scope | Token mute button or concept mute button? |
+| M4 (close-out) | Vocabulary collateral | Does deleting one concept spare the *other 48*? |
+| S1 (banked) | Scale | The specificity-emergence curve, extended to 7B. |
+| S2 (banked) | Scope | Token mute button or concept mute button? |
 
 **The honest framing:** an effect *found during a replication, characterized
 here* — the anchor is dim-stage's own recorded result, not a paper claim.
 
-**Status: M3 PASSED 2026-07-28 — the v1 chain is complete.** On the full 12 × 12
+**Status: M3 PASSED 2026-07-28 — the v1 chain is complete; close-out stage M4
+is in flight (brief in review, decisions not yet frozen).** On the full 12 × 12
 prime × probe matrix at the switch's home band, deleting one concept's direction
 silences that concept and leaves the other eleven almost untouched: at 1.5B the
 diagonal names **0/34** while the pooled off-diagonal names **363/374**

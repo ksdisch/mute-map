@@ -102,10 +102,9 @@ recorded artifacts and the frozen `oracle.py` — no new model runs):**
   the gate arm is **the concepts this subject already names, in the form the
   oracle accepts** — a *competence selection*, and confidently-named concepts
   are plausibly the robust ones, which biases the measured sparing floor
-  **upward**. That is the
-  same enrichment mechanism as F12's selection-enrichment finding, now on the
-  probe side; it is why the claim is sparing across the *measurable*
-  vocabulary, said exactly that way.
+  **upward**. That is the same enrichment mechanism as F12's
+  selection-enrichment finding, now on the probe side; it is why the claim is
+  sparing across the *measurable* vocabulary, said exactly that way.
 - **Five probe clues mention a prime's spelling — a confound M3's design never
   had.** M1's leak guard (D5) bars a clue from leaking its *own* concept or
   control; M3 verified no cross-mentions *within the 12*. Widening probes to
@@ -133,14 +132,20 @@ recorded artifacts and the frozen `oracle.py` — no new model runs):**
   probe side to all 60, so their items re-enter a **gate-bearing** pool.
   The residual condition is exact and narrower than "a 3-token word": the
   recorded span, after stripping leading whitespace, **equals the concept's
-  spelling with nothing following it**, so no boundary character is observed.
+  spelling with nothing following it**, compared case-insensitively as
+  `oracle.says_concept_prefix` compares, so no boundary character is observed.
   ("Fills the 3-token span" would not distinguish anything — every recorded
-  `greedy_3` is exactly 3 tokens by construction.) On that reading the
-  gate-arm residual cells are **0 / 2 / 2** at 0.5B / 1.5B / 3B — 1.5B
-  `beetle-1` ('Beetle') and `butterfly-1` ('Butterfly') of 71; 3B `trumpet-3`
-  ('Trumpet') and `butterfly-1` ('Butterfly') of 84; none gated at 0.5B. This
-  is exactly the set `oracle.py`'s frozen docstring already names ("beetle-1,
-  butterfly-1 ×2 arms, trumpet-3"). The other trumpet cells are *not*
+  `greedy_3` is exactly 3 tokens by construction; and a case-*exact*
+  comparison would select nothing, since the spans are capitalised and the
+  roster spellings are not.) On that reading the gate-arm residual cells are
+  **0 / 2 / 2** at 0.5B / 1.5B / 3B — 1.5B `beetle-1` ('Beetle') and
+  `butterfly-1` ('Butterfly') of 71; 3B `trumpet-3` ('Trumpet') and
+  `butterfly-1` ('Butterfly') of 84; none gated at 0.5B. These are the
+  gate-arm members of the same residual set `oracle.py`'s frozen docstring
+  names — the docstring counts **six recorded M1 cells** ("beetle-1,
+  butterfly-1 ×2 arms, trumpet-3"), enumerating across arms (`butterfly-1`
+  in both `clean` and `control_late`), where the four above are clean-arm
+  cells on the two gate-bearing subjects. The other trumpet cells are *not*
   residual: `trumpet-1` at 1.5B and `trumpet-1` / `trumpet-2` at 3B record
   `'Trumpet<|im_end|>'`, and `<|im_end|>` closes a word under
   `oracle._BOUNDARY` — capitalisation is why, since generated `Trumpet` is two
@@ -354,9 +359,14 @@ Beside the gate as scored, the same gate statistic is recomputed with every
 **residual cell** re-scored as a **miss** — the maximally conservative reading
 of the boundary D9(b) cannot observe. A residual cell is one whose recorded
 span, after stripping leading whitespace, **equals the scored concept's
-spelling exactly, with nothing following it** (no boundary character observed).
-That is the selector, stated once here and implemented verbatim: it is *not*
-"the span fills the 3-token window", which every recorded cell does. In the
+spelling with nothing following it — compared case-insensitively, exactly as
+`oracle.says_concept_prefix` compares (`re.IGNORECASE`)**, so that no boundary
+character is observed. The case rule is stated because it decides the set, not
+as a detail: the recorded spans are `'Beetle'`, `'Butterfly'`, `'Trumpet'`
+while the roster spellings are lowercase, so a case-*exact* comparison would
+select **zero** cells and silently turn this mitigation into a no-op. That is
+the selector, stated once here and implemented verbatim: it is *not* "the span
+fills the 3-token window", which every recorded cell does. In the
 recorded clean arm the residual cells are the 0 / 2 / 2 gate-arm items named in
 the instrument facts; in the ablated cells the set is whatever the run records,
 computed from the same recorded spans by the same selector.
@@ -380,11 +390,11 @@ cluster-mean per-cell floor on the new pool (M3's F15 readout, reference line
 0.5, the M3-comparable view); the ordering contrast from option (b); per-prime
 **row profiles** (does any of the 12 damage the wider vocabulary?) and
 per-probe **column profiles** over all 60 concepts (finding 1's mostly
-out-of-sample test — are there silver-like columns among the 48?); the within- vs
-cross-category split of the new pool; the five confound pairs (D21); mean
-concept mass per cell under D13's standing scope; the 0.5B floor under its
-standing frame (the recorded proxy predicts it may fail — that outcome is a
-finding, not a failure).
+out-of-sample test — are there silver-like columns among the 48?); the
+within- vs cross-category split of the new pool; the five confound pairs
+(D21); mean concept mass per cell under D13's standing scope; the 0.5B floor
+under its standing frame (M3's own subset already fails this bar in-statistic,
+so a 0.5B failure is a finding, not a failure of the run).
 
 **Verdict precedence, frozen** in `strip_verdict()` (`m4_verdict.py`): NOT A
 RESULT > DEGENERATE > UNDERPOWERED > the level bar. Wrong-arm inputs exit

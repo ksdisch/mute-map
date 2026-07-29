@@ -9,8 +9,10 @@ deleting one concept's direction at the late third silences that concept and
 leaves the other eleven almost untouched (1.5B: diagonal 0/34 vs off-diagonal
 363/374). M2 PASSED (LATE-LOCALIZED at 1.5B and 3B), M1 PASSED
 (BREADTH-SPECIFIC at 1.5B and 3B), M0 PASSED (2026-07-27); all re-certified
-bit-for-bit on every later run. v1 = M0–M3 per `docs/KICKOFF.md`; S1/S2
-stretches optional.
+bit-for-bit on every later run. v1 = M0–M3 per `docs/KICKOFF.md`. **Close-out
+stage M4 (the vocabulary collateral strip) is now in flight** — brief written
+and in review, decisions D19–D22 not yet frozen, no runner code yet. The S1/S2
+stretches were declined for this repo and banked (idea #13).
 
 **Next action:** close-out stage **M4, the vocabulary collateral strip** —
 decided by Kyle 2026-07-28 over closing immediately and over the stretches.
