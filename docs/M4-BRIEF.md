@@ -250,8 +250,10 @@ names a failing label that the single pass-label template had left unstated.
 The gate, its 0.5 bar, its arm and its precondition are unchanged — this scopes
 the claim and, per D17's carried rule, can never create or rescue one.*
 
-***Amendment 2, post-freeze, pre-run, at rounds 5–6 (F22, F24–F27) —*** ***NOT
-YET RATIFIED; awaiting Kyle.*** *A second material change to the same frozen
+***Amendment 2, post-freeze, pre-run, at rounds 5–6 (F22, F24–F27) —***
+***ratified by Kyle 2026-07-29*** *("I agree with what you recommend"), on the
+recommendation that named all four changes below. A second material change to
+the same frozen
 `GATE_WORDING` block, recorded separately rather than folded into Amendment 1,
 because Kyle's ratification quote covers Amendment 1 only. What changed:* **(i)
 the failing label** *is now the lineage's pre-committed null* `not shown`
