@@ -107,6 +107,21 @@ PRE_REGISTERED = {
     },
 }
 LATE_THIRDS = {24: list(range(17, 22)), 28: list(range(19, 25)), 36: list(range(26, 33))}
+SUBJECT_LAYERS = {"qwen2.5-0.5b-instruct": 24, "qwen2.5-1.5b-instruct": 28,
+                  "qwen2.5-3b-instruct": 36}
+#: The published verdicts, quoted verbatim by PROJECT.md, README.md, ROADMAP.md,
+#: HANDOFF.md and docs/M4-BRIEF.md — pinned here so a later wording or constant
+#: edit fails the suite instead of orphaning the artifacts those docs cite.
+PUBLISHED_VERDICTS = {
+    "qwen2.5-0.5b-instruct":
+        "not shown (11/41 survive all 12 = 0.268; Wilson 95% lower 0.157)",
+    "qwen2.5-1.5b-instruct":
+        "VOCAB-SPARING (51/71 survive all 12 = 0.718; Wilson 95% lower 0.605) — "
+        "AS-SCORED ONLY (concept-level 24/41 = 0.585, lower 0.434)",
+    "qwen2.5-3b-instruct":
+        "VOCAB-SPARING (63/84 survive all 12 = 0.750; Wilson 95% lower 0.648) — "
+        "AS-SCORED ONLY (concept-level 26/43 = 0.605, lower 0.456)",
+}
 
 
 # --- fixtures over the recorded artifacts -------------------------------------
@@ -117,6 +132,10 @@ def _m1(subject):
 
 def _m3(subject):
     return json.load(open(f"results/m3-matrix-{subject}.json"))
+
+
+def _m4(subject):
+    return json.load(open(f"results/m4-strip-{subject}.json"))
 
 
 def _items():
@@ -1130,6 +1149,81 @@ def test_the_earlier_milestones_wordings_stay_byte_frozen_with_their_artifacts(s
     assert _m3(subject)["protocol"]["gate_wording"] == m3_matrix.GATE_WORDING
     assert GATE_WORDING != m3_matrix.GATE_WORDING
     assert GATE_WORDING["oracle"] == oracle.ORACLE_WORDING  # the one shared rule
+
+
+@pytest.mark.parametrize("subject", SUBJECTS)
+def test_every_published_m4_artifact_carries_the_wording_it_was_produced_under(subject):
+    """The convention M2 added after it was burned (`test_m2.py`'s F14 note: the
+    artifacts silently kept publishing a retracted sentence because nothing was
+    looking), applied to M4's own runs. Without this, an edit to `GATE_WORDING`,
+    the bar, or the prime roster lands green while three committed JSONs keep
+    publishing the superseded version that every doc quotes. It matters more here
+    than at M3: M4 is the close-out, so no successor suite will pin it."""
+    protocol = _m4(subject)["protocol"]
+    assert protocol["gate_wording"] == GATE_WORDING
+    assert protocol["survival_lower_bound"] == SURVIVAL_LOWER_BOUND
+    assert protocol["cluster_floor_reference"] == m4_strip.CLUSTER_FLOOR_REFERENCE
+    assert protocol["primes"] == list(SUBSET)
+    assert protocol["cross_mention_pairs"] == [list(p) for p in CROSS_MENTION_PAIRS]
+    assert protocol["span_tokens"] == oracle.SPAN_TOKENS
+    assert protocol["min_n"] == MIN_N
+
+
+@pytest.mark.parametrize("subject", SUBJECTS)
+def test_the_published_runs_re_certified_two_generations_and_ran_the_frozen_plan(subject):
+    """The published re-certification (255/255 M1 and 468/468 M3 cells, ×3)
+    otherwise rests only on gitignored run logs. This asserts it from the
+    artifacts themselves, together with the frozen plan the cells were produced
+    under."""
+    run = _m4(subject)
+    assert run["milestone"] == "M4"
+    assert run["smoke_limit"] is None
+    assert run["environment"]["certified"] is True
+    assert run["lambda"] == m4_strip.STRIP_LAMBDA == 1.0
+    assert run["ablated_layers"] == LATE_THIRDS[SUBJECT_LAYERS[subject]]
+    assert run["protocol"]["cells_planned"] == 2340
+    assert sum(len(item["cells"]) for item in run["items"]) == 2340
+    assert len(run["items"]) == 180
+    for milestone, items, cells in (("m1", 180, EXPECTED_M1_CELLS),
+                                    ("m3", 36, EXPECTED_M3_CELLS)):
+        check = run[f"{milestone}_crosscheck"]
+        assert check["n_mismatches"] == 0
+        assert check["items_checked"] == check["items_expected"] == items
+        assert check["cells_checked"] == check["cells_expected"] == cells
+        assert check["mass_cells_equal"] == cells      # concept_mass exact too
+        assert check["gate_bearing"] is True
+
+
+@pytest.mark.parametrize("subject", SUBJECTS)
+def test_the_published_verdict_re_derives_from_the_frozen_precedence(subject):
+    """The verdict string is the thing every doc quotes, so it is pinned twice:
+    it must re-emit byte-for-byte from `strip_verdict()` on the run's own
+    recorded numbers, AND match the string this suite records as published."""
+    run = _m4(subject)
+    sparing = run["vocabulary_sparing"]
+    assert strip_verdict(
+        run["environment"]["certified"], sparing["degenerate_gate_arms"],
+        sparing["gate_arm"], sparing["conservative_reads"], run["smoke_limit"],
+    ) == sparing["verdict"] == PUBLISHED_VERDICTS[subject]
+
+
+@pytest.mark.parametrize("subject", SUBJECTS)
+def test_the_published_run_landed_every_pre_registered_number(subject):
+    """The power table was a cross-check, not a projection — pinned against the
+    run that had to reproduce it, not only against M1's recorded clean arm."""
+    expected, run = PRE_REGISTERED[subject], _m4(subject)
+    gate = run["vocabulary_sparing"]["gate_arm"]
+    assert run["competence"]["gate_span"] == expected["gated"]
+    assert gate["n"] == expected["arm"]
+    assert run["competence"]["gate_arm_concepts"] == expected["concepts"]
+    assert len(run["competence"]["zero_gated_non_subset_concepts"]) == expected["zero_gated"]
+    assert run["new_pool_arms"]["off_target"]["n"] == expected["new_pool"]
+    ceiling = run["gate_arm_ceiling"]
+    assert ceiling["cells_recorded_in_m1"] == expected["recorded_in_m1"]
+    assert ceiling["ceiling"] == expected["ceiling"]
+    # the dispositive arm never collapsed, so no verdict was withheld on it
+    assert run["vocabulary_sparing"]["degenerate_gate_arms"] == []
+    assert run["degeneracy_guard_wrong_opening"]["new_pool_off_target"]["collapsed"] is False
 
 
 def test_the_oracle_is_byte_shared_by_a_fourth_consumer():

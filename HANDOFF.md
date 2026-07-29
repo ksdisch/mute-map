@@ -111,13 +111,25 @@ adversarial review before any merge.
 ## Open questions / blockers
 
 - **None blocking.** Every stage is closed.
-- **One known repo defect, out of M4's scope and deliberately not fixed here:**
-  `.github/workflows/ci.yml` runs `uv run test_<name>.py`, which executes each
-  test file as a plain script. No test file has a `__main__` guard, so the files
-  import, define their functions, and exit 0 — **CI passes vacuously and has
-  never actually run a test.** The suites do run under `uv run pytest` locally
-  (384 green). Fixing it is a one-line CI change (`uv run pytest`) and belongs in
-  its own PR; flagged to Kyle 2026-07-29.
+- **CI ran zero tests from `fdcbfcc` until 2026-07-29, now fixed** (PR #13
+  adversarial review, F1). `.github/workflows/ci.yml` looped `uv run test_<f>.py`,
+  which executes each file as a plain script; with no `__main__` guard the files
+  imported, defined their functions and exited 0, so the workflow's `rc` only ever
+  reflected import errors. It now runs `uv run pytest -q "$f"` per file, keeping
+  the per-suite log grouping — verified locally to collect and run all 396 cases.
+  Any green CI badge before that date certifies syntax, not behaviour.
+- **Two follow-ups from the same review, both nice-to-have, neither fixed:**
+  **(F3)** `m4_strip.GATE_WORDING["degeneracy"]` — byte-frozen with three
+  subjects' artifacts, so it cannot be edited — promises per-pair-cell degeneracy
+  texture "attached to the readout it compromises", but `strip_package()` computes
+  none and its `tokenizer` parameter is left unused (M3 computed exactly that).
+  Honouring it would change the JSONs and cost a ~50-minute re-run for a readout
+  that is pre-declared non-verdict-bearing at n ≤ 3; the write-up owes a
+  deviations-table row instead, and must not quote that clause as if the field
+  exists. **(F4)** `m4_strip.main()` re-parses the battery outside the
+  `try/except` that turns battery drift into a clean `VERDICT: INVALID`, so those
+  guards would raise a bare traceback rather than exit 2 — unreachable, since the
+  file cannot change between the two calls in one process.
 - **One conditional obligation survives:** S2's brief owes the
   `oracle._BOUNDARY` boundary-class decision before it freezes any non-ASCII
   list. M4 did not fire that trigger.
