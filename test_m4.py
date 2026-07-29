@@ -536,6 +536,19 @@ def test_the_qualifier_can_never_create_or_rescue_a_claim():
     assert QUALIFIER not in verdict
 
 
+def test_the_qualifier_reads_the_lower_bound_not_the_point_estimate():
+    """Read literally — and the frozen wording IS literal — the trigger is 'a
+    conservative read's Wilson 95% lower bound is below 0.5', not 'a conservative
+    read disagrees'. So a read that agrees perfectly on the point estimate but
+    has a wide interval still fires the qualifier. That is the rule as ratified,
+    and it is conservative in the right direction; it is pinned here so nobody
+    'fixes' a frozen gate later. It cannot arise in M4's own runs, where the
+    concept-level n is 23 / 41 / 43 — all >= MIN_N."""
+    agreeing_but_wide = _read("concept-level", 2, 2)   # 1.000, lower 0.342
+    assert agreeing_but_wide["rate"] == 1.0
+    assert QUALIFIER in strip_verdict(True, [], _gate(30, 30), [agreeing_but_wide])
+
+
 def test_both_reads_appear_in_the_frozen_order_when_both_fire():
     verdict = strip_verdict(
         True, [], _gate(45, 71),
