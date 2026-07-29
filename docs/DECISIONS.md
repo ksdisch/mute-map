@@ -639,3 +639,230 @@ by a test that makes `AutoModelForCausalLM.from_pretrained` raise), re-asserts
 the loaded model's shape against that spec before any trial, and returns the
 parsed M1 artifact from `validate()` for `main()` to reuse. `m2_depth.py` itself
 stays untouched, per the certified-predecessor rule.
+
+## D19 — The strip frame: 12 primes × all 180 items (Kyle, 2026-07-29)
+
+Option (a): **the full 12 × 180 strip plus a full clean re-run — 2,340 cells per
+subject.** M3 measured collateral *among the 12* and said so in its own Honest
+limits: "the matrix measures collateral among 12 concepts, not across the
+vocabulary … Nothing here shows that deleting France spares the other 48 M1
+concepts." M4 runs exactly that experiment: keep the 12 characterized directions
+as the **primes** (the thing deleted), widen the **probes** (the thing asked
+about) to all 60 M1 concepts — the whole frozen 180-item battery. Every cell is
+the M3 recipe unchanged (late third, λ = 1, k = 1, D9(b) oracle), so cells differ
+only in which direction was removed and which item was asked.
+
+Per subject: `clean` (180) + 12 × 180 = **2,340 cells**. The genuinely new
+content is the **non-subset pool** — 492 / 852 / 1,008 cells at 0.5B / 1.5B / 3B,
+of which 486 / 844 / 993 have never been measured by any milestone.
+
+**The re-certification surface is maximal, and two generations deep.** The strip
+contains **255** cells per subject recorded in M1's artifacts (`clean` 180, the
+12 subset concepts' `primed_late` 36, and the 39 `control_late` cells whose
+control direction is a prime) **and 468** recorded in M3's (the 36 subset `clean`
+cells + all 432 matrix cells — everything M3 ran except its 18 out-of-subset
+control-extras, whose directions are not strip primes). The two surfaces overlap
+in 90 cells, so phase 1 of the run grades their union — **633 of the 2,340** —
+and both comparisons run on raw recorded strings (`greedy`, `greedy_3`;
+`concept_mass` as texture) **before any new cell is read**. Any mismatch on the
+certified stack is INVALID. This is D16's pattern applied against two artifact
+sets at once.
+
+Rejected: **(b) 12 primes × the 144 non-subset items only** — saves ~20% of the
+run and destroys the M3-overlap re-certification (no subset cells, no diagonal)
+plus the in-strip recorded proxies; the one check that has caught nothing yet
+*because it runs every time*, broken for one saved coffee break. **(c) the full
+60 × 60 matrix** — a different, bigger question ("is *every* direction safe to
+delete?") at ~4.7× the cost, with 48 primes no milestone has characterized; that
+is a future stage's question, not this close-out's.
+
+**Consequence worth stating.** Every `clean` cell is M1-recorded and gating is
+the deterministic clean arm under a frozen oracle, so the realized gate-arm n is
+**fixed before the run** at 41 / 71 / 84. A run that disagrees is an INVALID
+cross-check, not a power surprise.
+
+## D20 — The pre-committed wording package for M4 (Kyle, 2026-07-29)
+
+Option (a): **a survives-everything level gate on the new pool**, frozen as code
+in `m4_strip.GATE_WORDING` before any run and written verbatim into every results
+JSON. In brief:
+
+> **VOCAB-SPARING** iff, per subject: among the gated **non-subset** items, the
+> proportion that **survives all 12** subset-direction deletions has its Wilson
+> 95% lower bound at or above **0.5**. The bar is read **only when** the 468
+> M3-recorded and 255 M1-recorded cells reproduce their recorded outcomes
+> bit-for-bit. The M4 verdict is the AND over 1.5B and 3B; 0.5B runs under its
+> standing any-direction-damage frame and is never gate-bearing. Gate-arm
+> n < MIN_N = 20 ⇒ UNDERPOWERED.
+
+Rejected: **(b) an M3-clause-(1)-style ordering gate extended to the strip** —
+maximally comparable to M3, and it passes almost by inheritance (the diagonal is
+0-to-3 hits at every subject), so it gates nothing; reported beside as
+descriptive continuity instead. **(c) the conjunction of (a) AND (b)** — adds
+nothing (b) doesn't already concede and re-opens the conjunction-degeneracy
+obligation for no inferential gain.
+
+**Why a level gate at all.** The strip's question is a *level* question — "is the
+floor high?" — not an ordering question; M3 already settled the ordering. The
+per-item survives-all-12 outcome is a true binary, so the Wilson interval is
+exact for it. This deliberately does **not** promote M3's cluster-mean floor
+readout to gate-bearing: D17 froze that approximation as "acceptable only because
+the qualifier is never dispositive," and M4 keeps *that* rationale intact by
+reporting the cluster-mean floor beside, reference line 0.5, never dispositive.
+
+**The 0.5 constant is new, and owned as new.** M3's 0.5 was a floor on
+cluster-collapsed **per-cell** survival; M4's is a bar on a **12-fold
+conjunction**. The same digits mean opposite things across the two statistics:
+under independence a conjunction of 0.5 corresponds to a per-cell
+0.5^(1/12) ≈ **0.944**. Two consequences, stated rather than inherited. **(i)
+Status changed** — M3's constant was itself uncalibrated and D17 tolerated that
+only because the qualifier it scoped could never create or rescue a claim; M4
+makes a constant of the same value the *single dispositive gate*, so D17's
+tolerance does not transfer. **(ii) The deletion count is half the bar** — at a
+per-cell rate of 0.971 (M3's recorded 1.5B off-diagonal) the conjunction reads
+≈ 0.70 and clears; at 0.94 it reads ≈ 0.48 and fails. So M4's 0.5 is a new,
+deliberately lenient, uncalibrated constant, pre-registered before any new cell
+was run and fitted to none, with its per-cell equivalence written into
+`GATE_WORDING` itself so no write-up can quote it as M3's floor.
+
+**Why the re-certification clause lives inside the wording.** Every prior stage's
+gate compared an intervened arm against another *measured* arm, so a dead
+intervention could never pass one. M4's bar is single-clause and reads only the
+off-target survival rate — read in isolation, an ablation that did nothing at all
+would score ~100% survival and print VOCAB-SPARING. The strip's re-run of M3's
+432 matrix cells catches exactly that, but that guarantee lived in D19's design
+and an exit code, not in the sentence a write-up quotes. Now it cannot be quoted
+out of its own precondition.
+
+**Why the realized proportion rides inside the verdict string.** `VOCAB-SPARING`
+is the strongest possible phrasing of exactly the over-reading M4 exists to
+correct, and the bar it names permits real damage: at the 1.5B pass point (44/71)
+**27 of 71** gated non-subset items — 38% — are damaged by at least one of the 12
+deletions. Prose owns that, but prose is not what gets quoted; the label is. So
+M4 carries the number **inside** the verdict string — M3's `ON A DAMAGED FLOOR`
+move, applied to a level bar.
+
+**Amendment 1 (post-freeze, pre-run, ratified by Kyle 2026-07-29).** The verdict
+string as first frozen carried only the **as-scored** proportion, so the two
+pre-registered reads that can flip which number is honest stayed in prose —
+reproducing the exact failure the realized-proportion resolution was meant to
+prevent. The wording now carries a pre-declared **AS-SCORED ONLY** qualifier,
+attached *conditionally by the runner* whenever a conservative read's Wilson lower
+bound falls below 0.5 while the as-scored read's does not, and names a failing
+label the single pass-label template had left unstated.
+
+**Amendment 2 (post-freeze, pre-run, ratified by Kyle 2026-07-29),** recorded
+separately because Amendment 1's ratification quote covers only Amendment 1.
+Four changes: **(i)** the failing label is the lineage's pre-committed null
+`not shown`, not the assertive `NOT VOCAB-SPARING` Amendment 1 introduced —
+failing a Wilson *lower* bound cannot establish the contrary (at 1.5B, k = 40 has
+a point estimate of 0.563 *above* the bar with a straddling interval), and all
+three predecessor runners emit `not shown`; **(ii)** 0.5B is scoped inside the
+wording — the gate verdict is the AND over the two gate-bearing subjects and
+0.5B's readout is never a gate claim; **(iii)** the qualifier attaches to a
+**claim-level verdict only**, never to `NOT A RESULT` / `DEGENERATE` /
+`UNDERPOWERED` — Amendment 1 had attached it to all of them, contradicting the
+D17 rule it cites; **(iv)** both string templates are stated explicitly with a
+fixed read order. The gate, its 0.5 bar, its arm and its re-certification
+precondition are unchanged by both amendments.
+
+**The two pre-registered conservative reads, never dispositive.**
+
+1. **The residual-conservative read.** D9(b)'s owned span-truncation residual
+   re-enters a gate-bearing arm for the first time since M1: `oracle.py`'s frozen
+   wording closes with "None of the three concepts is in M2's subset," and M4's
+   wider probe side retires exactly that scope sentence. The gate statistic is
+   recomputed with every **residual cell** re-scored as a **miss**. A residual
+   cell is one whose recorded span, after stripping leading whitespace, **equals
+   the scored concept's spelling with nothing following it, compared
+   case-insensitively** exactly as `oracle.says_concept_prefix` compares. The
+   case rule *decides the set*: the recorded spans are `'Beetle'`, `'Butterfly'`,
+   `'Trumpet'` while the roster spellings are lowercase, so a case-**exact**
+   comparison would select **zero** cells and silently turn the mitigation into a
+   no-op; and the rule is *not* "the span fills the 3-token window", which every
+   recorded cell does by construction. On that reading the gate-arm residual cells
+   are **0 / 2 / 2** (1.5B `beetle-1`, `butterfly-1`; 3B `trumpet-3`,
+   `butterfly-1`). **Denominator: fail in place** — the arm stays at 41 / 71 / 84
+   and a residual-affected item scores as a *failure*. The alternative (re-score
+   the clean cell too, so the item un-gates and the arm shrinks) is rejected: it
+   is the *less* conservative reading at the bar — same numerator,
+   `wilson(43, 71)` = 0.489 fails while `wilson(43, 69)` = 0.505 passes — and it
+   would break the power table's pre-registered n. `oracle.py` is not touched;
+   editing it would force re-runs of three milestones.
+2. **The concept-level collapse.** Items cluster three-per-concept on the probe
+   side, so the same statistic is recomputed collapsed to one binary per
+   **concept** over the non-subset concepts with ≥ 1 gated item (n = 23 / 41 / 43).
+
+If the gate passes and either read does not, **that read's numbers are the honest
+ones to quote** — and the AS-SCORED ONLY qualifier puts them in the verdict
+string rather than leaving them in prose.
+
+**Degeneracy disposition.** D14/D17's wide-oracle guard, unchanged in mechanism
+(pool the first tokens of an arm's non-produced cells only, share against the
+arm's full cell count, threshold 0.5). Scope, enumerated — and this enumeration
+**discharges PR #9 F1's conjunction-degeneracy obligation**, since M4's gate is
+deliberately single-clause and the dispositive list therefore has exactly one
+surviving arm: collapse in the pooled **non-subset off-target** arm ⇒
+**DEGENERATE**; collapse in the subset **diagonal** ⇒ **TAG only**; `clean` stays
+off the dispositive list (the D14 F3 correction, carried); rows, columns and
+per-pair cells are **texture**.
+
+**Verdict precedence, frozen** in `m4_verdict.strip_verdict()`: NOT A RESULT >
+DEGENERATE > UNDERPOWERED > the level bar. Wrong-arm inputs exit INVALID before
+the checkpoint loads; `--dry-run` validates and stops; `--limit` is smoke, never a
+result; M4 refuses M1 **or** M3 artifacts that were themselves not results.
+
+## D21 — The five cross-mention cells (Kyle, 2026-07-29)
+
+Option (a): **keep them in the gate-bearing pool and report them as a named
+confound row.** Widening the probe side to all 180 items surfaces a confound M3's
+12-concept design never had: five (prime, item) pairs whose clue mentions a
+prime's spelling. The list is frozen — **October→september-2, silver→flute-1,
+China→jade-1, October→opal-2, Egypt→beetle-2** — and scanned with **D5's own
+rule**: no word of the clue may *start with* the string, case-insensitive, plus
+that string's `forbidden_forms` entries. The prefix rule is why the list is five
+and not four: a whole-word scan misses `Egypt→beetle-2`, whose clue inflects the
+prime ("Ancient **Egyptians** carved amulets of the scarab"). In those cells a
+miss cannot distinguish collateral damage from "the clue's own text lost a word
+it references."
+
+*Why keep them:* a confounded miss can only **lower** the floor, so the bias runs
+**against** the gate — the one direction this project ships owned. Excluding them
+would delete only cells that could hurt the claim, the anti-conservative move the
+lineage never makes. Four cells of 852 cannot carry a verdict either way; what
+they can do is mislead a *reader* of the column profiles, and the named row
+prevents that. Four gate at both gate-bearing subjects (only `jade-1` at 0.5B);
+`beetle-2` is ungated on all three and carries no gate-bearing cell today — it is
+listed so a future re-gate cannot silently acquire one.
+
+Rejected: **(b) pre-registered exclusion from gate-bearing pools** — evidence
+removal in the gate's favour. **(c) drop the five items entirely** — loses their
+clean cells and their unconfounded prime cells for no reason.
+
+## D22 — Run-time instrument bars, widened to the full roster (Kyle, 2026-07-29)
+
+Option (a): **both D18 bars in `m4_strip.py`'s pre-trial validation, now over
+every scored word — all 60 — plus the 12 direction words, with unit tests.** Span
+bar: `max(len(tok(w)), len(tok(" " + w))) ≤ SPAN_TOKENS` on the subject's own
+tokenizer, else INVALID. ASCII bar: every spelling pure ASCII, else INVALID.
+Verified in advance for all 60 words on all three tokenizers (2026-07-28); the
+run-time bar still runs, because D18's point was that the premise must hold *at
+the moment of measurement*.
+
+Rejected: **(b) bars over the 12 primes only** (M3's literal scope) — the
+soundness premise attaches to every **scored** word, and M4 scores 60, so a bar
+checking 12 pins a fifth of the premise. **(c) widen `_BOUNDARY` now** — still
+zero live cases, still the unforced version of the mistake D9 exists to prevent
+(carried rejection).
+
+**What the span bar cannot catch, stated so it stays owned:** the D9(b) residual
+passes the bar at exactly ≤ 3 tokens, which *is* the residual condition. The
+residual is carried by disclosure plus D20's residual-conservative read, never by
+a bar.
+
+**The `oracle._BOUNDARY` boundary-class decision is not owed here.** D18's named
+trigger is a stage freezing a **non-ASCII** list; M4 adds no vocabulary — every
+probe and every prime comes from M1's frozen 60, all pure-ASCII spellings. The
+premise stays *pinned, not assumed*: the ASCII bar runs at run time, unchanged.
+`oracle.py` is untouched, and becomes byte-shared by a fourth consumer (a
+deviations-table row, on the same D9 rationale as the first three).
