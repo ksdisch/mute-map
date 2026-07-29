@@ -1,5 +1,7 @@
 # mute-map
 
+[![CI](https://github.com/ksdisch/mute-map/actions/workflows/ci.yml/badge.svg)](https://github.com/ksdisch/mute-map/actions/workflows/ci.yml)
+
 **Cartography of a late-band output off-switch in small language models.**
 
 During [dim-stage](https://github.com/ksdisch/dim-stage) — an independent rebuild
