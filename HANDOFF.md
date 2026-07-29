@@ -21,7 +21,8 @@ the frozen `docs/M4-BRIEF.md` (D19–D22). Landed in one PR with its docs spine:
   DEGENERATE > UNDERPOWERED > the level bar, failing label the lineage null
   `not shown`) and the cross-subject AND over 1.5B and 3B. The runner imports it,
   so exactly one implementation of the pre-committed verdict string exists.
-- **`test_m4.py`** — 112 cases; the full suite is 384 and green.
+- **`test_m4.py`** — 124 cases (112 at first submission, +12 added at review);
+  the full suite is 396 and green, in CI as well as locally.
 
 **Results: VOCAB-SPARING at 1.5B AND 3B — AS-SCORED ONLY.** Of the gated items
 whose concept is outside M3's twelve, those surviving **all 12** deletions:
@@ -116,9 +117,21 @@ adversarial review before any merge.
   which executes each file as a plain script; with no `__main__` guard the files
   imported, defined their functions and exited 0, so the workflow's `rc` only ever
   reflected import errors. It now runs `uv run pytest -q "$f"` per file, keeping
-  the per-suite log grouping — verified locally to collect and run all 396 cases.
-  Any green CI badge before that date certifies syntax, not behaviour.
-- **Two follow-ups from the same review, both nice-to-have, neither fixed:**
+  the per-suite log grouping — and the workflow is **green on the real runner**
+  at `40e7c26` with all 396 cases genuinely collected and run. Any green CI badge
+  before 2026-07-29 certifies syntax, not behaviour.
+- **Making CI real immediately exposed a second defect** (same review, F5):
+  `test_a_dry_run_never_loads_the_checkpoint` in both `test_m3.py` and
+  `test_m4.py` passed `--lens lenses/<subject>.pt` into the real `main()`, which
+  `torch.load`s the artifact before the `--dry-run` exit — and those weights are
+  gitignored by decision K3, so the case passed locally and failed on every clean
+  checkout. Both now supply the artifact synthetically via monkeypatched
+  `torch.load`; the guarantee is unchanged (`from_pretrained` still raises if the
+  checkpoint loads). **Note for a later M3 audit: `test_m3.py` was edited in PR
+  #13, after M3 PASSED.** Only that one test changed; `m3_matrix.py`, its frozen
+  `GATE_WORDING` and its published artifacts are untouched — leaving M3's copy
+  broken would have left the shared CI gate red.
+- **Three follow-ups from the same review, all nice-to-have, none fixed:**
   **(F3)** `m4_strip.GATE_WORDING["degeneracy"]` — byte-frozen with three
   subjects' artifacts, so it cannot be edited — promises per-pair-cell degeneracy
   texture "attached to the readout it compromises", but `strip_package()` computes
@@ -130,6 +143,16 @@ adversarial review before any merge.
   `try/except` that turns battery drift into a clean `VERDICT: INVALID`, so those
   guards would raise a bare traceback rather than exit 2 — unreachable, since the
   file cannot change between the two calls in one process.
+  **(F6)** the CI job is still *named* `offline-suites` and its header comment
+  still claims no network, but now that pytest really runs, four Qwen2.5
+  tokenizer repos are fetched from `huggingface.co` on every push and PR
+  (`test_the_whole_sixty_word_roster_clears_both_bars_on_the_real_tokenizer` ×3
+  plus M3's roster test). 390 of 396 pass with no network at all. **A future red
+  build there is network, not logic.** The two remedies — cache
+  `~/.cache/huggingface`, or add a `network` marker and deselect it — trade off
+  against each other (the marker route stops exercising the real tokenizers,
+  which is the roster bar's whole point), so it is a workflow design call rather
+  than a correctness fix.
 - **One conditional obligation survives:** S2's brief owes the
   `oracle._BOUNDARY` boundary-class decision before it freezes any non-ASCII
   list. M4 did not fire that trigger.
