@@ -93,8 +93,8 @@ string, the M3 `ON A DAMAGED FLOOR` pattern applied to a level bar. Full
 pattern. Round 4 of the review was authorized beyond the three-dispatch cap to
 verify the `edb5387` fixes and the freeze commit; no merge until it is clean.
 
-The stage: 12 subset primes × all 180 M1 items
-(2,340 cells/subject), gate = a single-clause VOCAB-SPARING level
+The stage: 12 subset primes × all 180 M1 items (2,340 cells/subject), gate =
+a single-clause VOCAB-SPARING level
 bar on the non-subset pool (per-item survives-all-12, Wilson lower bound ≥ 0.5
 at 1.5B AND 3B — a *new*, deliberately lenient, uncalibrated constant on the
 12-fold conjunction, ≈ 0.944 per-cell under independence, explicitly not
