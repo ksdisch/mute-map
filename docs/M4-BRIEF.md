@@ -645,3 +645,113 @@ from `m3_matrix.py` (never from certified predecessors), verdict in
   residual is owned in the deviations table and carried by the
   residual-conservative read (D20), not by a rule change. Never an LLM judge,
   never free-text parsing (standing guardrail).
+
+---
+
+## Results (2026-07-29) — **VOCAB-SPARING at 1.5B AND 3B, AS-SCORED ONLY**
+
+Three subjects, 2,340 cells each, ~50 minutes total on MPS, $0. `GATE_WORDING`
+was frozen as code and the gates dry-run (six wrong-arm inputs exiting INVALID
+with named reasons) before the first real cell.
+
+**The re-certification, two generations deep, on every subject:** M1
+**255/255** cells and M3 **468/468** cells reproduced bit-for-bit on the raw
+recorded strings, with `concept_mass` exact on all 723 comparisons — ×3 subjects.
+Because that surface includes all 180 `clean` cells, every realized n below was
+knowable before the run, and every one landed exactly as pre-registered.
+
+| Readout | 0.5B | 1.5B | 3B |
+|---|---|---|---|
+| Gated items (full roster) | 69 | 105 | 116 |
+| **Gate arm** (gated non-subset) | **41** | **71** | **84** |
+| **Survives all 12** | **11/41 = 0.268** | **51/71 = 0.718** | **63/84 = 0.750** |
+| Wilson 95% | [0.157, 0.419] | **[0.605, 0.810]** | **[0.648, 0.830]** |
+| vs the pre-registered bar 0.5 | fails (off-gate) | **clears** | **clears** |
+| Residual-conservative (fail in place) | 11/41 = 0.268 | 49/71 = 0.690, lower 0.575 | 62/84 = 0.738, lower 0.635 |
+| Concept-level collapse | 4/23 = 0.174 | **24/41 = 0.585, lower 0.434** | **26/43 = 0.605, lower 0.456** |
+| Pre-registered ceiling | 35/41 ✓ | 69/71 ✓ | 82/84 ✓ |
+| Verdict | `not shown` | **VOCAB-SPARING — AS-SCORED ONLY** | **VOCAB-SPARING — AS-SCORED ONLY** |
+
+**M4 VERDICT: VOCAB-SPARING at 1.5B AND 3B — AS-SCORED ONLY.** Deleting any one
+of the 12 characterized directions at the late third spares most of the
+measurable wider vocabulary. M3's stated bound is closed: it is now measured,
+not assumed, that deleting France spares the other 48 concepts' items.
+
+**The qualifier fired, and it earned its existence.** The concept-level collapse
+— one binary per concept instead of per item — reads 0.585 (lower **0.434**) at
+1.5B and 0.605 (lower **0.456**) at 3B: *below* the bar at both gate-bearing
+subjects while the item-level gate clears it. Per D20's pre-commitment those are
+**the honest numbers to quote**, and Amendment 1 is exactly why they ride inside
+the verdict string instead of sitting in prose. The residual-conservative read
+clears the bar at both (49/71, 62/84), so only one of the two reads fired. Had
+the qualifier not been restored at round 4, the published label would have been a
+bare `VOCAB-SPARING` over a conservative read the brief itself had already named
+as the honest one.
+
+**Every pre-registered number landed.** Gate arms 41/71/84; concept counts
+23/41/43; ceilings 35/41, 69/71, 82/84 with exactly the named misses (`july-1`,
+`april-1`, `april-3`, `gold-1/2/3` at 0.5B; `july-3`, `venus-3` at 1.5B;
+`guitar-2`, `neptune-1` at 3B). No degeneracy fired on the dispositive arm
+(shares 0.022 / 0.011 / 0.011 against a 0.5 threshold) and the subset diagonal
+carried no collapse tag.
+
+### The residual set was larger in the ablated arm than in the clean arm
+
+The clean-arm gate-arm residual cells were the pre-computed **0 / 2 / 2**. The
+*run* recorded **0 / 27 / 21** residual cells in total (26 / 21 in the gate arm),
+all on `beetle`, `butterfly` and `trumpet` — the three concepts `oracle.py`'s
+frozen docstring names. This is precisely the case D20 wrote the selector for
+("in the ablated cells the set is whatever the run records"), and it is why the
+residual-conservative read moves the number at all: 51 → 49 at 1.5B, 63 → 62 at
+3B. A case-exact selector would have found zero of them.
+
+### Descriptive findings the gate never asked for
+
+1. **Finding 1 generalizes out of sample — there *are* silver-like columns among
+   the 48.** Collateral still concentrates on fragile **probes**, not damaging
+   **primes**. No prime is a wrecking ball: at 1.5B every row lands between 63/71
+   and 67/71, at 3B between 77/84 and 83/84. But specific probe columns collapse:
+   `copper` 6/12 and `mosquito` 8/12 at 1.5B; `eagle` 8/12, `platinum` 9/12 and
+   `trumpet` 18/36 at 3B. Meanwhile **32 of 53** gated columns at 1.5B and **33
+   of 55** at 3B take *zero* collateral across all 12 deletions. The distribution
+   is bimodal, which is what makes the item-level and concept-level statistics
+   diverge.
+2. **Category-block collateral is real in the wider vocabulary and does NOT
+   dissolve with scale** — the reverse of what M3 found inside the subset.
+   Within-category vs cross-category survival: 5/22 vs 382/470 at 0.5B, **22/29
+   (0.759) vs 769/823 (0.934)** at 1.5B, **35/53 (0.660) vs 913/955 (0.956)** at
+   3B. M3 saw within-category collateral dissolve by 1.5B, but M3's within arm
+   was 30/34 countries; the strip's within arm samples ten categories.
+3. **0.5B is the first measured divergence between the subset's robustness and
+   the wider roster's.** 30 of its 41 gate-arm items (73%) are damaged by at
+   least one deletion, against 28% at 1.5B and 25% at 3B. Read under the standing
+   any-direction-damage frame, never as a gate claim — and consistent in advance
+   with M3's own 0.5B subset failing this bar in-statistic (19/28, lower 0.4934),
+   the 0/6 proxy and M1's 33/69 0.5B control cell.
+4. **The two statistics disagree by design, and 0.5B shows it starkly.** The
+   M3-comparable cluster-mean per-cell floor reads **32/41 → [0.633, 0.880]** at
+   0.5B — comfortably above 0.5 — while the 12-fold conjunction on the same cells
+   reads 0.268. Same subject, same cells, opposite side of the same constant.
+   That is the sharpest possible illustration of why D20 refused to inherit M3's
+   0.5 and wrote the per-cell equivalence (0.5^(1/12) ≈ 0.944) into the frozen
+   wording.
+5. **The five cross-mention cells did not carry the verdict, as predicted.** At
+   3B all four gate-bearing cells named their concept; at 1.5B three named and
+   `China→jade-1` missed; `Egypt→beetle-2` remains ungated on all three subjects.
+
+### Honest limits
+
+- **The claim is sparing across the *measurable* vocabulary**, said exactly that
+  way. 25 / 7 / 5 of the 48 non-subset concepts gate zero items — a competence
+  selection that plausibly enriches for robust concepts and biases the floor
+  **upward**.
+- **The concept-level read is below the bar at both gate-bearing subjects.** The
+  AS-SCORED ONLY qualifier is not decoration: an honest one-line summary is "the
+  item-level floor clears 0.5; the concept-level floor's lower bound does not."
+- **The 0.5 constant is lenient and uncalibrated**, pre-registered before any new
+  cell and fitted to none. It is a floor bar, not an effect size; at the realized
+  1.5B rate, 20 of 71 measurable items are still damaged by at least one of the
+  12 deletions.
+- **Prime-side correlation structure is now measured but not modelled** — the
+  survives-all-12 statistic is conservative under it, and the strip records the
+  per-pair cells a later stage could model.

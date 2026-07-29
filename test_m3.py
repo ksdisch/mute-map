@@ -934,12 +934,23 @@ def test_a_dry_run_never_loads_the_checkpoint(monkeypatch, capsys):
     """PR #7 review F6's disposition, pinned: `m2_depth.main()` loaded the model
     before validating, so every `--dry-run` and every wrong-arm exit paid a full
     checkpoint load. The M3 cut validates first, so this test passes only
-    because no model was touched."""
+    because no model was touched.
+
+    The lens artifact is supplied synthetically rather than by repo path: the
+    `lenses/*.pt` weights are gitignored by decision K3, so a repo path makes
+    this case pass locally and fail on any clean checkout — which it did in CI
+    the moment PR #13 made the workflow really invoke pytest (that PR's review,
+    F5). The guarantee under test is unchanged: `from_pretrained` still raises
+    if it is called.
+    """
     def refuse(*args, **kwargs):
         raise AssertionError("the checkpoint must not load on a --dry-run")
 
     monkeypatch.setattr(
         m3_matrix.transformers.AutoModelForCausalLM, "from_pretrained", refuse
+    )
+    monkeypatch.setattr(
+        m3_matrix.torch, "load", lambda *a, **k: {**_good_artifact(), "n_prompts": 100}
     )
     monkeypatch.setattr(sys, "argv", [
         "m3_matrix.py", "--model-id", "Qwen/Qwen2.5-0.5B-Instruct",

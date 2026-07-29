@@ -282,3 +282,107 @@ earn their keep by being pre-registered as descriptive, not by being small.
    two simpler readouts this replaced and the specific way each one lies —
    and explain why it matters that the qualifier can never turn a "not shown"
    into a result.
+
+## M4 — the vocabulary collateral strip (2026-07-29)
+
+**The same digits can mean opposite things in two statistics.** M3 gated on a
+**per-cell** floor of 0.5 — "of all the (deleted concept, probed item) cells,
+what fraction still name the word?" M4 gates on a **conjunction**: "what fraction
+of items survive *all twelve* deletions?" Those are not the same quantity, and a
+0.5 bar on one is nothing like a 0.5 bar on the other: if the twelve deletions
+were independent, a conjunction of 0.5 would require a per-cell rate of
+0.5^(1/12) ≈ **0.944**. The 0.5B run made this concrete rather than theoretical —
+on *the same cells*, the per-cell floor reads 32/41 → [0.633, 0.880], clearing
+0.5 comfortably, while the conjunction reads 0.268. Reusing M3's constant because
+it was "already pre-registered" would have imported a number that meant something
+else. The fix wasn't to change the bar; it was to declare it **new**, own it as
+lenient and uncalibrated, and write the per-cell equivalence into the frozen gate
+wording so no later write-up can quote it as M3's floor.
+
+**A qualifier needs a *mechanism*, not just a sentence.** M3's ON A DAMAGED FLOOR
+worked because the runner attached it conditionally, from the numbers. M4's first
+draft borrowed the shape and dropped the mechanism: it stated in prose that two
+conservative reads could be the honest ones, then froze a verdict string that
+carried only the as-scored number. The round-4 review caught it, and the fix —
+`AS-SCORED ONLY`, attached by the runner whenever a conservative read's lower
+bound falls below the bar while the as-scored read's does not — turned out to
+matter in the actual run: the concept-level collapse reads 0.585 (lower 0.434) at
+1.5B and 0.605 (lower 0.456) at 3B, below the bar at *both* gate-bearing
+subjects. Without the amendment, the published label would have been a bare
+`VOCAB-SPARING` sitting on top of a number the brief itself had already called
+the honest one.
+
+**Failing a lower bound is not proving the opposite.** A Wilson interval's lower
+bound sitting under 0.5 says "this data doesn't establish the floor is above
+0.5" — it does not say "the floor is below 0.5". At 1.5B, k = 40 of 71 would have
+a *point estimate* of 0.563, above the bar, with an interval straddling it. That
+is why the failing label is the lineage's `not shown` rather than a confident
+`NOT VOCAB-SPARING`, and why 0.5B's `not shown` is a statement about evidence,
+not a claim that 0.5B's vocabulary is unspared. (Its 73%-damaged rate is the
+claim; the label is not.)
+
+**"Fail in place" — keep a mitigation from quietly becoming a rescue.** The D9(b)
+oracle can't observe a word's closing boundary when the word fills the recorded
+3-token span, so `Beetlejuice` would score as `beetle`. The conservative fix
+re-scores every such cell as a miss. But *which denominator?* If you re-score the
+clean cell too, the item un-gates and leaves the arm — and with the same
+numerator, `wilson(43, 71)` = 0.489 **fails** while `wilson(43, 69)` = 0.505
+**passes**. A "conservative" reading that can raise the number is not
+conservative. Fail-in-place — the item stays in the arm and scores as a failure —
+keeps the read strictly one-way.
+
+**A selector rule can be worded so it selects nothing.** The residual rule went
+through three drafts, and each broken version failed *silently*. "The span fills
+the 3-token window" selects **every** recorded cell, because `greedy_continuation`
+always decodes exactly three tokens. A **case-exact** "span equals the spelling"
+selects **zero**, because the model emits `'Beetle'` and the roster spells
+`beetle` — a mitigation that runs, reports, and does nothing. The rule that works
+is "equals the spelling with nothing following it, compared case-insensitively,
+exactly as the oracle compares." Both failure directions are now unit tests,
+because neither would ever announce itself: one over-fires into noise, the other
+under-fires into a no-op.
+
+**A one-sided sample can invert a finding.** M3 found category-block collateral
+dissolving with scale — but M3's within-category arm was 30 of 34 pairs
+*countries*. The strip's within-category arm samples ten categories, and the
+effect not only survives at 3B, it is the largest structure in the run: 35/53
+within-category survival against 913/955 cross-category. Same lineage, same
+operator, opposite conclusion — because the earlier arm's composition, not the
+scale, was doing the work.
+
+**Re-certification is cheap enough to do twice.** M4's strip physically contains
+255 cells M1 recorded and 468 M3 recorded, so it re-runs both and demands
+bit-for-bit agreement before reading a single new cell — 723 comparisons per
+subject, all exact, including every float of `concept_mass`. That has a second
+payoff beyond drift-catching: because the 180 `clean` cells are inside the
+certified set, and gating is deterministic, **every sample size in the run was
+knowable before it started**. The power table stopped being a projection and
+became a cross-check — a run that disagreed would have been INVALID, not a
+surprise.
+
+**A single-clause gate needs a liveness check inside its own wording.** Every
+earlier gate compared an intervened arm against another *measured* arm, so a
+broken intervention could never pass. M4's bar reads only off-target survival —
+so an ablation that did nothing at all would score ~100% survival and print
+`VOCAB-SPARING`. The re-run of M3's 432 matrix cells is what forecloses that, but
+that guarantee lived in a design doc and an exit code, not in the sentence a
+write-up quotes. Putting it *inside* `GATE_WORDING` means the claim cannot be
+quoted out of its own precondition.
+
+### Recall questions
+
+1. M3 and M4 both use a bar of **0.5**, and the M4 brief insists this is a
+   **new** constant with no provenance from M3. Explain what each 0.5 is a bar
+   *on*, why 0.5B's own numbers (32/41 → [0.633, 0.880] versus 0.268) are the
+   cleanest demonstration that the two are unrelated, and why D17's tolerance for
+   an uncalibrated constant did **not** transfer to M4.
+2. Both gate-bearing subjects passed the gate and both verdicts carry
+   `AS-SCORED ONLY`. Say what fired it, what the honest number to quote is, and
+   why the qualifier is *mechanically incapable* of appearing beside a
+   `not shown` — then explain what would have been published had the round-4
+   review not restored it.
+3. The residual-conservative read re-scores cells as misses and keeps the
+   denominator at 41/71/84 rather than letting affected items un-gate. Name the
+   two rejected selector wordings and the opposite way each one fails, and show
+   with the brief's own numbers why the shrinking denominator would have been the
+   *less* conservative choice.
