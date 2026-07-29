@@ -87,10 +87,13 @@ compete in the seed-hunt on equal terms, no incumbent's privilege.
 **Where M4 stands: `docs/M4-BRIEF.md` is written and in review; decisions
 D19–D22 await Kyle's freeze.** The stage: 12 subset primes × all 180 M1 items
 (2,340 cells/subject), gate proposed as a single-clause VOCAB-SPARING level
-bar on the never-measured non-subset pool (per-item survives-all-12, Wilson
-lower bound ≥ 0.5 at 1.5B AND 3B, the 0.5 carried from M3's pre-registered
-floor). Realized ns are known from the recorded gated sets (gate arm 41 / 71 /
-84). Design facts found while drafting: four probe clues mention a prime's
+bar on the non-subset pool (per-item survives-all-12, Wilson lower bound ≥ 0.5
+at 1.5B AND 3B — a *new*, deliberately lenient, uncalibrated constant on the
+12-fold conjunction, ≈ 0.944 per-cell under independence, explicitly not
+carried from M3's per-cell floor). Realized ns are known from the recorded
+gated sets (gate arm 41 / 71 / 84); 486 / 844 / 993 of the pool's 492 / 852 /
+1,008 cells are genuinely new, the rest are M1-recorded and cap the gate arm at
+35/41, 69/71, 82/84 before any forward pass. Design facts found while drafting: four probe clues mention a prime's
 spelling (October→september-2, silver→flute-1, China→jade-1, October→opal-2 —
 D21 decides their treatment); all 60 roster words pass the D18 span bar on all
 three tokenizers (checked in advance); the recorded same-category proxy for
