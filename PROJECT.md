@@ -19,8 +19,8 @@ adversarially reviewed (PR #10); **D19–D22 were frozen 2026-07-29 — (a) acro
 the board** — so the next step is code: `m4_strip.py` cut from `m3_matrix.py`,
 `m4_verdict.py`, `test_m4.py`, and the D19–D22 entries appended to
 `docs/DECISIONS.md` in that same code PR. After M4: write-up + `/seed-hunt`.
-The S1 (7B) and S2 (lexical vs semantic scope)
-stretches were declined for this repo and banked as idea #13 in
+The S1 (7B) and S2 (lexical vs semantic scope) stretches were declined for
+this repo and banked as idea #13 in
 `~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md`; they compete in the
 seed-hunt on equal terms.
 

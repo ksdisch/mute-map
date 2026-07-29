@@ -93,25 +93,25 @@ string, the M3 `ON A DAMAGED FLOOR` pattern applied to a level bar. Full
 pattern. Round 4 of the review was authorized beyond the three-dispatch cap to
 verify the `edb5387` fixes and the freeze commit; no merge until it is clean.
 
-The stage: 12 subset primes × all 180 M1 items (2,340 cells/subject), gate =
-a single-clause VOCAB-SPARING level
-bar on the non-subset pool (per-item survives-all-12, Wilson lower bound ≥ 0.5
-at 1.5B AND 3B — a *new*, deliberately lenient, uncalibrated constant on the
-12-fold conjunction, ≈ 0.944 per-cell under independence, explicitly not
-carried from M3's per-cell floor). Realized ns are known from the recorded
-gated sets (gate arm 41 / 71 / 84); 486 / 844 / 993 of the pool's 492 / 852 /
-1,008 cells are genuinely new, the rest are M1-recorded and cap the gate arm at
-35/41, 69/71, 82/84 before any forward pass. Design facts found while
-drafting: five probe clues mention a prime's spelling under D5's own prefix
-rule (October→september-2, silver→flute-1, China→jade-1, October→opal-2,
-Egypt→beetle-2 — the last ungated on all three subjects; D21 decides their
-treatment); D9(b)'s owned span-truncation residual re-enters a gate-bearing
-arm for the first time since M1 (0 / 2 / 2 cells, carried by a pre-registered
-fail-in-place conservative read); all 60 roster words pass the D18 span bar on
-all three tokenizers (checked in advance); and M3's own 0.5B subset already
-fails M4's bar in-statistic (19/28, Wilson lower 0.4934), so the off-gate 0.5B
-floor may genuinely fail — reportable under the standing frame.
-No runner code exists yet; code only after freeze, cut from `m3_matrix.py`.
+The stage: 12 subset primes × all 180 M1 items (2,340 cells/subject), gate = a
+single-clause VOCAB-SPARING level bar on the non-subset pool (per-item
+survives-all-12, Wilson lower bound ≥ 0.5 at 1.5B AND 3B — a *new*,
+deliberately lenient, uncalibrated constant on the 12-fold conjunction, ≈
+0.944 per-cell under independence, explicitly not carried from M3's per-cell
+floor). Realized ns are known from the recorded gated sets (gate arm 41 / 71 /
+84); 486 / 844 / 993 of the pool's 492 / 852 / 1,008 cells are genuinely new,
+the rest are M1-recorded and cap the gate arm at 35/41, 69/71, 82/84 before
+any forward pass. Design facts found while drafting: five probe clues mention
+a prime's spelling under D5's own prefix rule (October→september-2,
+silver→flute-1, China→jade-1, October→opal-2, Egypt→beetle-2 — the last
+ungated on all three subjects; D21 decides their treatment); D9(b)'s owned
+span-truncation residual re-enters a gate-bearing arm for the first time since
+M1 (0 / 2 / 2 cells, carried by a pre-registered fail-in-place conservative
+read); all 60 roster words pass the D18 span bar on all three tokenizers
+(checked in advance); and M3's own 0.5B subset already fails M4's bar
+in-statistic (19/28, Wilson lower 0.4934), so the off-gate 0.5B floor may
+genuinely fail — reportable under the standing frame. No runner code exists
+yet; with D19–D22 now frozen, code is the next step, cut from `m3_matrix.py`.
 
 Standing constraints unchanged: certified environment = `mps` + torch 2.13.0 +
 transformers 5.13.1 (off it: NOT A RESULT); `m0_anchor.py` stays certified and
