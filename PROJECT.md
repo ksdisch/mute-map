@@ -3,26 +3,26 @@
 **One-liner:** Map the late-band J-lens output off-switch found in dim-stage S4b —
 breadth, localization, dose, specificity — on small local Qwen models.
 
-**Status:** **v1 chain complete — M3 PASSED (2026-07-28)**, the off-switch is
-**MATRIX-SPECIFIC at 1.5B and 3B**: over the full 12 × 12 prime × probe grid,
-deleting one concept's direction at the late third silences that concept and
-leaves the other eleven almost untouched (1.5B: diagonal 0/34 vs off-diagonal
-363/374). M2 PASSED (LATE-LOCALIZED at 1.5B and 3B), M1 PASSED
-(BREADTH-SPECIFIC at 1.5B and 3B), M0 PASSED (2026-07-27); all re-certified
-bit-for-bit on every later run. v1 = M0–M3 per `docs/KICKOFF.md`. **Close-out
-stage M4 (the vocabulary collateral strip) is now in flight** — brief written
-and reviewed, **decisions D19–D22 frozen 2026-07-29**, no runner code yet. The
-S1/S2 stretches were declined for this repo and banked (idea #13).
+**Status:** **v1 chain complete and the close-out stage landed — M4 PASSED
+(2026-07-29)**, the off-switch is **VOCAB-SPARING at 1.5B and 3B, AS-SCORED
+ONLY**: over a 12-prime × 180-item strip, deleting any one of the 12
+characterized directions at the late third spares most of the *measurable wider
+vocabulary* — 51/71 = 0.718 [0.605, 0.810] of gated non-subset items survive all
+12 deletions at 1.5B and 63/84 = 0.750 [0.648, 0.830] at 3B. Both verdicts carry
+the pre-declared **AS-SCORED ONLY** qualifier, because the concept-level collapse
+sits below the bar (0.585, lower 0.434; 0.605, lower 0.456). M3 PASSED
+(MATRIX-SPECIFIC at 1.5B and 3B), M2 PASSED (LATE-LOCALIZED), M1 PASSED
+(BREADTH-SPECIFIC), M0 PASSED (2026-07-27); all re-certified bit-for-bit on every
+later run — M4 re-certifies **two** artifact sets at once (M1 255/255 and M3
+468/468 cells, ×3 subjects). v1 = M0–M3 per `docs/KICKOFF.md`; M4 is the
+Kyle-picked post-KICKOFF close-out.
 
-**Next action:** build the M4 runner. `docs/M4-BRIEF.md` is written and
-adversarially reviewed (PR #10); **D19–D22 were frozen 2026-07-29 — (a) across
-the board** — so the next step is code: `m4_strip.py` cut from `m3_matrix.py`,
-`m4_verdict.py`, `test_m4.py`, and the D19–D22 entries appended to
-`docs/DECISIONS.md` in that same code PR. After M4: write-up + `/seed-hunt`.
-The S1 (7B) and S2 (lexical vs semantic scope) stretches were declined for
-this repo and banked as idea #13 in
-`~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md`; they compete in the
-seed-hunt on equal terms.
+**Next action:** the write-up, then `/seed-hunt`. Every measurement stage is
+closed and M3's stated bound — "nothing here shows that deleting France spares
+the other 48 M1 concepts" — is now measured rather than assumed. The S1 (7B) and
+S2 (lexical vs semantic scope) stretches were declined for this repo and banked
+as idea #13 in `~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md`; they
+compete in the seed-hunt on equal terms.
 
 **Key facts**
 - Fact — Anchor: S4b (dim-stage), concept-specific off-switch at 1.5B, +.727
@@ -77,6 +77,36 @@ seed-hunt on equal terms.
   / 105 (1.5B) / 116 (3B); primed 0/69, 0/105, 12/116; contrast +0.478 / +0.762
   / +0.690. Planets and musical instruments go from 0 gated items on every
   subject to 7/8/15 and 2/8/13 of 18.
+- Fact — M4 (2026-07-29): on the 12-prime × 180-item strip at the late third
+  (λ = 1, k = 1), the gated non-subset items surviving **all 12** deletions are
+  **51/71 = 0.718 [0.605, 0.810]** at 1.5B and **63/84 = 0.750 [0.648, 0.830]**
+  at 3B, both clearing the pre-registered 0.5 bar; 0.5B `not shown` off-gate at
+  11/41 = 0.268 [0.157, 0.419]. Every pre-registered n and ceiling landed exactly
+  (arms 41/71/84, ceilings 35/41, 69/71, 82/84 with the named misses). No
+  degeneracy fired on the dispositive arm.
+- Fact — both gate-bearing verdicts carry **AS-SCORED ONLY**: the pre-registered
+  concept-level collapse reads 0.585 (lower **0.434**) at 1.5B and 0.605 (lower
+  **0.456**) at 3B — below the bar while the item-level gate clears it — so per
+  D20 those are the honest numbers to quote. The residual-conservative read
+  clears at both (49/71 lower 0.575, 62/84 lower 0.635).
+- Fact — M4's descriptive map (no gate reads it): finding 1 **generalizes out of
+  sample** — no prime is a wrecking ball (1.5B rows all 63–67/71, 3B all
+  77–83/84), while specific probe columns collapse (`copper` 6/12, `mosquito`
+  8/12 at 1.5B; `eagle` 8/12, `platinum` 9/12 at 3B) and 32/53 and 33/55 gated
+  columns take **zero** collateral. Category-block collateral is real in the
+  wider vocabulary and does **not** dissolve with scale (within 22/29 vs cross
+  769/823 at 1.5B; 35/53 vs 913/955 at 3B).
+- Inference — M3's "category collateral dissolves by 1.5B" was an artefact of
+  **arm composition**, not scale: M3's within-category arm was 30 of 34 pairs
+  countries, while the strip's samples ten categories. A one-sided sample
+  inverted the finding; M3's numbers stand, their scope narrows.
+- Inference — 0.5B is the first measured divergence between the subset-12's
+  robustness and the wider roster's: 30 of 41 gate-arm items (73%) are damaged by
+  at least one deletion, against 28% at 1.5B and 25% at 3B.
+- Decision — D19–D22 frozen 2026-07-29 (M4-BRIEF), (a) across the board, with two
+  post-freeze ratified amendments to the D20 wording package (the AS-SCORED ONLY
+  mechanism; the `not shown` failing label, 0.5B scoping, bar-level-only
+  attachment and both string templates).
 - Decision — K1–K4 at kickoff: slug/visibility, naming-only competence gate,
   lens provenance (no refits in core), stats ruler ported verbatim.
 - Fact — Lens artifacts gitignored (70–560MB); sourced from local dim-stage

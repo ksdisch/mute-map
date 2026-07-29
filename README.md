@@ -30,9 +30,30 @@ pre-registered gates frozen as code before any run):
 **The honest framing:** an effect *found during a replication, characterized
 here* — the anchor is dim-stage's own recorded result, not a paper claim.
 
-**Status: M3 PASSED 2026-07-28 — the v1 chain is complete; close-out stage M4
-is in flight — brief reviewed, decisions D19–D22 frozen 2026-07-29, runner not
-yet written.** On the full 12 × 12 prime × probe matrix at the switch's home
+**Status: M4 PASSED 2026-07-29 — every measurement stage is closed.** The
+close-out stage widened M3's probe side from 12 concepts to all 60: keep the 12
+characterized directions as the things deleted, and ask *every* item in the
+frozen 180-item battery. Deleting any one of those directions at the late third
+**spares most of the measurable wider vocabulary** — of the gated items whose
+concept is outside M3's twelve, **51/71 = 0.718 [0.605, 0.810]** survive all 12
+deletions at 1.5B and **63/84 = 0.750 [0.648, 0.830]** at 3B, both clearing the
+pre-registered 0.5 bar. Both verdicts carry the pre-declared **AS-SCORED ONLY**
+qualifier: collapsed to one binary per *concept* rather than per item, the same
+statistic reads 0.585 (lower 0.434) and 0.605 (lower 0.456) — below the bar — and
+the brief pre-committed those as the honest numbers, so they ride inside the
+verdict string rather than sitting in prose. 0.5B reads `not shown` (11/41 =
+0.268) off-gate, the first measured divergence between the subset-12's robustness
+and the wider roster's. The strip physically contains 255 cells M1 recorded and
+468 M3 recorded, and reproduced **all 723 bit-for-bit on every subject** before
+reading a single new cell — so every sample size was knowable before the run, and
+each landed exactly as pre-registered. What the gate did not ask: collateral
+still concentrates on fragile **probes** rather than damaging **primes** (no
+prime's row falls below 63/71 at 1.5B, while `copper` takes 6/12 and `mosquito`
+8/12), and category-block collateral turns out to be real in the wider vocabulary
+and *not* to dissolve with scale — reversing an M3 finding whose within-category
+arm was 30/34 countries.
+
+**M3 PASSED 2026-07-28** — on the full 12 × 12 prime × probe matrix at the switch's home
 band, deleting one concept's direction silences that concept and leaves the
 other eleven almost untouched: at 1.5B the diagonal names **0/34** while the
 pooled off-diagonal names **363/374** (+0.971 [+0.867, +0.983]); at 3B 3/32 vs
@@ -75,15 +96,13 @@ deterministic prefix rule on the recorded 3-token span (decision D9b, frozen
 before any run), M1's published numbers stand untouched, and the re-score is
 published beside them as a labelled reanalysis (D10a) in which the contrast
 survives on every subject and the dark categories light up. **The v1 chain
-(M0–M3) is now closed.** In progress: close-out stage **M4, the vocabulary
-collateral strip** (12 characterized directions × all 60 concepts), which
-measures the one thing M3's near-white grid does *not* show — that deleting
-France spares the other 48 concepts. Its brief is adversarially reviewed and
-its decisions (D19–D22) were frozen 2026-07-29, before any runner code exists
-— the lineage's freeze-before-code discipline. The S1 (7B) and S2 (lexical vs
-semantic scope) stretches were declined for this repo and banked for a future
-seed-hunt. Models: Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS, forward-only;
-core chain $0.
+(M0–M3) closed 2026-07-28, and the close-out stage M4 landed 2026-07-29** —
+measuring the one thing M3's near-white grid did *not* show, that deleting France
+spares the other 48 concepts. Every stage's gate wording was frozen as code
+before its first run, M4's included, and each stage re-certifies its predecessors
+bit-for-bit rather than trusting them. The S1 (7B) and S2 (lexical vs semantic
+scope) stretches were declined for this repo and banked for a future seed-hunt.
+Models: Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS, forward-only; whole project $0.
 
 Full brief: [`docs/KICKOFF.md`](docs/KICKOFF.md). The 12-idea backlog this was
 picked from: dim-stage
