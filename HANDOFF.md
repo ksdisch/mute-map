@@ -84,9 +84,17 @@ vocabulary collateral strip as close-out stage M4, then write-up +
 idea #13 in `~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md` — they
 compete in the seed-hunt on equal terms, no incumbent's privilege.
 
-**Where M4 stands: `docs/M4-BRIEF.md` is written and in review; decisions
-D19–D22 await Kyle's freeze.** The stage: 12 subset primes × all 180 M1 items
-(2,340 cells/subject), gate proposed as a single-clause VOCAB-SPARING level
+**Where M4 stands: `docs/M4-BRIEF.md` is written, reviewed across three
+adversarial rounds, and D19–D22 are FROZEN (Kyle, 2026-07-29) — (a) across the
+board.** The verdict label was resolved per review F8: the label stays
+`VOCAB-SPARING` and the realized survival proportion rides inside the verdict
+string, the M3 `ON A DAMAGED FLOOR` pattern applied to a level bar. Full
+`DECISIONS.md` entries D19–D22 land with the M4 code PR, per the M0–M3
+pattern. Round 4 of the review was authorized beyond the three-dispatch cap to
+verify the `edb5387` fixes and the freeze commit; no merge until it is clean.
+
+The stage: 12 subset primes × all 180 M1 items
+(2,340 cells/subject), gate = a single-clause VOCAB-SPARING level
 bar on the non-subset pool (per-item survives-all-12, Wilson lower bound ≥ 0.5
 at 1.5B AND 3B — a *new*, deliberately lenient, uncalibrated constant on the
 12-fold conjunction, ≈ 0.944 per-cell under independence, explicitly not

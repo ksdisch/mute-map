@@ -217,6 +217,26 @@ list before the wording freezes.
 
 ## Decisions to freeze (Kyle picks; recommendations flagged)
 
+*Frozen (Kyle, 2026-07-29): **D19 (a)** the full 12 × 180 strip plus a full
+clean re-run (2,340 cells/subject) with the embedded 255-cell M1 and 468-cell
+M3 re-certifications graded first; **D20 (a)** the single-clause
+survives-all-12 level gate as written, with the verdict-label choice resolved
+per review F8 — the label stays `VOCAB-SPARING` and the **realized survival
+proportion rides inside the verdict string**, the M3 `ON A DAMAGED FLOOR`
+pattern applied to a level bar; **D21 (a)** all five cross-mention pairs kept
+in the gate-bearing pool with named per-cell reporting; **D22 (a)** both
+run-time instrument bars over all 60 scored words plus the 12 direction words.
+Full `DECISIONS.md` entries (D19–D22) land with the M4 code PR, per the
+M0/M1/M2/M3 pattern. Amended pre-freeze at PR #10's adversarial review, across
+three rounds: F1–F4 (should-fix) fixed and verified; F11–F12 (should-fix,
+defects of the F2 fix) fixed and verified; F16 (should-fix, a defect of the
+F11 fix — a case-exact selector that would have silently matched zero cells)
+fixed with F15/F17/F18 at `edb5387`; and all eight deferred nice-to-haves
+(F5–F7, F9, F10, F13–F15) pulled in at the freeze on Kyle's call ("pull in all
+8"), because F5/F7/F9/F13's text byte-freezes into code once these decisions
+are signed. Round 4 was authorized by Kyle beyond the three-dispatch cap to
+verify the `edb5387` fixes and this freeze commit.*
+
 ### D19 — Primes × probes: the strip frame (decide first)
 
 - **(a) 12 subset primes × all 180 M1 items, plus a full clean re-run
@@ -269,7 +289,12 @@ JSON):**
   > The M4 verdict is the AND over 1.5B and 3B; 0.5B runs and is reported under
   > its standing any-direction-damage frame, never gate-bearing. Gate-arm
   > n < MIN_N = 20 ⇒ pre-declared UNDERPOWERED and no claim (realized n =
-  > 41 / 71 / 84 from the recorded gated sets).
+  > 41 / 71 / 84 from the recorded gated sets). **Verdict string,
+  > pre-committed:** the label alone over-reads — clearing a floor bar is
+  > compatible with a large minority of measurable items damaged — so the
+  > verdict, whatever it is, carries its **realized survival proportion in the
+  > same string**, per subject:
+  > `VOCAB-SPARING (k/n survive all 12 = <rate>; Wilson 95% lower <lo>)`.
 
   *Why this shape.* The strip's question is a **level** question — "is the
   floor high?" — not an ordering question; M3 already settled the ordering.
@@ -314,6 +339,18 @@ JSON):**
   but that guarantee lived in D19's design and the runner's exit code, not in
   the sentence a write-up quotes. Putting it in `GATE_WORDING` means the
   sentence cannot be quoted out of its own precondition.
+
+  *Why the realized proportion rides in the verdict string.* `VOCAB-SPARING`
+  is the strongest possible phrasing of exactly the over-reading M4 exists to
+  correct, and the bar it names permits real damage: at the 1.5B pass point
+  (44/71) **27 of 71** gated non-subset items — 38% — are damaged by at least
+  one of the 12 deletions, and at the bar's nominal 0.5 it would be half. The
+  prose owns that, but prose is not what gets quoted; the label is, and the
+  label is frozen into every results JSON. Rather than rename the verdict away
+  from the lineage's `M<n>-<PROPERTY>` shape, M4 carries the number **inside
+  the verdict string** — the same move M3 made when it attached `ON A DAMAGED
+  FLOOR` to the verdict rather than leaving the damaged floor in the prose.
+  The number a write-up quotes then travels with the label it quotes.
 
   *Trade-off, owned:* survives-all-12 is the strictest sparing statistic; a
   single fragile cell fails an item, and the correlation structure across the
