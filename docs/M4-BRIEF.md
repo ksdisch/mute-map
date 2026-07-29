@@ -237,6 +237,20 @@ fixed with F15/F17/F18 at `edb5387`; and all eight deferred nice-to-haves
 are signed. Round 4 was authorized by Kyle beyond the three-dispatch cap to
 verify the `edb5387` fixes and this freeze commit.*
 
+*Amended post-freeze, pre-run, at round 4 (F20 + F21) — the M3 precedent for a
+review-driven amendment before any cell is run, **flagged for Kyle's
+ratification in the merge brief**: the verdict string as first frozen carried
+only the **as-scored** proportion, so the two pre-registered reads that can flip
+which number is honest (residual-conservative fail-in-place; concept-level
+collapse) stayed in prose — reproducing the exact failure F8 was resolved to
+prevent. D20's wording now carries the pre-declared **AS-SCORED ONLY**
+qualifier, attached conditionally by the runner whenever a conservative read's
+Wilson lower bound falls below 0.5 while the as-scored read's does not, and
+names the failing label (`NOT VOCAB-SPARING`) that the single pass-label
+template had left unstated. The gate, its 0.5 bar, its arm and its precondition
+are unchanged — this scopes the claim and, per D17's carried rule, can never
+create or rescue one.*
+
 ### D19 — Primes × probes: the strip frame (decide first)
 
 - **(a) 12 subset primes × all 180 M1 items, plus a full clean re-run
@@ -292,9 +306,21 @@ JSON):**
   > 41 / 71 / 84 from the recorded gated sets). **Verdict string,
   > pre-committed:** the label alone over-reads — clearing a floor bar is
   > compatible with a large minority of measurable items damaged — so the
-  > verdict, whatever it is, carries its **realized survival proportion in the
-  > same string**, per subject:
-  > `VOCAB-SPARING (k/n survive all 12 = <rate>; Wilson 95% lower <lo>)`.
+  > verdict, whichever way it goes, carries its **realized survival proportion
+  > in the same string**, per subject, using `VOCAB-SPARING` when the bar is
+  > cleared and `NOT VOCAB-SPARING` when it is not:
+  > `<label> (k/n survive all 12 = <rate>; Wilson 95% lower <lo>)`.
+  > **Conservative-read qualifier, pre-declared:** two pre-registered reads can
+  > fall below the bar when the as-scored read clears it — the
+  > residual-conservative fail-in-place read and the concept-level collapse —
+  > and this brief pre-commits that where they diverge, *their* numbers are the
+  > honest ones. So the verdict, whatever it is, additionally carries the
+  > qualifier **AS-SCORED ONLY** naming each such read and its number, whenever
+  > any pre-registered conservative read's Wilson 95% lower bound is below
+  > **0.5** while the as-scored read's is not — e.g.
+  > `VOCAB-SPARING (44/71 = 0.620; Wilson 95% lower 0.503) AS-SCORED ONLY
+  > (residual-conservative 42/71 = 0.592, lower 0.475)`. The qualifier scopes
+  > the claim and can never create or rescue one (D17's rule, carried).
 
   *Why this shape.* The strip's question is a **level** question — "is the
   floor high?" — not an ordering question; M3 already settled the ordering.
@@ -351,6 +377,20 @@ JSON):**
   the verdict string** — the same move M3 made when it attached `ON A DAMAGED
   FLOOR` to the verdict rather than leaving the damaged floor in the prose.
   The number a write-up quotes then travels with the label it quotes.
+
+  *And why the qualifier had to come with it (round-4 review, F20).* The first
+  version of this clause carried only the **as-scored** proportion, which
+  reproduced the very failure the F8 resolution names: the two reads that can
+  *flip* which number is honest — the residual-conservative fail-in-place read
+  and the concept-level collapse — stayed in prose, each closed with "the …
+  numbers are the honest ones to quote". The window is live, not hypothetical:
+  at 1.5B the bar needs k ≥ 44 (`wilson(44, 71)` lower 0.50342), and
+  fail-in-place removes the 2 residual items, so for an as-scored k of 44 or 45
+  the JSON would have read `VOCAB-SPARING … lower 0.503` while the brief's own
+  pre-commitment said 42/71 (lower **0.475**) was the honest number. M3's
+  precedent is a **conditional** qualifier attached by the runner, not a fixed
+  sentence; M4 had borrowed the shape and dropped the mechanism. `AS-SCORED
+  ONLY` restores it.
 
   *Trade-off, owned:* survives-all-12 is the strictest sparing statistic; a
   single fragile cell fails an item, and the correlation structure across the
