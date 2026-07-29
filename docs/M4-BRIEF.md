@@ -307,20 +307,34 @@ JSON):**
   > pre-committed:** the label alone over-reads — clearing a floor bar is
   > compatible with a large minority of measurable items damaged — so the
   > verdict, whichever way it goes, carries its **realized survival proportion
-  > in the same string**, per subject, using `VOCAB-SPARING` when the bar is
-  > cleared and `NOT VOCAB-SPARING` when it is not:
-  > `<label> (k/n survive all 12 = <rate>; Wilson 95% lower <lo>)`.
+  > in the same string**: `VOCAB-SPARING` when the bar is cleared and the
+  > lineage's pre-committed null **`not shown`** when it is not — never an
+  > assertive negative, because failing a Wilson *lower* bound does not
+  > establish the contrary (`m1_battery.py`, `m2_depth.py`, `m3_matrix.py` all
+  > emit `not shown`). The gate verdict is the AND over the two gate-bearing
+  > subjects; 0.5B's readout is reported in the same shape under its standing
+  > any-direction-damage frame and is **not** a gate verdict, so a low 0.5B
+  > reading is never a `not shown` gate claim.
   > **Conservative-read qualifier, pre-declared:** two pre-registered reads can
   > fall below the bar when the as-scored read clears it — the
   > residual-conservative fail-in-place read and the concept-level collapse —
   > and this brief pre-commits that where they diverge, *their* numbers are the
-  > honest ones. So the verdict, whatever it is, additionally carries the
-  > qualifier **AS-SCORED ONLY** naming each such read and its number, whenever
-  > any pre-registered conservative read's Wilson 95% lower bound is below
-  > **0.5** while the as-scored read's is not — e.g.
-  > `VOCAB-SPARING (44/71 = 0.620; Wilson 95% lower 0.503) AS-SCORED ONLY
-  > (residual-conservative 42/71 = 0.592, lower 0.475)`. The qualifier scopes
-  > the claim and can never create or rescue one (D17's rule, carried).
+  > honest ones. So a **claim-level** verdict additionally carries the qualifier
+  > **AS-SCORED ONLY**, naming each such read and its number, whenever any
+  > pre-registered conservative read's Wilson 95% lower bound is below **0.5**
+  > while the as-scored read's is not. The qualifier **scopes a claim and can
+  > never create or rescue one** (D17's rule, carried), so it attaches to a
+  > bar-level verdict only and never to `NOT A RESULT`, `DEGENERATE` or
+  > `UNDERPOWERED` — precedence has already withheld the claim there, leaving
+  > it nothing to scope.
+  > **The two templates, stated once and implemented verbatim** — base:
+  > `<label> (k/n survive all 12 = <rate>; Wilson 95% lower <lo>)`; qualifier,
+  > appended to the base string when it fires:
+  > ` — AS-SCORED ONLY (<read> k/n = <rate>, lower <lo>[; <read> …])`, with the
+  > reads listed in the fixed order *residual-conservative, concept-level* when
+  > both fire. Worked: `VOCAB-SPARING (44/71 survive all 12 = 0.620; Wilson 95%
+  > lower 0.503) — AS-SCORED ONLY (residual-conservative 42/71 = 0.592, lower
+  > 0.475)`.
 
   *Why this shape.* The strip's question is a **level** question — "is the
   floor high?" — not an ordering question; M3 already settled the ordering.
@@ -385,12 +399,15 @@ JSON):**
   and the concept-level collapse — stayed in prose, each closed with "the …
   numbers are the honest ones to quote". The window is live, not hypothetical:
   at 1.5B the bar needs k ≥ 44 (`wilson(44, 71)` lower 0.50342), and
-  fail-in-place removes the 2 residual items, so for an as-scored k of 44 or 45
-  the JSON would have read `VOCAB-SPARING … lower 0.503` while the brief's own
-  pre-commitment said 42/71 (lower **0.475**) was the honest number. M3's
-  precedent is a **conditional** qualifier attached by the runner, not a fixed
-  sentence; M4 had borrowed the shape and dropped the mechanism. `AS-SCORED
-  ONLY` restores it.
+  fail-in-place removes the 2 residual items, so both of the as-scored values
+  that clear the bar by the narrowest margins would have printed a pass over a
+  conservative failure — k = 44 → `VOCAB-SPARING … lower 0.503` against a
+  fail-in-place 42/71 (lower **0.475**), and k = 45 → `… lower 0.518` against
+  43/71 (lower **0.489**). Either way the brief's own pre-commitment named the
+  *conservative* number as the honest one and the frozen string carried the
+  other. M3's precedent is a **conditional** qualifier attached by the runner,
+  not a fixed sentence; M4 had borrowed the shape and dropped the mechanism.
+  `AS-SCORED ONLY` restores it.
 
   *Trade-off, owned:* survives-all-12 is the strictest sparing statistic; a
   single fragile cell fails an item, and the correlation structure across the
@@ -474,10 +491,14 @@ under its standing frame (M3's own subset already fails this bar in-statistic,
 so a 0.5B failure is a finding, not a failure of the run).
 
 **Verdict precedence, frozen** in `strip_verdict()` (`m4_verdict.py`): NOT A
-RESULT > DEGENERATE > UNDERPOWERED > the level bar. Wrong-arm inputs exit
-INVALID before the checkpoint loads (the D18-companion shape, carried from
-`m3_matrix.py`); `--dry-run` validates and stops; `--limit` is smoke, never a
-result; M4 refuses M1 or M3 artifacts that were themselves not results.
+RESULT > DEGENERATE > UNDERPOWERED > the level bar (`VOCAB-SPARING` or the
+pre-committed null `not shown`, each carrying its realized proportion, and
+`AS-SCORED ONLY` appended only at this level — the three higher outcomes
+withhold the claim, leaving the qualifier nothing to scope). Wrong-arm
+inputs exit INVALID before the checkpoint loads (the D18-companion shape,
+carried from `m3_matrix.py`); `--dry-run` validates and stops; `--limit` is
+smoke, never a result; M4 refuses M1 or M3 artifacts that were themselves
+not results.
 
 ### D21 — The five cross-mention cells
 

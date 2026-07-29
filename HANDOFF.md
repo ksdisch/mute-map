@@ -1,6 +1,6 @@
 # HANDOFF.md — mute-map
 
-_Last updated: 2026-07-28 (post-M3 decision session)_
+_Last updated: 2026-07-29 (M4 brief reviewed; D19–D22 frozen)_
 
 ## What was just done
 
@@ -84,14 +84,22 @@ vocabulary collateral strip as close-out stage M4, then write-up +
 idea #13 in `~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md` — they
 compete in the seed-hunt on equal terms, no incumbent's privilege.
 
-**Where M4 stands: `docs/M4-BRIEF.md` is written, reviewed across three
-adversarial rounds, and D19–D22 are FROZEN (Kyle, 2026-07-29) — (a) across the
+**Where M4 stands: `docs/M4-BRIEF.md` is written, adversarially reviewed
+across five rounds, and D19–D22 are FROZEN (Kyle, 2026-07-29) — (a) across the
 board.** The verdict label was resolved per review F8: the label stays
 `VOCAB-SPARING` and the realized survival proportion rides inside the verdict
-string, the M3 `ON A DAMAGED FLOOR` pattern applied to a level bar. Full
+string, the M3 `ON A DAMAGED FLOOR` pattern applied to a level bar. **Amended
+post-freeze, pre-run and ratified by Kyle (round 4, F20):** that string as
+first frozen carried only the as-scored proportion, so the two pre-registered
+reads that can flip which number is honest (residual-conservative
+fail-in-place; concept-level collapse) stayed in prose — the exact failure F8
+was adopted to prevent. D20 now carries a pre-declared **AS-SCORED ONLY**
+qualifier, attached by the runner whenever a conservative read's Wilson lower
+bound falls below 0.5 while the as-scored read's does not, and the failing
+label is the lineage's `not shown`, never an assertive negative. The gate, its
+0.5 bar, its arm and its re-certification precondition are unchanged. Full
 `DECISIONS.md` entries D19–D22 land with the M4 code PR, per the M0–M3
-pattern. Round 4 of the review was authorized beyond the three-dispatch cap to
-verify the `edb5387` fixes and the freeze commit; no merge until it is clean.
+pattern.
 
 The stage: 12 subset primes × all 180 M1 items (2,340 cells/subject), gate = a
 single-clause VOCAB-SPARING level bar on the non-subset pool (per-item
@@ -104,7 +112,7 @@ the rest are M1-recorded and cap the gate arm at 35/41, 69/71, 82/84 before
 any forward pass. Design facts found while drafting: five probe clues mention
 a prime's spelling under D5's own prefix rule (October→september-2,
 silver→flute-1, China→jade-1, October→opal-2, Egypt→beetle-2 — the last
-ungated on all three subjects; D21 decides their treatment); D9(b)'s owned
+ungated on all three subjects; D21(a) keeps all five in the pool); D9(b)'s owned
 span-truncation residual re-enters a gate-bearing arm for the first time since
 M1 (0 / 2 / 2 cells, carried by a pre-registered fail-in-place conservative
 read); all 60 roster words pass the D18 span bar on all three tokenizers
