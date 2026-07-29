@@ -1,6 +1,6 @@
 # HANDOFF.md — mute-map
 
-_Last updated: 2026-07-28_
+_Last updated: 2026-07-28 (post-M3 decision session)_
 
 ## What was just done
 
@@ -78,24 +78,25 @@ and each needs its own brief.
 
 ## Immediate next move
 
-**Nothing is pre-committed.** The honest options, none of them owed:
+**Decided (Kyle, 2026-07-28, session "mute-map post M3 decisions"): run the
+vocabulary collateral strip as close-out stage M4, then write-up +
+`/seed-hunt`.** The S1/S2 stretches were declined for this repo and banked as
+idea #13 in `~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md` — they
+compete in the seed-hunt on equal terms, no incumbent's privilege.
 
-1. **Close the project** — a write-up of the four-milestone arc, then
-   `/seed-hunt` for the next paper. The characterization KICKOFF bought is
-   delivered: breadth (M1), localization + dose (M2), specificity (M3).
-2. **S1 stretch — scale.** 7B lens fit on a rented GPU (≤ $15, decision K3's
-   no-refit rule applies only to the core chain) plus a matrix-lite. The
-   sharpening-with-scale story is the one M1–M3 keep gesturing at and never
-   measured above 3B.
-3. **S2 stretch — scope.** Token mute button or concept mute button?
-   (translations, synonyms, morphological variants). **Its brief owes the
-   `oracle._BOUNDARY` boundary-class decision before it freezes any non-ASCII
-   list** — that is the named future trigger D18 recorded, and it is the only
-   inherited obligation on the board.
-4. **The cheap follow-up M3 explicitly did not run:** M3 measures collateral
-   among 12 concepts, not across the vocabulary. Nothing here shows that deleting
-   France spares the other 48 M1 concepts. A 12-prime × 60-probe strip would
-   close that gap for roughly the cost of one M3 subject run.
+**Where M4 stands: `docs/M4-BRIEF.md` is written and in review; decisions
+D19–D22 await Kyle's freeze.** The stage: 12 subset primes × all 180 M1 items
+(2,340 cells/subject), gate proposed as a single-clause VOCAB-SPARING level
+bar on the never-measured non-subset pool (per-item survives-all-12, Wilson
+lower bound ≥ 0.5 at 1.5B AND 3B, the 0.5 carried from M3's pre-registered
+floor). Realized ns are known from the recorded gated sets (gate arm 41 / 71 /
+84). Design facts found while drafting: four probe clues mention a prime's
+spelling (October→september-2, silver→flute-1, China→jade-1, October→opal-2 —
+D21 decides their treatment); all 60 roster words pass the D18 span bar on all
+three tokenizers (checked in advance); the recorded same-category proxy for
+the new pool reads 6/8 (1.5B) and 13/15 (3B) but **0/6 at 0.5B**, so the
+off-gate 0.5B floor may genuinely fail — reportable under the standing frame.
+No runner code exists yet; code only after freeze, cut from `m3_matrix.py`.
 
 Standing constraints unchanged: certified environment = `mps` + torch 2.13.0 +
 transformers 5.13.1 (off it: NOT A RESULT); `m0_anchor.py` stays certified and
