@@ -238,8 +238,8 @@ are signed. Round 4 was authorized by Kyle beyond the three-dispatch cap to
 verify the `edb5387` fixes and this freeze commit.*
 
 *Amended post-freeze, pre-run, at round 4 (F20 + F21) — the M3 precedent for a
-review-driven amendment before any cell is run, **flagged for Kyle's
-ratification in the merge brief**: the verdict string as first frozen carried
+review-driven amendment before any cell is run, **ratified by Kyle 2026-07-29**
+("I ratify the F20 amendment"): the verdict string as first frozen carried
 only the **as-scored** proportion, so the two pre-registered reads that can flip
 which number is honest (residual-conservative fail-in-place; concept-level
 collapse) stayed in prose — reproducing the exact failure F8 was resolved to
