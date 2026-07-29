@@ -1,6 +1,6 @@
 # HANDOFF.md — mute-map
 
-_Last updated: 2026-07-28_
+_Last updated: 2026-07-29 (M4 brief reviewed; D19–D22 frozen)_
 
 ## What was just done
 
@@ -78,24 +78,52 @@ and each needs its own brief.
 
 ## Immediate next move
 
-**Nothing is pre-committed.** The honest options, none of them owed:
+**Decided (Kyle, 2026-07-28, session "mute-map post M3 decisions"): run the
+vocabulary collateral strip as close-out stage M4, then write-up +
+`/seed-hunt`.** The S1/S2 stretches were declined for this repo and banked as
+idea #13 in `~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md` — they
+compete in the seed-hunt on equal terms, no incumbent's privilege.
 
-1. **Close the project** — a write-up of the four-milestone arc, then
-   `/seed-hunt` for the next paper. The characterization KICKOFF bought is
-   delivered: breadth (M1), localization + dose (M2), specificity (M3).
-2. **S1 stretch — scale.** 7B lens fit on a rented GPU (≤ $15, decision K3's
-   no-refit rule applies only to the core chain) plus a matrix-lite. The
-   sharpening-with-scale story is the one M1–M3 keep gesturing at and never
-   measured above 3B.
-3. **S2 stretch — scope.** Token mute button or concept mute button?
-   (translations, synonyms, morphological variants). **Its brief owes the
-   `oracle._BOUNDARY` boundary-class decision before it freezes any non-ASCII
-   list** — that is the named future trigger D18 recorded, and it is the only
-   inherited obligation on the board.
-4. **The cheap follow-up M3 explicitly did not run:** M3 measures collateral
-   among 12 concepts, not across the vocabulary. Nothing here shows that deleting
-   France spares the other 48 M1 concepts. A 12-prime × 60-probe strip would
-   close that gap for roughly the cost of one M3 subject run.
+**Where M4 stands: `docs/M4-BRIEF.md` is written, adversarially reviewed (see
+the mailbox under `~/.claude/reviews/mute-map/` for the round-by-round
+record), and D19–D22 are FROZEN (Kyle, 2026-07-29) — (a) across the board.**
+The verdict label was resolved per review F8: the label stays `VOCAB-SPARING`
+and the realized survival proportion rides inside the verdict string, the M3
+`ON A DAMAGED FLOOR` pattern applied to a level bar. **Amended post-freeze,
+pre-run and ratified by Kyle (round 4, F20):** that string as first frozen
+carried only the as-scored proportion, so the two pre-registered reads that
+can flip which number is honest (residual-conservative fail-in-place;
+concept-level collapse) stayed in prose — the exact failure F8 was adopted to
+prevent. D20 now carries a pre-declared **AS-SCORED ONLY** qualifier, attached
+by the runner whenever a conservative read's Wilson lower bound falls below
+0.5 while the as-scored read's does not. **Amendment 2 (rounds 5–6,
+F22/F24–F27), also ratified by Kyle 2026-07-29:** the failing label became the
+lineage's null `not shown` rather than an assertive negative, 0.5B was scoped
+inside the wording, the qualifier's attachment was restricted to claim-level
+verdicts, and both string templates were stated explicitly. The gate, its 0.5
+bar, its arm and its re-certification precondition are unchanged under both
+amendments. Full `DECISIONS.md` entries D19–D22 land with the M4 code PR, per
+the M0–M3 pattern.
+
+The stage: 12 subset primes × all 180 M1 items (2,340 cells/subject), gate = a
+single-clause VOCAB-SPARING level bar on the non-subset pool (per-item
+survives-all-12, Wilson lower bound ≥ 0.5 at 1.5B AND 3B — a *new*,
+deliberately lenient, uncalibrated constant on the 12-fold conjunction, ≈
+0.944 per-cell under independence, explicitly not carried from M3's per-cell
+floor). Realized ns are known from the recorded gated sets (gate arm 41 / 71 /
+84); 486 / 844 / 993 of the pool's 492 / 852 / 1,008 cells are genuinely new,
+the rest are M1-recorded and cap the gate arm at 35/41, 69/71, 82/84 before
+any forward pass. Design facts found while drafting: five probe clues mention
+a prime's spelling under D5's own prefix rule (October→september-2,
+silver→flute-1, China→jade-1, October→opal-2, Egypt→beetle-2 — the last
+ungated on all three subjects; D21(a) keeps all five in the pool); D9(b)'s owned
+span-truncation residual re-enters a gate-bearing arm for the first time since
+M1 (0 / 2 / 2 cells, carried by a pre-registered fail-in-place conservative
+read); all 60 roster words pass the D18 span bar on all three tokenizers
+(checked in advance); and M3's own 0.5B subset already fails M4's bar
+in-statistic (19/28, Wilson lower 0.4934), so the off-gate 0.5B floor may
+genuinely fail — reportable under the standing frame. No runner code exists
+yet; with D19–D22 now frozen, code is the next step, cut from `m3_matrix.py`.
 
 Standing constraints unchanged: certified environment = `mps` + torch 2.13.0 +
 transformers 5.13.1 (off it: NOT A RESULT); `m0_anchor.py` stays certified and

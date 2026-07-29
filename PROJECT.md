@@ -9,13 +9,20 @@ deleting one concept's direction at the late third silences that concept and
 leaves the other eleven almost untouched (1.5B: diagonal 0/34 vs off-diagonal
 363/374). M2 PASSED (LATE-LOCALIZED at 1.5B and 3B), M1 PASSED
 (BREADTH-SPECIFIC at 1.5B and 3B), M0 PASSED (2026-07-27); all re-certified
-bit-for-bit on every later run. v1 = M0–M3 per `docs/KICKOFF.md`; S1/S2
-stretches optional.
+bit-for-bit on every later run. v1 = M0–M3 per `docs/KICKOFF.md`. **Close-out
+stage M4 (the vocabulary collateral strip) is now in flight** — brief written
+and reviewed, **decisions D19–D22 frozen 2026-07-29**, no runner code yet. The
+S1/S2 stretches were declined for this repo and banked (idea #13).
 
-**Next action:** none pre-committed — the v1 chain is closed. Open options: the
-S1 stretch (7B lens fit + matrix-lite, ≤ $15 rented GPU), the S2 stretch
-(lexical vs semantic scope, which owes the `oracle._BOUNDARY` boundary-class
-decision before freezing any non-ASCII list), a write-up, or `/seed-hunt`.
+**Next action:** build the M4 runner. `docs/M4-BRIEF.md` is written and
+adversarially reviewed (PR #10); **D19–D22 were frozen 2026-07-29 — (a) across
+the board** — so the next step is code: `m4_strip.py` cut from `m3_matrix.py`,
+`m4_verdict.py`, `test_m4.py`, and the D19–D22 entries appended to
+`docs/DECISIONS.md` in that same code PR. After M4: write-up + `/seed-hunt`.
+The S1 (7B) and S2 (lexical vs semantic scope) stretches were declined for
+this repo and banked as idea #13 in
+`~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md`; they compete in the
+seed-hunt on equal terms.
 
 **Key facts**
 - Fact — Anchor: S4b (dim-stage), concept-specific off-switch at 1.5B, +.727

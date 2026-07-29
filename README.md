@@ -23,27 +23,30 @@ pre-registered gates frozen as code before any run):
 | M1 | Breadth | How much of the (measurable) vocabulary has an off-switch? |
 | M2 | Localization + dose | Where does the switch live, and how much removal does it take? |
 | M3 | Specificity | The full prime × probe collateral matrix. |
-| S1 (stretch) | Scale | The specificity-emergence curve, extended to 7B. |
-| S2 (stretch) | Scope | Token mute button or concept mute button? |
+| M4 (close-out) | Vocabulary collateral | Does deleting one concept spare the *other 48*? |
+| S1 (banked) | Scale | The specificity-emergence curve, extended to 7B. |
+| S2 (banked) | Scope | Token mute button or concept mute button? |
 
 **The honest framing:** an effect *found during a replication, characterized
 here* — the anchor is dim-stage's own recorded result, not a paper claim.
 
-**Status: M3 PASSED 2026-07-28 — the v1 chain is complete.** On the full 12 × 12
-prime × probe matrix at the switch's home band, deleting one concept's direction
-silences that concept and leaves the other eleven almost untouched: at 1.5B the
-diagonal names **0/34** while the pooled off-diagonal names **363/374**
-(+0.971 [+0.867, +0.983]); at 3B 3/32 vs 343/352 (+0.881 [+0.731, +0.943]). The
-same contrast restricted to *same-category* pairs — the arm the lineage's single
-control actually tested — is +0.950 and +0.891, likewise CI-clean. Of the
-matrix's 132 ordered off-diagonal pairs, **126 had never been measured before**
-(the other 6 are M1's own country control cells, which this run re-certifies
-bit-for-bit before it reads anything new). What the gate did not
-ask: collateral concentrates on a few fragile **probes** rather than being caused
-by damaging **primes** (`silver`'s direction damages *nothing*, while `silver`
-itself is the most fragile probe in the grid — inverting what a single control
-cell had suggested), category-block collateral is CI-clean at 0.5B and dissolves
-by 1.5B, and the only imperfect mutes anywhere are `Egypt` and `October` at 3B —
+**Status: M3 PASSED 2026-07-28 — the v1 chain is complete; close-out stage M4
+is in flight — brief reviewed, decisions D19–D22 frozen 2026-07-29, runner not
+yet written.** On the full 12 × 12 prime × probe matrix at the switch's home
+band, deleting one concept's direction silences that concept and leaves the
+other eleven almost untouched: at 1.5B the diagonal names **0/34** while the
+pooled off-diagonal names **363/374** (+0.971 [+0.867, +0.983]); at 3B 3/32 vs
+343/352 (+0.881 [+0.731, +0.943]). The same contrast restricted to
+*same-category* pairs — the arm the lineage's single control actually tested —
+is +0.950 and +0.891, likewise CI-clean. Of the matrix's 132 ordered
+off-diagonal pairs, **126 had never been measured before** (the other 6 are
+M1's own country control cells, which this run re-certifies bit-for-bit before
+it reads anything new). What the gate did not ask: collateral concentrates on
+a few fragile **probes** rather than being caused by damaging **primes**
+(`silver`'s direction damages *nothing*, while `silver` itself is the most
+fragile probe in the grid — inverting what a single control cell had
+suggested), category-block collateral is CI-clean at 0.5B and dissolves by
+1.5B, and the only imperfect mutes anywhere are `Egypt` and `October` at 3B —
 the two concepts pre-registered as the leaky-switch stratum.
 
 **M2 PASSED 2026-07-28** — on a pre-registered 12-concept subset, the
@@ -72,9 +75,15 @@ deterministic prefix rule on the recorded 3-token span (decision D9b, frozen
 before any run), M1's published numbers stand untouched, and the re-score is
 published beside them as a labelled reanalysis (D10a) in which the contrast
 survives on every subject and the dark categories light up. **The v1 chain
-(M0–M3) is now closed; the S1 (7B) and S2 (lexical vs semantic scope) stretches
-remain optional.** Models: Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS,
-forward-only; core chain $0.
+(M0–M3) is now closed.** In progress: close-out stage **M4, the vocabulary
+collateral strip** (12 characterized directions × all 60 concepts), which
+measures the one thing M3's near-white grid does *not* show — that deleting
+France spares the other 48 concepts. Its brief is adversarially reviewed and
+its decisions (D19–D22) were frozen 2026-07-29, before any runner code exists
+— the lineage's freeze-before-code discipline. The S1 (7B) and S2 (lexical vs
+semantic scope) stretches were declined for this repo and banked for a future
+seed-hunt. Models: Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS, forward-only;
+core chain $0.
 
 Full brief: [`docs/KICKOFF.md`](docs/KICKOFF.md). The 12-idea backlog this was
 picked from: dim-stage
