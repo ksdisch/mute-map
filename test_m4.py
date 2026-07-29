@@ -109,9 +109,11 @@ PRE_REGISTERED = {
 LATE_THIRDS = {24: list(range(17, 22)), 28: list(range(19, 25)), 36: list(range(26, 33))}
 SUBJECT_LAYERS = {"qwen2.5-0.5b-instruct": 24, "qwen2.5-1.5b-instruct": 28,
                   "qwen2.5-3b-instruct": 36}
-#: The published verdicts, quoted verbatim by PROJECT.md, README.md, ROADMAP.md,
-#: HANDOFF.md and docs/M4-BRIEF.md — pinned here so a later wording or constant
-#: edit fails the suite instead of orphaning the artifacts those docs cite.
+#: The exact verdict strings the three committed artifacts publish. This pins
+#: code <-> artifact ONLY: the docs paraphrase these numbers in their own prose
+#: and contain none of these strings, so no doc edit can fail this test. Its job
+#: is that a later edit to the wording, the bar or the templates cannot land
+#: green while the JSONs keep publishing the superseded verdict.
 PUBLISHED_VERDICTS = {
     "qwen2.5-0.5b-instruct":
         "not shown (11/41 survive all 12 = 0.268; Wilson 95% lower 0.157)",
@@ -913,12 +915,23 @@ def test_a_non_positive_limit_is_wrong_arm_input(limit, monkeypatch, capsys):
 def test_a_dry_run_never_loads_the_checkpoint(monkeypatch, capsys):
     """PR #7 review F6's disposition, carried: a `--dry-run` or a wrong-arm exit
     must not pay for a checkpoint load. This passes only because no model was
-    touched."""
+    touched.
+
+    The lens artifact is supplied synthetically rather than by repo path: the
+    `lenses/*.pt` weights are gitignored by decision K3, so pointing `--lens` at
+    one makes this case pass locally and fail on any clean checkout — which is
+    exactly what it did in CI the moment PR #13 made the workflow really invoke
+    pytest. The guarantee under test is that the *checkpoint* never loads, and
+    that is unchanged: `from_pretrained` still raises if it is called.
+    """
     def refuse(*args, **kwargs):
         raise AssertionError("the checkpoint must not load on a --dry-run")
 
     monkeypatch.setattr(
         m4_strip.transformers.AutoModelForCausalLM, "from_pretrained", refuse
+    )
+    monkeypatch.setattr(
+        m4_strip.torch, "load", lambda *a, **k: {**_good_artifact(), "n_prompts": 100}
     )
     monkeypatch.setattr(sys, "argv", [
         "m4_strip.py", "--model-id", "Qwen/Qwen2.5-0.5B-Instruct",
