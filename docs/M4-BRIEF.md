@@ -118,17 +118,29 @@ recorded artifacts and the frozen `oracle.py` — no new model runs):**
   exactly "Beetle"). The wording's closing scope sentence, "**None of the
   three concepts is in M2's subset**," is precisely what made the residual
   harmless for M2 and M3: those concepts were never scored. M4 widens the
-  probe side to all 60, so their items re-enter a **gate-bearing** pool:
-  **0 / 3 / 4** span-filling gate-arm items at 0.5B / 1.5B / 3B — 1.5B
-  `trumpet-1`, `beetle-1`, `butterfly-1` (of 71); 3B `trumpet-1`, `trumpet-2`,
-  `trumpet-3`, `butterfly-1` (of 84); none gated at 0.5B. D22's span bar
-  cannot catch this: it passes at exactly ≤ 3 tokens, which *is* the residual
-  condition. The bias runs **toward** the gate — an unobservably-terminated
-  span scores a hit, inflating survival — and at 1.5B the pass/fail margin is
-  one item (44/71 passes, 43/71 fails), so three such items exceed the margin.
-  `oracle.py` stays untouched (editing it would force re-runs of three
-  milestones); the residual is carried by disclosure plus the pre-registered
-  residual-conservative recomputation in D20.
+  probe side to all 60, so their items re-enter a **gate-bearing** pool.
+  The residual condition is exact and narrower than "a 3-token word": the
+  recorded span, after stripping leading whitespace, **equals the concept's
+  spelling with nothing following it**, so no boundary character is observed.
+  ("Fills the 3-token span" would not distinguish anything — every recorded
+  `greedy_3` is exactly 3 tokens by construction.) On that reading the
+  gate-arm residual cells are **0 / 2 / 2** at 0.5B / 1.5B / 3B — 1.5B
+  `beetle-1` ('Beetle') and `butterfly-1` ('Butterfly') of 71; 3B `trumpet-3`
+  ('Trumpet') and `butterfly-1` ('Butterfly') of 84; none gated at 0.5B. This
+  is exactly the set `oracle.py`'s frozen docstring already names ("beetle-1,
+  butterfly-1 ×2 arms, trumpet-3"). The other trumpet cells are *not*
+  residual: `trumpet-1` at 1.5B and `trumpet-1` / `trumpet-2` at 3B record
+  `'Trumpet<|im_end|>'`, and `<|im_end|>` closes a word under
+  `oracle._BOUNDARY` — capitalisation is why, since generated `Trumpet` is two
+  tokens (`['Trump','et']`) where bare `trumpet` is three, leaving room for the
+  terminator. D22's span bar cannot catch the residual: it passes at exactly
+  ≤ 3 tokens, which *is* the residual condition. The bias runs **toward** the
+  gate — an unobservably-terminated span scores a hit, inflating survival —
+  and at 1.5B the pass/fail margin is one item (44/71 passes, 43/71 fails), so
+  even two such items exceed the margin. `oracle.py` stays untouched (editing
+  it would force re-runs of three milestones); the residual is carried by
+  disclosure plus the pre-registered residual-conservative recomputation in
+  D20.
 - **The D18 bars pass for the whole roster, checked in advance.** All 60
   concepts tokenize to ≤ `oracle.SPAN_TOKENS` = 3 in both bare and
   leading-space form on all three Qwen2.5 tokenizers (verified 2026-07-28),
@@ -304,15 +316,28 @@ honest ones to quote.
 
 **The residual-conservative read, pre-registered and never dispositive.**
 Beside the gate as scored, the same gate statistic is recomputed with every
-scored cell whose recorded greedy span *fills* the 3-token window re-scored as
-a **miss** — the maximally conservative reading of the boundary D9(b) cannot
-observe. In the recorded clean arm those are the beetle / butterfly / trumpet
-items listed in the instrument facts (0 / 3 / 4 gate-arm items); in the
-ablated cells the set is whatever the run records, computed from the same
-recorded spans. Both numbers are reported. Following the same honesty pattern
-as the concept-level collapse: **if the gate passes and the
-residual-conservative read does not, the conservative numbers are the honest
-ones to quote.** The read can only lower the floor, never rescue it, and
+**residual cell** re-scored as a **miss** — the maximally conservative reading
+of the boundary D9(b) cannot observe. A residual cell is one whose recorded
+span, after stripping leading whitespace, **equals the scored concept's
+spelling exactly, with nothing following it** (no boundary character observed).
+That is the selector, stated once here and implemented verbatim: it is *not*
+"the span fills the 3-token window", which every recorded cell does. In the
+recorded clean arm the residual cells are the 0 / 2 / 2 gate-arm items named in
+the instrument facts; in the ablated cells the set is whatever the run records,
+computed from the same recorded spans by the same selector.
+
+**Denominator, pre-registered: fail in place.** The gate arm stays at its
+as-scored n — **41 / 71 / 84**, the knowable-now cross-check the power table
+freezes — and a residual-affected item scores as a **failure** within that arm.
+The alternative reading (re-score the clean cell too, so the item un-gates and
+the arm shrinks) is named and **rejected**: it is the less conservative of the
+two at the bar — with the same numerator, `wilson(43, 71)` reads 0.489 and
+fails while `wilson(43, 69)` reads 0.505 and passes — and it would break the
+power table's pre-registered n. Fail-in-place keeps the read strictly one-way:
+it can only lower the floor, never rescue it. Both the as-scored and the
+conservative numbers are reported, and following the same honesty pattern as
+the concept-level collapse: **if the gate passes and the residual-conservative
+read does not, the conservative numbers are the honest ones to quote.**
 `oracle.py` is not touched.
 
 **Descriptive package, never gate-bearing, all pre-registered here:** the
@@ -376,7 +401,7 @@ result; M4 refuses M1 or M3 artifacts that were themselves not results.
 | A **new, uncalibrated, sole-dispositive** 0.5 constant | D17's 0.5, which was per-cell and never dispositive | The statistic changed (12-fold conjunction, ≈ 0.944 per-cell under independence) and the status changed (qualifier → gate), so no provenance transfers; owned as deliberately lenient, pre-registered before any new cell, fitted to none, with the per-cell equivalence frozen into `GATE_WORDING` |
 | Four cross-mention (prime, item) cells kept in gate-bearing pools | M3's verified no-cross-mention property | M1's leak guard only bars own-concept/control leaks; the confound biases against the gate; named per-cell reporting (D21a) |
 | `oracle.py` byte-shared by a fourth consumer (`m4_strip.py`) | cut-from-predecessor rule | Same D9 rationale as the first three consumers: the rule's purpose is byte-identity; pinned by the existing shared-oracle test pattern |
-| D9(b)'s owned span-truncation residual sits in a gate-bearing arm | `oracle.py`'s scope sentence, "None of the three concepts is in M2's subset" | M4 scores all 60 probes, so beetle / butterfly / trumpet are gated again for the first time since M1 (0 / 3 / 4 gate-arm items); the bias runs *toward* the gate, so it is disclosed per subject and carried by the pre-registered residual-conservative recomputation (D20), never by editing `oracle.py` |
+| D9(b)'s owned span-truncation residual sits in a gate-bearing arm | `oracle.py`'s scope sentence, "None of the three concepts is in M2's subset" | M4 scores all 60 probes, so beetle / butterfly / trumpet are gated again for the first time since M1 (0 / 2 / 2 gate-arm cells whose span equals the spelling with no boundary observed — `oracle.py`'s own named set); the bias runs *toward* the gate, so it is disclosed per subject and carried by the pre-registered residual-conservative recomputation, fail-in-place (D20), never by editing `oracle.py` |
 | Probe-side reach is still the D9(b)-visible roster | "the vocabulary" | 25 / 7 / 5 concepts gate zero items — a **competence selection** (the model names something else; the gate is token-count-insensitive up to 3), not tokenizer geometry; that selection plausibly enriches for robust concepts and biases the floor **upward** (F12's enrichment mechanism, probe side); the claim is sparing across the *measurable* vocabulary, said exactly that way |
 
 Standing owned rows carry unchanged: naming-only gate (K2), lens provenance
@@ -398,7 +423,7 @@ now (a run that disagrees is an INVALID cross-check, not a power surprise):
 | Concept-level collapse (non-subset concepts ≥ 1 gated item) | 23 | 41 | 43 | yes, all |
 | Subset diagonal (recorded; M3's cells re-run) | 28 | 34 | 32 | yes |
 | Confound cells in the pool (D21a) | 1 | 4 | 4 | named texture |
-| Span-filling residual items in the gate arm (D9(b), clean arm) | 0 | 3 | 4 | named texture |
+| D9(b) residual items in the gate arm (clean arm; span = spelling, no boundary) | 0 | 2 | 2 | named texture |
 
 Honesty rows, carried and extended: probe-side clustering (3 items share a
 concept) is handled by the pre-registered concept-level collapse, never by the
