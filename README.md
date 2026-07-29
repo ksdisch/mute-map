@@ -70,9 +70,13 @@ deterministic prefix rule on the recorded 3-token span (decision D9b, frozen
 before any run), M1's published numbers stand untouched, and the re-score is
 published beside them as a labelled reanalysis (D10a) in which the contrast
 survives on every subject and the dark categories light up. **The v1 chain
-(M0–M3) is now closed; the S1 (7B) and S2 (lexical vs semantic scope) stretches
-remain optional.** Models: Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS,
-forward-only; core chain $0.
+(M0–M3) is now closed.** In progress: close-out stage **M4, the vocabulary
+collateral strip** (12 characterized directions × all 60 concepts), which
+measures the one thing M3's near-white grid does *not* show — that deleting
+France spares the other 48 concepts. Its brief is in review and its decisions
+are not yet frozen. The S1 (7B) and S2 (lexical vs semantic scope) stretches
+were declined for this repo and banked for a future seed-hunt. Models:
+Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS, forward-only; core chain $0.
 
 Full brief: [`docs/KICKOFF.md`](docs/KICKOFF.md). The 12-idea backlog this was
 picked from: dim-stage

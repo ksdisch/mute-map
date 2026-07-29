@@ -12,10 +12,14 @@ leaves the other eleven almost untouched (1.5B: diagonal 0/34 vs off-diagonal
 bit-for-bit on every later run. v1 = M0–M3 per `docs/KICKOFF.md`; S1/S2
 stretches optional.
 
-**Next action:** none pre-committed — the v1 chain is closed. Open options: the
-S1 stretch (7B lens fit + matrix-lite, ≤ $15 rented GPU), the S2 stretch
-(lexical vs semantic scope, which owes the `oracle._BOUNDARY` boundary-class
-decision before freezing any non-ASCII list), a write-up, or `/seed-hunt`.
+**Next action:** close-out stage **M4, the vocabulary collateral strip** —
+decided by Kyle 2026-07-28 over closing immediately and over the stretches.
+`docs/M4-BRIEF.md` is written and in adversarial review (PR #10); decisions
+**D19–D22 await Kyle's freeze**, and no runner code exists until they do. After
+M4: write-up + `/seed-hunt`. The S1 (7B) and S2 (lexical vs semantic scope)
+stretches were declined for this repo and banked as idea #13 in
+`~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md`; they compete in the
+seed-hunt on equal terms.
 
 **Key facts**
 - Fact — Anchor: S4b (dim-stage), concept-specific off-switch at 1.5B, +.727

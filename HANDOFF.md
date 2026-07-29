@@ -93,12 +93,16 @@ at 1.5B AND 3B — a *new*, deliberately lenient, uncalibrated constant on the
 carried from M3's per-cell floor). Realized ns are known from the recorded
 gated sets (gate arm 41 / 71 / 84); 486 / 844 / 993 of the pool's 492 / 852 /
 1,008 cells are genuinely new, the rest are M1-recorded and cap the gate arm at
-35/41, 69/71, 82/84 before any forward pass. Design facts found while drafting: four probe clues mention a prime's
-spelling (October→september-2, silver→flute-1, China→jade-1, October→opal-2 —
-D21 decides their treatment); all 60 roster words pass the D18 span bar on all
-three tokenizers (checked in advance); the recorded same-category proxy for
-the new pool reads 6/8 (1.5B) and 13/15 (3B) but **0/6 at 0.5B**, so the
-off-gate 0.5B floor may genuinely fail — reportable under the standing frame.
+35/41, 69/71, 82/84 before any forward pass. Design facts found while
+drafting: five probe clues mention a prime's spelling under D5's own prefix
+rule (October→september-2, silver→flute-1, China→jade-1, October→opal-2,
+Egypt→beetle-2 — the last ungated on all three subjects; D21 decides their
+treatment); D9(b)'s owned span-truncation residual re-enters a gate-bearing
+arm for the first time since M1 (0 / 2 / 2 cells, carried by a pre-registered
+fail-in-place conservative read); all 60 roster words pass the D18 span bar on
+all three tokenizers (checked in advance); and M3's own 0.5B subset already
+fails M4's bar in-statistic (19/28, Wilson lower 0.4934), so the off-gate 0.5B
+floor may genuinely fail — reportable under the standing frame.
 No runner code exists yet; code only after freeze, cut from `m3_matrix.py`.
 
 Standing constraints unchanged: certified environment = `mps` + torch 2.13.0 +

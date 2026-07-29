@@ -41,10 +41,9 @@ descriptive finding. Finding 1 said collateral concentrates on a few fragile
 probe columns are a near-fresh sample — 6 / 8 / 15 of their gate-bearing cells
 are M1-recorded, the other 486 / 844 / 993 are new: either near-total sparing
 holds and the fragile-probe story stays a curiosity of the 12, or more
-silver-like columns exist among the 48 —
-both outcomes are findings, and a *failed* gate (a low survival floor across
-the wider vocabulary) would be the pre-committed reportable headline against
-the specificity story's reach.
+silver-like columns exist among the 48 — both outcomes are findings, and a
+*failed* gate (a low survival floor across the wider vocabulary) would be the
+pre-committed reportable headline against the specificity story's reach.
 
 Because the strip contains, cell-for-cell, almost everything M1 and M3 already
 recorded on these conditions, it also carries the standing re-certification a
@@ -87,29 +86,42 @@ recorded artifacts and the frozen `oracle.py` — no new model runs):**
   116** (0.5B / 1.5B / 3B) of 180 items. Non-subset gated items — the gate
   arm's n: **41 / 71 / 84**. Non-subset concepts with ≥ 1 gated item: **23 /
   41 / 43** of 48 (zero-gated: 25 / 7 / 5). Those concepts drop out because
-  **the model names something else**, not because of token geometry: under
+  **the model answers something else, or answers correctly in a form D9(b)'s
+  opening-word rule refuses** — never because of token geometry: under
   D9(b) the gate is a prefix on the 3-token span, so it is insensitive to
   token count up to 3, and four of the seven 1.5B zero-gated concepts are
   single-token bare. The recorded clean spans say it plainly — `saturn-1/2/3
   → 'Jupiter'`, `neptune-1 → 'Jupiter'`, `bronze-2 → 'Aluminum'`,
-  `monday-1/2/3 → 'Friday'`, `thursday-1/3 → 'Friday'`, `moth-1 → 'Wasp'`;
-  `ant-1/2 → 'Ants'` is a morphology miss (a plural closes no boundary).
-  So the gate arm is **the concepts this subject already names correctly** — a
-  *competence selection*, and confidently-named concepts are plausibly the
-  robust ones, which biases the measured sparing floor **upward**. That is the
+  `monday-1/2/3 → 'Friday'`, `thursday-1/3 → 'Friday'`, `moth-1 → 'Wasp'`.
+  Two further mechanisms sit beside that one and are named rather than folded
+  in: `ant-1/2 → 'Ants'` is a **morphology** miss (a plural closes no
+  boundary), and D9(b)'s opening-word rule refuses **correct answers behind a
+  modifier** — `duck-3 → 'Peking duck'` and `beetle-3 → 'Insect Beetle'` at 3B,
+  `eagle-1 → 'American eagle'`, `guitar-2 → 'Electric guitar'` and
+  `bear-3 → 'Polar bear'` at 0.5B. All three mechanisms point the same way:
+  the gate arm is **the concepts this subject already names, in the form the
+  oracle accepts** — a *competence selection*, and confidently-named concepts
+  are plausibly the robust ones, which biases the measured sparing floor
+  **upward**. That is the
   same enrichment mechanism as F12's selection-enrichment finding, now on the
   probe side; it is why the claim is sparing across the *measurable*
   vocabulary, said exactly that way.
-- **Four probe clues mention a prime's spelling — a confound M3's design never
+- **Five probe clues mention a prime's spelling — a confound M3's design never
   had.** M1's leak guard (D5) bars a clue from leaking its *own* concept or
   control; M3 verified no cross-mentions *within the 12*. Widening probes to
-  180 items surfaces exactly four (prime, item) pairs where the item's clue
-  contains the deleted word at a word boundary: **October→september-2,
-  silver→flute-1, China→jade-1, October→opal-2**. In those cells a miss cannot
-  distinguish "collateral damage to naming machinery" from "the clue's own
-  text lost a word it references." All four items gate at both gate-bearing
-  subjects (only jade-1 gates at 0.5B), so the cells are live. D21 decides
-  their treatment.
+  180 items surfaces five (prime, item) pairs, scanned with **D5's own rule** —
+  no word of the clue may *start with* the string, case-insensitive, plus that
+  string's `forbidden_forms` entries — not the narrower whole-word match:
+  **October→september-2, silver→flute-1, China→jade-1, October→opal-2**, and
+  **Egypt→beetle-2** ("Ancient **Egyptians** carved amulets of the scarab, one
+  kind of this insect"), which a whole-word scan misses because the clue
+  inflects the prime. In those cells a miss cannot distinguish "collateral
+  damage to naming machinery" from "the clue's own text lost a word it
+  references." The first four items gate at both gate-bearing subjects (only
+  jade-1 gates at 0.5B), so those cells are live; `beetle-2` is **ungated on
+  all three subjects** (clean span 'Scarab' / 'scarab'), so it contributes no
+  gate-bearing cell today and is listed so a future re-gate cannot silently
+  miss it. D21 decides their treatment.
 - **D9(b)'s owned span-truncation residual re-enters a gate-bearing arm for
   the first time since M1.** `oracle.py`'s frozen wording owns a residual: for
   the three concepts whose bare spelling *fills* the 3-token span — beetle,
@@ -158,15 +170,24 @@ recorded artifacts and the frozen `oracle.py` — no new model runs):**
   82/84** at 0.5B / 1.5B / 3B (0.5B: all 6 proxy cells miss; 1.5B: `july-3`
   and `venus-3` miss; 3B: `guitar-2` and `neptune-1` miss). At 1.5B the bar
   needs 44 of 71, so the ceiling leaves real room; at 3B likewise. Where the
-  proxy is genuinely predictive is the *rest* of the pool. The pool itself is
-  mostly cross-category, so a
-  high floor is the prediction at the gate-bearing subjects. At 0.5B the same
-  proxy reads **0/6** — consistent with M1's full-battery 0.5B control cell
-  (33/69) and with F12's selection-enrichment finding (the subset-12's 0.5B
-  robustness came partly from S1's selection rule), and *not* with M3's clean
-  0.5B subset floor. The strip may well fail its floor at 0.5B — off-gate,
-  under the standing any-direction-damage frame, and reportable as the
-  measured resolution of that tension.
+  proxy is genuinely predictive is the *rest* of the pool, which is mostly
+  cross-category — so a high floor is the prediction at the gate-bearing
+  subjects.
+- **The 0.5B prediction, read in M4's own statistic.** The strongest and most
+  directly comparable evidence is not the 6-cell proxy: it is M3's recorded
+  subset, recomputed under **M4's gate statistic**. M3's per-item
+  survives-all-11 off-diagonal reads **19/28 = 0.679 at 0.5B, Wilson lower
+  bound 0.4934** — *below 0.5*, i.e. **M3's own 0.5B subset would already fail
+  M4's bar**. The same field passes at both gate-bearing subjects (1.5B 29/34,
+  lower 0.6987; 3B 27/32, lower 0.6825). So there is no "tension" between M3's
+  clean 0.5B floor and a possible M4 failure to resolve — M3's 0.5B floor was
+  clean only under the *cluster-mean per-cell* statistic, and switching to the
+  conjunction flips it. That is also the sharpest illustration of why the 0.5
+  constant carries no meaning across statistics (D20). The 0.5B strip may well
+  fail its floor — off-gate, under the standing any-direction-damage frame,
+  and consistent in advance with M3's own numbers, M1's full-battery 0.5B
+  control cell (33/69), the 0/6 proxy, and F12's selection-enrichment finding
+  (the subset-12's 0.5B robustness came partly from S1's selection rule).
 
 ## Dispositions for the two inherited obligations (explicit, per HANDOFF)
 
@@ -237,10 +258,13 @@ JSON):**
   > conjunction**, not on per-cell survival, and is **not** M3's per-cell
   > floor: under independence it corresponds to a per-cell survival of
   > 0.5^(1/12) ≈ **0.944**, and its stringency depends on the deletion count
-  > (12) as much as on the sparing rate. The M4 verdict is the AND over 1.5B
-  > and 3B; 0.5B runs and is reported under its standing
-  > any-direction-damage frame, never gate-bearing. Gate-arm n (41 / 71 / 84)
-  > < MIN_N = 20 ⇒ pre-declared UNDERPOWERED and no claim.
+  > (12) as much as on the sparing rate. The bar is read **only when the 468
+  > M3-recorded and 255 M1-recorded cells in the strip reproduce their recorded
+  > outcomes bit-for-bit**; any mismatch is INVALID and there is no verdict.
+  > The M4 verdict is the AND over 1.5B and 3B; 0.5B runs and is reported under
+  > its standing any-direction-damage frame, never gate-bearing. Gate-arm
+  > n < MIN_N = 20 ⇒ pre-declared UNDERPOWERED and no claim (realized n =
+  > 41 / 71 / 84 from the recorded gated sets).
 
   *Why this shape.* The strip's question is a **level** question — "is the
   floor high?" — not an ordering question; M3 already settled the ordering.
@@ -274,6 +298,17 @@ JSON):**
   equivalence is written into `GATE_WORDING` itself so no write-up can quote it
   as M3's floor. It is a floor bar, not an effect-size claim; the descriptive
   numbers carry the actual size.
+
+  *Why the re-certification clause is inside the wording.* Every prior stage's
+  gate compared an intervened arm against another **measured** arm, so a dead
+  intervention could never pass one. M4's bar is single-clause and reads only
+  the off-target survival rate — so read in isolation, an ablation that did
+  nothing at all would score ~100% survival and print VOCAB-SPARING. In
+  practice the strip's re-run of M3's 432 matrix cells and M1's 36
+  `primed_late` cells catches exactly that, and any mismatch exits INVALID —
+  but that guarantee lived in D19's design and the runner's exit code, not in
+  the sentence a write-up quotes. Putting it in `GATE_WORDING` means the
+  sentence cannot be quoted out of its own precondition.
 
   *Trade-off, owned:* survives-all-12 is the strictest sparing statistic; a
   single fragile cell fails an item, and the correlation structure across the
@@ -346,7 +381,7 @@ cluster-mean per-cell floor on the new pool (M3's F15 readout, reference line
 **row profiles** (does any of the 12 damage the wider vocabulary?) and
 per-probe **column profiles** over all 60 concepts (finding 1's mostly
 out-of-sample test — are there silver-like columns among the 48?); the within- vs
-cross-category split of the new pool; the four confound cells (D21); mean
+cross-category split of the new pool; the five confound pairs (D21); mean
 concept mass per cell under D13's standing scope; the 0.5B floor under its
 standing frame (the recorded proxy predicts it may fail — that outcome is a
 finding, not a failure).
@@ -357,22 +392,28 @@ INVALID before the checkpoint loads (the D18-companion shape, carried from
 `m3_matrix.py`); `--dry-run` validates and stops; `--limit` is smoke, never a
 result; M4 refuses M1 or M3 artifacts that were themselves not results.
 
-### D21 — The four cross-mention cells
+### D21 — The five cross-mention cells
+
+*The list freezes here, scanned with D5's own prefix + `forbidden_forms` rule:
+**October→september-2, silver→flute-1, China→jade-1, October→opal-2,
+Egypt→beetle-2**. Four are gated today (one at 0.5B); `beetle-2` is ungated on
+all three subjects, so it carries no gate-bearing cell now but is listed so a
+future re-gate cannot silently acquire one.*
 
 - **(a) Keep them in the gate-bearing pool; report them as a named confound
-  row (recommended).** The four cells stay in every pooled arm and in their
-  items' survives-all-12 conjunctions, and the results section reports each
-  cell's outcome individually under its named confound. *Why:* a confounded
-  miss can only **lower** the floor — the bias runs against the gate, the one
-  direction this project ships owned. Excluding them would delete only cells
-  that could hurt the claim, which is the anti-conservative move the lineage
-  never makes. Four cells of 852 (1.5B) cannot carry a verdict either way;
-  what they can do is mislead a *reader* of the column profiles, and the named
-  row prevents that.
+  row (recommended).** The cells stay in every pooled arm and in their items'
+  survives-all-12 conjunctions, and the results section reports each cell's
+  outcome individually under its named confound. *Why:* a confounded miss can
+  only **lower** the floor — the bias runs against the gate, the one direction
+  this project ships owned. Excluding them would delete only cells that could
+  hurt the claim, which is the anti-conservative move the lineage never makes.
+  Four cells of 852 (1.5B) cannot carry a verdict either way; what they can do
+  is mislead a *reader* of the column profiles, and the named row prevents
+  that.
 - **(b) Pre-registered exclusion from gate-bearing pools, reported as
   texture.** Cleaner causal story per cell, but it is evidence-removal in the
   gate's favour — rejected on the standing bias rule. Not recommended.
-- **(c) Drop the four items entirely.** Loses their clean cells and their 11
+- **(c) Drop the five items entirely.** Loses their clean cells and their
   unconfounded prime cells for no reason. Not recommended.
 
 ### D22 — Run-time instrument bars (D18 carried, widened to the full roster)
@@ -399,10 +440,10 @@ result; M4 refuses M1 or M3 artifacts that were themselves not results.
 | M4 exists at all (post-KICKOFF stage) | KICKOFF's frozen M0–M3 chain | Kyle-picked close-out (2026-07-28) that closes M3's stated bound before write-up; KICKOFF's scope decisions unrelitigated; S1/S2 declined and banked (idea #13) |
 | Level-bar gate (Wilson lower bound vs a constant) | the lineage's Newcombe ordering gates | The ordering is M3's settled result; the strip's question is a level question |
 | A **new, uncalibrated, sole-dispositive** 0.5 constant | D17's 0.5, which was per-cell and never dispositive | The statistic changed (12-fold conjunction, ≈ 0.944 per-cell under independence) and the status changed (qualifier → gate), so no provenance transfers; owned as deliberately lenient, pre-registered before any new cell, fitted to none, with the per-cell equivalence frozen into `GATE_WORDING` |
-| Four cross-mention (prime, item) cells kept in gate-bearing pools | M3's verified no-cross-mention property | M1's leak guard only bars own-concept/control leaks; the confound biases against the gate; named per-cell reporting (D21a) |
+| Five cross-mention (prime, item) pairs kept in gate-bearing pools | M3's verified no-cross-mention property | M1's leak guard only bars own-concept/control leaks; scanned with D5's own prefix + `forbidden_forms` rule (a whole-word scan misses `Egypt→beetle-2`, which the clue inflects); the confound biases against the gate; named per-cell reporting (D21a) |
 | `oracle.py` byte-shared by a fourth consumer (`m4_strip.py`) | cut-from-predecessor rule | Same D9 rationale as the first three consumers: the rule's purpose is byte-identity; pinned by the existing shared-oracle test pattern |
 | D9(b)'s owned span-truncation residual sits in a gate-bearing arm | `oracle.py`'s scope sentence, "None of the three concepts is in M2's subset" | M4 scores all 60 probes, so beetle / butterfly / trumpet are gated again for the first time since M1 (0 / 2 / 2 gate-arm cells whose span equals the spelling with no boundary observed — `oracle.py`'s own named set); the bias runs *toward* the gate, so it is disclosed per subject and carried by the pre-registered residual-conservative recomputation, fail-in-place (D20), never by editing `oracle.py` |
-| Probe-side reach is still the D9(b)-visible roster | "the vocabulary" | 25 / 7 / 5 concepts gate zero items — a **competence selection** (the model names something else; the gate is token-count-insensitive up to 3), not tokenizer geometry; that selection plausibly enriches for robust concepts and biases the floor **upward** (F12's enrichment mechanism, probe side); the claim is sparing across the *measurable* vocabulary, said exactly that way |
+| Probe-side reach is still the D9(b)-visible roster | "the vocabulary" | 25 / 7 / 5 concepts gate zero items — a **competence selection** (the model answers something else, answers correctly behind a modifier the opening-word rule refuses, or misses on morphology; the gate is token-count-insensitive up to 3), not tokenizer geometry; that selection plausibly enriches for robust concepts and biases the floor **upward** (F12's enrichment mechanism, probe side); the claim is sparing across the *measurable* vocabulary, said exactly that way |
 
 Standing owned rows carry unchanged: naming-only gate (K2), lens provenance
 (K3), S2-stratum space-keyed directions (D11), mass-channel scope (D13),
@@ -422,7 +463,7 @@ now (a run that disagrees is an INVALID cross-check, not a power surprise):
 | — of them already recorded in M1 (outcome fixed pre-run) | 6 | 8 | 15 | ceilings 35/41, 69/71, 82/84 |
 | Concept-level collapse (non-subset concepts ≥ 1 gated item) | 23 | 41 | 43 | yes, all |
 | Subset diagonal (recorded; M3's cells re-run) | 28 | 34 | 32 | yes |
-| Confound cells in the pool (D21a) | 1 | 4 | 4 | named texture |
+| Cross-mention confound cells in the pool (D21a; 5 pairs, 4 currently gated) | 1 | 4 | 4 | named texture |
 | D9(b) residual items in the gate arm (clean arm; span = spelling, no boundary) | 0 | 2 | 2 | named texture |
 
 Honesty rows, carried and extended: probe-side clustering (3 items share a
@@ -438,9 +479,13 @@ pre-registered ceiling of **69 of 71** — 8 of the 852 cells are M1-recorded an
 two of them (`july-3`, `venus-3`) already miss — there is real room, and M3's
 per-item collapse texture (29/34 survived all 11 at 1.5B) points into it; the
 ceiling is a fact about the arm, not evidence for the gate. At 0.5B the same
-recorded cells put the ceiling at **35 of 41** (all 6 proxy cells miss), so the
-off-gate floor may well fail there, which would be the first measured
-divergence between the subset's 0.5B robustness and the wider roster's.
+recorded cells put the ceiling at **35 of 41** (all 6 proxy cells miss) —
+`wilson(35, 41)` lower bound 0.716, comfortably above the bar, so that ceiling
+is *not* a reason to expect failure. The reasons to expect failure at 0.5B are
+the ones stated in the instrument facts: M3's own 0.5B subset already fails
+this bar in-statistic (19/28, lower 0.4934), the 0/6 proxy rate, and M1's 33/69
+0.5B control cell. A 0.5B failure would be the first measured divergence
+between the subset's 0.5B robustness and the wider roster's.
 
 ## Wall-clock plan
 
