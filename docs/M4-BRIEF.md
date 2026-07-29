@@ -246,10 +246,30 @@ collapse) stayed in prose — reproducing the exact failure F8 was resolved to
 prevent. D20's wording now carries the pre-declared **AS-SCORED ONLY**
 qualifier, attached conditionally by the runner whenever a conservative read's
 Wilson lower bound falls below 0.5 while the as-scored read's does not, and
-names the failing label (`NOT VOCAB-SPARING`) that the single pass-label
-template had left unstated. The gate, its 0.5 bar, its arm and its precondition
-are unchanged — this scopes the claim and, per D17's carried rule, can never
-create or rescue one.*
+names a failing label that the single pass-label template had left unstated.
+The gate, its 0.5 bar, its arm and its precondition are unchanged — this scopes
+the claim and, per D17's carried rule, can never create or rescue one.*
+
+***Amendment 2, post-freeze, pre-run, at rounds 5–6 (F22, F24–F27) —*** ***NOT
+YET RATIFIED; awaiting Kyle.*** *A second material change to the same frozen
+`GATE_WORDING` block, recorded separately rather than folded into Amendment 1,
+because Kyle's ratification quote covers Amendment 1 only. What changed:* **(i)
+the failing label** *is now the lineage's pre-committed null* `not shown`
+*rather than the assertive* `NOT VOCAB-SPARING` *Amendment 1 introduced —
+failing a Wilson* lower *bound cannot establish the contrary (at 1.5B, k = 40
+has a point estimate of 0.563* above *the bar with a straddling interval), and
+all three predecessor runners emit* `not shown`*;* **(ii) 0.5B is scoped inside
+the wording** *— the gate verdict is the AND over the two gate-bearing subjects
+and 0.5B's readout is never a gate claim, where Amendment 1 had pre-committed
+the string "per subject" while the same block declares 0.5B never gate-bearing;*
+**(iii) the qualifier's attachment is restricted** *to a claim-level verdict,
+never to* `NOT A RESULT` / `DEGENERATE` / `UNDERPOWERED` *— verbatim, Amendment
+1 attached it to all of them, contradicting the D17 rule it cites (the fix
+copies* `m3_matrix.py`*'s own docstring rule); and* **(iv) both string templates
+are stated explicitly** *with a fixed read order, where Amendment 1 gave the
+qualifier an example but no template. The gate, its 0.5 bar, its arm and its
+re-certification precondition remain unchanged — verified byte-for-byte against
+`90b994c`.*
 
 ### D19 — Primes × probes: the strip frame (decide first)
 

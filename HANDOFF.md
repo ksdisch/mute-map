@@ -84,22 +84,26 @@ vocabulary collateral strip as close-out stage M4, then write-up +
 idea #13 in `~/Projects/j-lens-proj-ideas/jlens-followon-backlog.md` — they
 compete in the seed-hunt on equal terms, no incumbent's privilege.
 
-**Where M4 stands: `docs/M4-BRIEF.md` is written, adversarially reviewed
-across five rounds, and D19–D22 are FROZEN (Kyle, 2026-07-29) — (a) across the
-board.** The verdict label was resolved per review F8: the label stays
-`VOCAB-SPARING` and the realized survival proportion rides inside the verdict
-string, the M3 `ON A DAMAGED FLOOR` pattern applied to a level bar. **Amended
-post-freeze, pre-run and ratified by Kyle (round 4, F20):** that string as
-first frozen carried only the as-scored proportion, so the two pre-registered
-reads that can flip which number is honest (residual-conservative
-fail-in-place; concept-level collapse) stayed in prose — the exact failure F8
-was adopted to prevent. D20 now carries a pre-declared **AS-SCORED ONLY**
-qualifier, attached by the runner whenever a conservative read's Wilson lower
-bound falls below 0.5 while the as-scored read's does not, and the failing
-label is the lineage's `not shown`, never an assertive negative. The gate, its
-0.5 bar, its arm and its re-certification precondition are unchanged. Full
-`DECISIONS.md` entries D19–D22 land with the M4 code PR, per the M0–M3
-pattern.
+**Where M4 stands: `docs/M4-BRIEF.md` is written, adversarially reviewed (see
+the mailbox under `~/.claude/reviews/mute-map/` for the round-by-round
+record), and D19–D22 are FROZEN (Kyle, 2026-07-29) — (a) across the board.**
+The verdict label was resolved per review F8: the label stays `VOCAB-SPARING`
+and the realized survival proportion rides inside the verdict string, the M3
+`ON A DAMAGED FLOOR` pattern applied to a level bar. **Amended post-freeze,
+pre-run and ratified by Kyle (round 4, F20):** that string as first frozen
+carried only the as-scored proportion, so the two pre-registered reads that
+can flip which number is honest (residual-conservative fail-in-place;
+concept-level collapse) stayed in prose — the exact failure F8 was adopted to
+prevent. D20 now carries a pre-declared **AS-SCORED ONLY** qualifier, attached
+by the runner whenever a conservative read's Wilson lower bound falls below
+0.5 while the as-scored read's does not. **Amendment 2 (rounds 5–6,
+F22/F24–F27) is NOT YET RATIFIED and awaits Kyle:** the failing label became
+the lineage's null `not shown` rather than an assertive negative, 0.5B was
+scoped inside the wording, the qualifier's attachment was restricted to
+claim-level verdicts, and both string templates were stated explicitly. The
+gate, its 0.5 bar, its arm and its re-certification precondition are unchanged
+under both amendments. Full `DECISIONS.md` entries D19–D22 land with the M4
+code PR, per the M0–M3 pattern.
 
 The stage: 12 subset primes × all 180 M1 items (2,340 cells/subject), gate = a
 single-clause VOCAB-SPARING level bar on the non-subset pool (per-item
