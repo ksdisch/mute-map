@@ -859,9 +859,11 @@ raw counts, not to a smaller count adjusted for that clustering.*
 | M4 | The frozen gate wording promises per-pair-cell degeneracy texture the runner does not compute | Found at post-run adversarial review; the wording is byte-frozen with three subjects' artifacts and cannot be edited, and the readout is pre-declared non-verdict-bearing at n ≤ 3. Disclosed here rather than patched, and **that clause must not be quoted as if the field exists** |
 
 *In plain words: stage by stage, the things worth knowing are — M1 added 7 words from
-new lists and used a strict word-boundary test when screening its clue sentences for
-giveaways, so that a clue containing "plant" is not wrongly thrown out for leaking
-"ant". M2 widened the scoring rule (a fix to how words get chopped
+new lists and changed how it screens clue sentences for giving the answer away: rather
+than asking whether the concept appears anywhere inside a clue word — which wrongly
+flags "plant" for containing "ant" — it asks whether any clue word *starts with* the
+concept, plus a frozen list of extra forms to forbid, so that "lions" still counts as
+giving away "lion". M2 widened the scoring rule (a fix to how words get chopped
 up, not to what counts as an answer), wrote new code for partial removal, invented the
 sliding-window sweep, and — importantly — compared tiers that do not delete the same
 number of layers, so its localization comparison mixes "where" with "how much"; a
