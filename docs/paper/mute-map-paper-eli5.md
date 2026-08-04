@@ -330,7 +330,7 @@ comparison is computed *within* the set of items that passed, and passing is a p
 of the untouched run alone, decided before any direction is removed. And the same
 texture shows the bias **works against the finding, not for it** — on the qualifying
 cells, under the control condition the model said the concept within three word-pieces
-17 of 17, 46 of 40 and 36 of 34 times, so at both verdict-carrying models the primary
+17 of 38, 46 of 61 and 36 of 44 times, so at both verdict-carrying models the primary
 rule *understates* how much the control arm survived, while under the target-removed
 condition it said the concept 0 of 38, 0 of 61 and 6 of 44 times, exactly matching the
 primary count. If anything, the comparison arm is being scored too harshly.

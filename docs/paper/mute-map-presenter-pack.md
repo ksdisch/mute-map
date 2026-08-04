@@ -101,7 +101,7 @@ Any of these can be pulled up live. JSON paths are the field to read.
 | M1 gated n | 38 / 61 / 44 of 180 | same → `competence.gate_greedy` |
 | M1 arms | `primed_late` 0/38, 0/61, 6/44; `control_late` 17/38, 40/61, 34/44 | same → `naming_success_gated` |
 | M1 prevalence, UNDERPOWERED | 4/8, 9/11, 6/8 | same → `prevalence.cell` |
-| Bias runs against the finding | control said concept in 3 tokens 17/17, 46/40, 36/34 | same → `greedy_3_texture` vs `naming_success_gated` |
+| Bias runs against the finding | control said concept in 3 tokens 17/38, 46/61, 36/44 | same → `greedy_3_texture` vs `naming_success_gated` |
 | Re-score (labelled reanalysis) | gated 38→69, 61→105, 44→116; +0.478 / +0.762 / +0.690 | `results/m1-rescore-*.json` → `oracles.prefix` |
 | Re-score reproduces M1 exactly | `true` ×3 | same → `reproduces_published_first_token_cell` |
 | New-items-only contrast | +0.278 / +0.545 / +0.478 (first-token) | same → `per_source.first_token.m1-new` |

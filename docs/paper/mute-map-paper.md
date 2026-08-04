@@ -237,7 +237,7 @@ Two things bound this bound. It does not threaten the gate: the contrast is comp
 *within* the gated set, and gating is a property of the clean arm alone, decided before
 any ablation. And the same texture shows the bias **runs against the finding, not for it**
 — on the gated cell the model said the concept within three tokens in `control_late`
-17/17, 46/40 and 36/34, so at both gate-bearing subjects the primary readout *understates*
+17/38, 46/61 and 36/44, so at both gate-bearing subjects the primary readout *understates*
 control-arm survival, while under `primed_late` it said the concept 0/38, 0/61 and 6/44,
 exactly matching the primary count. The comparison arm is, if anything, scored too
 harshly.
