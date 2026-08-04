@@ -429,7 +429,7 @@ mark.pg-hl--flash { animation: pg-annot-flash 1.2s ease-out; }
     <dt>Source</dt><dd data-pg-block="pg-p-0004"><a href="https://github.com/ksdisch/mute-map/blob/main/docs/paper/mute-map-paper.md">docs/paper/mute-map-paper.md</a>, in the mute-map repository</dd>
     <dt>Generated</dt><dd data-pg-block="pg-p-0005">4 August 2026</dd>
   </dl>
-  <p data-pg-block="pg-p-0006" class="header-note"><strong>This is a plain-English rewrite that mirrors the original one-for-one</strong> — same headings in the same order, same paragraphs in the same order, nothing merged, dropped, added, or reordered. Every number, verdict and claim is stated exactly as the original states it. Tables are carried over unchanged, each followed by an <em>in-plain-words</em> gloss; the six figures are the original images; the references are carried over word-for-word.<br><br><strong>Terms in <button type="button" class="gloss-term" data-term-id="jacobian-lens">this colour</button> are clickable</strong> — tap one for a plain-English definition. The 📖 button opens the full glossary. Select any text to highlight it and attach a note.</p>
+  <p data-pg-block="pg-p-0006" class="header-note"><strong>This is a plain-English rewrite that mirrors the original one-for-one</strong> — same headings in the same order, same paragraphs in the same order, nothing merged, dropped, added, or reordered. Every number, verdict and claim is stated exactly as the original states it. Tables are carried over unchanged, each followed by an <em>in-plain-words</em> gloss; the six figures are the original images with rewritten captions; the references are carried over word-for-word.<br><br><strong>Terms in <button type="button" class="gloss-term" data-term-id="jacobian-lens">this colour</button> are clickable</strong> — tap one for a plain-English definition. The 📖 button opens the full glossary. Select any text to highlight it and attach a note.</p>
 </header>
 
 <main>
@@ -441,7 +441,7 @@ deleting one direction.</strong></p>
 <p data-pg-block="pg-p-0008"><em>The mute-map project, 2026-07-29. Every measurement was run on a local machine,
 using only ordinary forward runs of the model — no training, no <button type="button" class="gloss-term" data-term-id="gradients">gradients</button> — at a
 total cost of &#36;0.</em></p>
-<blockquote><p data-pg-block="pg-p-0009"><strong>A note on the figures.</strong> All six are drawn by <a href="figures.py"><code>figures.py</code></a> from the
+<blockquote><p data-pg-block="pg-p-0009"><strong>A note on the figures.</strong> All six are drawn by <a href="https://github.com/ksdisch/mute-map/blob/main/docs/paper/figures.py"><code>figures.py</code></a> from the
 saved result files in <code>results/</code>, and they plot nothing except values that were
 actually recorded — counts, rates, and the <button type="button" class="gloss-term" data-term-id="error-bar">error bars</button> the measurement scripts
 themselves wrote down. Nothing is smoothed, curve-fitted, or filled in between
@@ -680,7 +680,7 @@ comparison is computed <em>within</em> the set of items that passed, and passing
 of the untouched run alone, decided before any direction is removed. And the same
 texture shows the bias <strong>works against the finding, not for it</strong> — on the qualifying
 <button type="button" class="gloss-term" data-term-id="cell">cells</button>, under the control condition the model said the concept within three <button type="button" class="gloss-term" data-term-id="word-piece">word-pieces</button>
-17 of 17, 46 of 40 and 36 of 34 times, so at both <button type="button" class="gloss-term" data-term-id="verdict-carrying">verdict-carrying</button> models the primary
+17 of 38, 46 of 61 and 36 of 44 times, so at both <button type="button" class="gloss-term" data-term-id="verdict-carrying">verdict-carrying</button> models the primary
 rule <em>understates</em> how much the control <button type="button" class="gloss-term" data-term-id="arm">arm</button> survived, while under the target-removed
 condition it said the concept 0 of 38, 0 of 61 and 6 of 44 times, exactly matching the
 primary count. If anything, the comparison <button type="button" class="gloss-term" data-term-id="arm">arm</button> is being scored too harshly.</p>
@@ -1255,7 +1255,7 @@ const GLOSS_TERMS = {
   },
   "entry-test": {
     "term": "entry test",
-    "expansion": "The check that decides whether an item is measurable at all: the model must name the concept correctly when nothing has been removed. Applied before any intervention."
+    "expansion": "The check that decides whether an item is measurable at all. In this project the model must simply name the concept correctly when nothing has been removed. The earlier project's version also required the model to successfully avoid the word on request, which is why its measured sets were so small."
   },
   "competence": {
     "term": "competence",
@@ -1315,7 +1315,7 @@ const GLOSS_TERMS = {
   },
   "floor": {
     "term": "floor",
-    "expansion": "The worst-case level a measurement is guaranteed to stay above — here, the share of concepts that come through a deletion undamaged."
+    "expansion": "How much survives in the worst case. Here: the share of measurable items that come through a deletion undamaged, read at the pessimistic end of its error bar. Counting one yes/no per concept instead gives a different, lower floor — which is why the M4 verdict says AS-SCORED ONLY."
   },
   "verdict-carrying": {
     "term": "verdict-carrying",
@@ -1327,7 +1327,7 @@ const GLOSS_TERMS = {
   },
   "cell": {
     "term": "cell",
-    "expansion": "One measured data point — a specific combination of model, item and condition, with its own count of hits out of attempts."
+    "expansion": "One measured box in the design — a fixed combination of model and condition — holding however many items fall into it, and reported as hits out of attempts. A pooled cell is one with enough items in it to carry a verdict."
   },
   "decision-arm": {
     "term": "decision arm",
@@ -2130,9 +2130,31 @@ const GLOSS_TERMS = {
       }, function () { btn.textContent = 'Press ⌘C to copy'; });
     } else { btn.textContent = 'Press ⌘C to copy'; }
   });
+  // Blob + <a download> works in every browser, including file:// — without it
+  // an artifact opened outside claude.ai can never actually save an export.
+  function blobSave(filename, text) {
+    try {
+      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+      return true;
+    } catch (e) { return false; }
+  }
+
   function saveFile(filename, text) {
     var dl = window.claude && window.claude.downloads;
-    if (!dl) { showFallback(filename, text); return; }
+    if (!dl) {
+      if (blobSave(filename, text)) { status('Saved ' + filename); return; }
+      showFallback(filename, text);
+      return;
+    }
     dl.save({ filename: filename, data: text }).then(function () {
       status('Saved ' + filename);
     }, function (err) {
@@ -2142,6 +2164,7 @@ const GLOSS_TERMS = {
           'A download prompt was already open — copy instead, or try again shortly.');
         return;
       }
+      if (blobSave(filename, text)) { status('Saved ' + filename); return; }
       showFallback(filename, text);
     });
   }
