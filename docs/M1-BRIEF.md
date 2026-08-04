@@ -357,7 +357,7 @@ switches.
 
 Crucially, the texture also shows **the readout bias runs against the finding,
 not for it**. On the gated cell the model said the concept within 3 tokens in
-`control_late` **17/17, 46/40, 36/34** — i.e. at 1.5B and 3B the control arm
+`control_late` **17/38, 46/61, 36/44** — i.e. at 1.5B and 3B the control arm
 sometimes says the word without *starting* with it, so the primary readout
 *understates* control-arm survival. Under `primed_late` it said the concept
 **0/38, 0/61, 6/44** — exactly matching the primary count. So the mute is real:

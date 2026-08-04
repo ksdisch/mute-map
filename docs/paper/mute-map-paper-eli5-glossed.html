@@ -1327,7 +1327,7 @@ const GLOSS_TERMS = {
   },
   "cell": {
     "term": "cell",
-    "expansion": "One measured box in the design — a fixed combination of model and condition — holding however many items fall into it, and reported as hits out of attempts. A pooled cell is one with enough items in it to carry a verdict."
+    "expansion": "One measured box in the design — a fixed combination of the things being varied, such as the model, the condition, and which item or pair was tested — reported as hits out of attempts. Small cells are pooled together, because a cell under 20 trials cannot carry a verdict."
   },
   "decision-arm": {
     "term": "decision arm",
@@ -2151,7 +2151,9 @@ const GLOSS_TERMS = {
   function saveFile(filename, text) {
     var dl = window.claude && window.claude.downloads;
     if (!dl) {
-      if (blobSave(filename, text)) { status('Saved ' + filename); return; }
+      // the anchor click is fire-and-forget: report that the download was
+      // started, never that it landed, since a blocked download looks identical
+      if (blobSave(filename, text)) { status('Download started: ' + filename); return; }
       showFallback(filename, text);
       return;
     }
@@ -2164,7 +2166,9 @@ const GLOSS_TERMS = {
           'A download prompt was already open — copy instead, or try again shortly.');
         return;
       }
-      if (blobSave(filename, text)) { status('Saved ' + filename); return; }
+      // the anchor click is fire-and-forget: report that the download was
+      // started, never that it landed, since a blocked download looks identical
+      if (blobSave(filename, text)) { status('Download started: ' + filename); return; }
       showFallback(filename, text);
     });
   }
