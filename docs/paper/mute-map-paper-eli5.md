@@ -381,7 +381,8 @@ batch stands on its own.
 | **3B** | 32 | 27/32 | 25/32 | 3/32 | **+0.750 [+0.531, +0.857]** | **+0.688 [+0.463, +0.812]** | LATE-LOCALIZED |
 
 *In plain words: doing exactly the same deletion in the early third or the middle third
-of the band barely dents naming (17, 29 and 27 hits early; 17, 27 and 25 middle) — but
+of the band leaves most naming intact at 1.5B and 3B, and costs 0.5B about four items in
+ten (17, 29 and 27 hits early; 17, 27 and 25 middle) — but
 doing it in the late third drives naming to almost nothing (0, 0 and 3). The gaps
 between early and late, and between middle and late, all have error bars clear of zero,
 so both verdict-carrying models come out LATE-LOCALIZED; 0.5B shows the same shape but
@@ -673,8 +674,9 @@ M4 reverses M3's null from §4.4.2, and the reason is what went into the arms.
 
 *In plain words: when the deleted direction and the tested concept come from the same
 category, survival is much lower (76% at 1.5B, 66% at 3B) than when they come from
-different categories (93% and 96%). Deleting a country's direction really does knock
-other countries about, and the effect does not go away in the bigger models.*
+different categories (93% and 96%). Deleting a direction really does damage other
+concepts in the same category — here across ten categories, not just one — and the
+effect does not go away in the bigger models.*
 
 **Category-block collateral is real across the wider vocabulary and does not dissolve as
 models get bigger.** M3 saw it dissolve by 1.5B — but M3's within-category arm was **30
@@ -827,8 +829,9 @@ prove it; the entry test asks only that the model can name the concept, not that
 also avoid saying it; the test items were written by hand and locked before any run; the
 statistics count items rather than concepts, which slightly overstates how much
 independent evidence there is; the error bars on differences are computed with a formula
-meant for unpaired data, which makes them wider than they need to be and so can only
-cost sensitivity, never invent a false result; and the 20-trial minimum is applied to
+meant for unpaired data, which — when the two arms move together, as these do — makes
+them wider than they need to be and so can only cost sensitivity, never invent a false
+result; and the 20-trial minimum is applied to
 raw counts, not to a smaller count adjusted for that clustering.*
 
 ### 6.2 Stage-specific deviations
@@ -856,8 +859,9 @@ raw counts, not to a smaller count adjusted for that clustering.*
 | M4 | The frozen gate wording promises per-pair-cell degeneracy texture the runner does not compute | Found at post-run adversarial review; the wording is byte-frozen with three subjects' artifacts and cannot be edited, and the readout is pre-declared non-verdict-bearing at n ≤ 3. Disclosed here rather than patched, and **that clause must not be quoted as if the field exists** |
 
 *In plain words: stage by stage, the things worth knowing are — M1 added 7 words from
-new lists and used a strict word-boundary test so that short words like "ant" do not
-count as hits inside "plant". M2 widened the scoring rule (a fix to how words get chopped
+new lists and used a strict word-boundary test when screening its clue sentences for
+giveaways, so that a clue containing "plant" is not wrongly thrown out for leaking
+"ant". M2 widened the scoring rule (a fix to how words get chopped
 up, not to what counts as an answer), wrote new code for partial removal, invented the
 sliding-window sweep, and — importantly — compared tiers that do not delete the same
 number of layers, so its localization comparison mixes "where" with "how much"; a
