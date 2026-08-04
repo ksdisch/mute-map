@@ -30,6 +30,8 @@ pre-registered gates frozen as code before any run):
 **The honest framing:** an effect *found during a replication, characterized
 here* — the anchor is dim-stage's own recorded result, not a paper claim.
 
+## Results
+
 **Status: M4 PASSED 2026-07-29 — every measurement stage is closed.** The
 close-out stage widened M3's probe side from 12 concepts to all 60: keep the 12
 characterized directions as the things deleted, and ask *every* item in the
@@ -104,6 +106,61 @@ bit-for-bit rather than trusting them. The S1 (7B) and S2 (lexical vs semantic
 scope) stretches were declined for this repo and banked for a future seed-hunt.
 Models: Qwen2.5-0.5B/1.5B/3B-Instruct, local MPS, forward-only; whole project $0.
 
-Full brief: [`docs/KICKOFF.md`](docs/KICKOFF.md). The 12-idea backlog this was
-picked from: dim-stage
+## Reproducing
+
+Everything is local and free: no API keys, no `.env`; `uv` (Python 3.12+) manages
+the venv, and models pull from HuggingFace on first use.
+
+```bash
+git clone https://github.com/ksdisch/mute-map && cd mute-map
+
+uv run pytest    # stats ruler + per-stage invariant/gate tests, no model downloads needed
+```
+
+The verdicts above are printed straight from the committed per-run JSONs in
+[`results/`](results/) — reproducing them needs no model, no lens, no GPU:
+
+```bash
+uv run m1_verdict.py   # BREADTH-SPECIFIC at 1.5B and 3B
+uv run m2_verdict.py   # LATE-LOCALIZED at 1.5B and 3B
+uv run m3_verdict.py   # MATRIX-SPECIFIC at 1.5B and 3B
+uv run m4_verdict.py   # VOCAB-SPARING at 1.5B and 3B, AS-SCORED ONLY
+```
+
+Re-running a milestone from scratch additionally needs a fitted Jacobian lens per
+subject (`lenses/*.pt`, gitignored — copied from local dim-stage copies, K3;
+provenance in [`lenses/PROVENANCE.md`](lenses/PROVENANCE.md)) and downloads the
+Qwen checkpoint on first use. Each runner supports `--dry-run` (validate inputs
+and stop; a wrong-arm input exits `INVALID`) and `--limit` (smoke only, never a
+result):
+
+```bash
+uv run m1_battery.py --model-id Qwen/Qwen2.5-1.5B-Instruct \
+  --lens lenses/qwen2.5-1.5b-instruct-n100.pt --dry-run
+uv run m1_battery.py --model-id Qwen/Qwen2.5-1.5B-Instruct \
+  --lens lenses/qwen2.5-1.5b-instruct-n100.pt
+```
+
+All milestone runs are comfortably local: M1–M3 each ran under an hour per
+subject on MPS ($0), and M4 — the largest, at ~4.3× an M1 subject run — stayed
+within an afternoon. The anchor re-run (`m0_anchor.py`) is under an hour total
+across all three subjects; `m0_anchor.py` is certified post-M0-gate and never
+edited, so cut new runners from it rather than modifying it.
+
+## Repo map
+
+| Path | Role |
+|---|---|
+| [`docs/KICKOFF.md`](docs/KICKOFF.md) | The approved brief — scope, milestones, gates, risks, decisions. **Source of truth.** |
+| `docs/M0…M4-BRIEF.md` | Per-milestone design extraction, frozen conventions, deviations table, full results |
+| [`docs/DECISIONS.md`](docs/DECISIONS.md) | Append-only log of every frozen decision |
+| [`docs/LEARNING.md`](docs/LEARNING.md) | Plain-English teaching notes, milestone by milestone |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Milestone status vs the plan |
+| `m0_anchor.py`, `m1_battery.py`, `m2_depth.py`, `m3_matrix.py`, `m4_strip.py` | Milestone runners at the repo root, each cut from its predecessor (`oracle.py` is the one shared exception, K3) |
+| `m1_verdict.py` … `m4_verdict.py` | Committed verdict scripts — print each milestone's pre-committed gate wording against `results/` |
+| `items/` | Frozen item sets used by the runners |
+| `results/` | Per-run JSONs — the recorded measurements this README reports |
+| `lenses/` | Fitted Jacobian lenses (gitignored — sourced from local dim-stage copies; `PROVENANCE.md` is tracked) |
+
+The 12-idea backlog this was picked from: dim-stage
 [`docs/ideas/jlens-followon-backlog.md`](https://github.com/ksdisch/dim-stage/blob/main/docs/ideas/jlens-followon-backlog.md).
