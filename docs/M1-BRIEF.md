@@ -357,13 +357,22 @@ switches.
 
 Crucially, the texture also shows **the readout bias runs against the finding,
 not for it**. On the gated cell the model said the concept within 3 tokens in
-`control_late` **17/38, 46/61, 36/44** — i.e. at 1.5B and 3B the control arm
-sometimes says the word without *starting* with it, so the primary readout
+`control_late` **17/38, 46/61, 36/44** [erratum 2026-08-04] — i.e. at 1.5B and 3B
+the control arm sometimes says the word without *starting* with it, so the primary readout
 *understates* control-arm survival. Under `primed_late` it said the concept
 **0/38, 0/61, 6/44** — exactly matching the primary count. So the mute is real:
 under a concept's own late-band ablation the model does not say the word at all
 within three tokens, while the arm it is compared against is, if anything,
 scored too harshly.
+
+> **[erratum 2026-08-04]** This line originally read `17/17, 46/40, 36/34`, which
+> quoted the control arm's own *primary naming hits* (17/40/34) as denominators
+> instead of the gated n (38/61/44) — making two of the three arithmetically
+> impossible. Corrected against `results/m1-battery-qwen2.5-*-instruct.json`
+> (`greedy_3_texture.gated_control_late_says_concept_in_3` = 17/46/36 over
+> `naming_success_gated.clean.n` = 38/61/44). No verdict, contrast or interval
+> changes; the argument the paragraph makes gets stronger. Found at adversarial
+> review of PR #17.
 
 **Follow-up owed (not a post-hoc gate change).** The gate stayed exactly as
 pre-committed; nothing here was rescored. The obvious instrument fix — accepting
