@@ -150,9 +150,10 @@ highest-probability next *token* (a token is the chunk of text a model actually
 emits, often a whole word but sometimes a fragment) had to be one of the concept's
 single-token spellings, matching case exactly. Stage M2 widened it once, under
 decision D9(b), locked into code in `oracle.py` before any M2 run: the concept counts
-as produced if the model's three most likely word-pieces, decoded and stripped of
-leading spaces, **begin with the concept's spelling at a word boundary, ignoring
-capitalisation**. It is a rule about how the answer *starts*, never about the word
+as produced if the first three word-pieces the model actually produces — taken one
+after another, picking the most likely next piece at each step — once decoded and
+stripped of leading spaces, **begin with the concept's spelling at a word boundary,
+ignoring capitalisation**. It is a rule about how the answer *starts*, never about the word
 appearing anywhere in it ("not France" counts as a miss); the word-boundary test is
 "the next character is not a letter or digit" (so "Marseille" does not count as
 "Mars"). `oracle.py` is shared byte-for-byte between its four users rather than
@@ -231,6 +232,7 @@ sets are hand-constructed rather than harvested from naturally occurring text** 
 deviation the project owns, carried forward from the first stage onward.
 
 ---
+
 ## 4. Results
 
 Verdicts are quoted exactly as the measurement scripts emitted them. Bold marks the
@@ -286,8 +288,8 @@ single new cell.
 models. With the concept's own direction removed at the late layers, the model still
 named it in 0, 0 and 6 of those cases; with a control direction removed instead, it
 named it in 17, 40 and 34. The gap between the two — 0.447, 0.656 and 0.636 — has an
-error bar that stays well clear of zero on all three, so all three come out
-BREADTH-SPECIFIC.*
+error bar that stays well clear of zero on all three, so both verdict-carrying models
+come out BREADTH-SPECIFIC; 0.5B's row is marked off-gate and never carries a verdict.*
 
 **M1 verdict: BREADTH-SPECIFIC at 1.5B AND 3B.** The effect is not a quirk of the
 handful of items it was first spotted on.
@@ -382,7 +384,8 @@ batch stands on its own.
 of the band barely dents naming (17, 29 and 27 hits early; 17, 27 and 25 middle) — but
 doing it in the late third drives naming to almost nothing (0, 0 and 3). The gaps
 between early and late, and between middle and late, all have error bars clear of zero,
-so all three models come out LATE-LOCALIZED.*
+so both verdict-carrying models come out LATE-LOCALIZED; 0.5B shows the same shape but
+is read off-gate.*
 
 **M2 verdict: LATE-LOCALIZED at 1.5B AND 3B.** The qualifying item counts were
 *predicted before the runs* — 28 / 34 / 32, because passing the entry test is a
@@ -489,6 +492,7 @@ designed: at 1.5B it passes the entry test 3 of 3 and reads 0 of 3 under its own
 direction's removal **and 0 of 3 under the control direction too** — the control
 direction mutes it as well — with 1 of 3 under early removal and 0 of 3 under middle
 removal, i.e. damaged at *every* depth. The pooled curves include it.
+
 ### 4.4 M3 — the specificity matrix
 
 | Subject | Gated n / 36 | Diagonal | Off-diagonal | clause (1) off − diag [Newcombe 95%] | Within-category | Restricted diagonal | clause (2) [Newcombe 95%] | Verdict |
@@ -503,8 +507,8 @@ is every case where they differ — naming survives almost untouched (279 of 308
 374, 343 of 352). The first pass/fail clause is the gap between those two, and it is
 huge with an error bar clear of zero. The second clause repeats the comparison using
 only pairs from the same category — the hardest case — and it still holds (95 of 100
-versus 0 of 28 at 1.5B, 97 of 101 versus 2 of 29 at 3B). All three models come out
-MATRIX-SPECIFIC.*
+versus 0 of 28 at 1.5B, 97 of 101 versus 2 of 29 at 3B). Both verdict-carrying models
+come out MATRIX-SPECIFIC; 0.5B shows the same shape but is read off-gate.*
 
 **M3 verdict: MATRIX-SPECIFIC at 1.5B AND 3B**, on both of the two pre-committed
 clauses. Clause (2) narrows the comparison to *same-category* pairs — the case the
@@ -748,6 +752,7 @@ it plausibly loads the sample with robust concepts, biasing the floor **upward**
 pre-registered before any new cell was run, fitted to none of them, with the per-cell
 equivalent (≈ 0.944) written into the frozen wording itself so that it cannot be quoted
 as if it were M3's floor.
+
 ---
 
 ## 5. Discussion
